@@ -65,42 +65,44 @@ class IntroPage extends StatelessWidget {
             )
           ],
         ),
-        body: Container(
-          width: double.infinity,
-          color: HexColor('#E7E6DC'),
-          child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Image.asset(
-                  "assets/images/SHPLogo.png",
-                  height: SizeConfig.blockSizeVertical * 25,
-                ),
-                const SizedBox(
-                  height: 5,
-                ),
-                Padding(
-                  padding: EdgeInsets.all(SizeConfig.blockSizeVertical * 4),
-                  child: Text(
-                    '''Play scavenger hunt with the camera. Alternate taking and finding pictures within boundaries.  
-                    ''',
-                    style: TextStyle(
-                      color: HexColor('#4A5E43'),
-                      fontFamily: 'CaveatBrush',
-                      fontSize: SizeConfig.blockSizeHorizontal * 6,
-                      fontWeight: FontWeight.w400,
-                    ),
-                    textAlign: TextAlign.justify,
+        body: SingleChildScrollView(
+          child: Container(
+            width: double.infinity,
+            color: HexColor('#E7E6DC'),
+            child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Image.asset(
+                    "assets/images/SHPLogo.png",
+                    height: SizeConfig.blockSizeVertical * 25,
                   ),
-                ),
-                PixButton(
-                    name: "Start",
-                    fontSize: SizeConfig.blockSizeHorizontal * 10,
-                    onPressed: () {
-                      Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) => const Player1Page()));
-                    })
-              ]),
+                  const SizedBox(
+                    height: 5,
+                  ),
+                  Padding(
+                    padding: EdgeInsets.all(SizeConfig.blockSizeVertical * 4),
+                    child: Text(
+                      '''Play scavenger hunt with the camera. Alternate taking and finding pictures within boundaries.  
+                      ''',
+                      style: TextStyle(
+                        color: HexColor('#4A5E43'),
+                        fontFamily: 'CaveatBrush',
+                        fontSize: SizeConfig.blockSizeHorizontal * 6,
+                        fontWeight: FontWeight.w400,
+                      ),
+                      textAlign: TextAlign.justify,
+                    ),
+                  ),
+                  PixButton(
+                      name: "Start",
+                      fontSize: SizeConfig.blockSizeHorizontal * 10,
+                      onPressed: () {
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => const Player1Page()));
+                      })
+                ]),
+          ),
         ));
   }
 }
