@@ -39,7 +39,7 @@ class _Player1PageState extends State<Player1Page> {
       appBar: NewGradientAppBar(
         automaticallyImplyLeading: false,
         title: AutoSizeText(
-          "Take Original Pix",
+          "Take Original Pics",
           style: TextStyle(
             color: HexColor('#E7E6DC'),
             fontFamily: 'CaveatBrush',

@@ -12,7 +12,7 @@ showPlayer1Instructions(BuildContext context) {
 
   // set up the AlertDialog
   AlertDialog alert = AlertDialog(
-    title: const Text("Original Pix"),
+    title: const Text("Original Pics"),
     content: const Text(
         "Use the camera to take close up pictures within the set boundaries. Once completed, click the 'Next' button and pass to your competitor."),
     actions: [
@@ -40,7 +40,7 @@ showPlayer2Instructions(BuildContext context) {
 
   // set up the AlertDialog
   AlertDialog alert = AlertDialog(
-    title: const Text("Matching Pix"),
+    title: const Text("Matching Pics"),
     content: const Text(
         "Click on 'Match this picture:' to see the original image. Try to find that item within the set boundaries and take exactly the same picture. Click 'Next' when finished."),
     actions: [
@@ -76,7 +76,7 @@ restartGame(BuildContext context) {
   // set up the AlertDialog
   AlertDialog alert = AlertDialog(
     title: const Text("Restart the Game?"),
-    content: const Text("Restarting the game will remove the Original Pix."),
+    content: const Text("Restarting the game will remove the Original Pics."),
     actions: [
       cancelButton,
       okButton,

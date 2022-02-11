@@ -16,7 +16,7 @@ class IntroPage extends StatelessWidget {
         appBar: NewGradientAppBar(
           automaticallyImplyLeading: false,
           title: AutoSizeText(
-            "Scavenger Pix",
+            "Hunt n Pic",
             style: TextStyle(
                 color: HexColor('#E7E6DC'),
                 fontFamily: 'CaveatBrush',
@@ -45,7 +45,7 @@ class IntroPage extends StatelessWidget {
                         height: 50,
                         width: 50,
                       ),
-                      applicationName: "Scavenger Hunt Pictures",
+                      applicationName: "Hunt n Pic",
                       applicationVersion: "1.1.1",
                       applicationLegalese: '©2022 borderlineBoomer',
                       children: <Widget>[
@@ -73,6 +73,9 @@ class IntroPage extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
+                  SizedBox(
+                    height: SizeConfig.blockSizeVertical * 10,
+                  ),
                   Image.asset(
                     "assets/images/SHPLogo.png",
                     height: SizeConfig.blockSizeVertical * 25,

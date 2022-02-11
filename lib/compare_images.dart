@@ -141,7 +141,7 @@ class _CompareImagesState extends State<CompareImages> {
       appBar: NewGradientAppBar(
         automaticallyImplyLeading: false,
         title: AutoSizeText(
-          "Compare Pix",
+          "Compare Pics",
           style: TextStyle(
             color: HexColor('#E7E6DC'),
             fontFamily: 'CaveatBrush',

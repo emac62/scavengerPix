@@ -49,7 +49,7 @@ class _Player2PageState extends State<Player2Page> {
         appBar: NewGradientAppBar(
           automaticallyImplyLeading: false,
           title: AutoSizeText(
-            "Match the Pix",
+            "Match the Pics",
             style: TextStyle(
               color: HexColor('#E7E6DC'),
               fontFamily: 'CaveatBrush',
@@ -214,7 +214,7 @@ class _Player2PageState extends State<Player2Page> {
                     ),
                   ),
                   PixButton(
-                    name: "$imgNumCompare Pix",
+                    name: "$imgNumCompare Pic",
                     onPressed: () {
                       Navigator.of(context).push(MaterialPageRoute(
                           builder: (context) => FullscreenImage(

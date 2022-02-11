@@ -23,7 +23,7 @@ class _FullscreenImageState extends State<FullscreenImage> {
     return Scaffold(
       appBar: NewGradientAppBar(
         title: AutoSizeText(
-          widget.imagePix,
+          '${widget.imagePix} Pic',
           style: TextStyle(fontSize: SizeConfig.blockSizeHorizontal * 8),
         ),
         gradient:
