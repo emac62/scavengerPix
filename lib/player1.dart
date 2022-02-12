@@ -29,6 +29,8 @@ class _Player1PageState extends State<Player1Page> {
   @override
   initState() {
     super.initState();
+    int num = imageCache!.currentSize;
+    debugPrint("P1 init: $num");
   }
 
   @override

@@ -2,6 +2,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:new_gradient_app_bar/new_gradient_app_bar.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:scavenger_hunt_pictures/player1.dart';
 import 'package:scavenger_hunt_pictures/widgets/pix_button.dart';
 import 'package:scavenger_hunt_pictures/widgets/size_config.dart';
@@ -86,8 +87,7 @@ class IntroPage extends StatelessWidget {
                   Padding(
                     padding: EdgeInsets.all(SizeConfig.blockSizeVertical * 4),
                     child: Text(
-                      '''Play scavenger hunt with the camera. Alternate taking and finding pictures within boundaries.  
-                      ''',
+                      "Play scavenger hunt with the camera. Alternate taking and finding pictures within boundaries.",
                       style: TextStyle(
                         color: HexColor('#4A5E43'),
                         fontFamily: 'CaveatBrush',
@@ -100,7 +100,9 @@ class IntroPage extends StatelessWidget {
                   PixButton(
                       name: "Start",
                       fontSize: SizeConfig.blockSizeHorizontal * 10,
-                      onPressed: () {
+                      onPressed: () async {
+                        int num = imageCache!.currentSize;
+                        debugPrint("Cache: $num");
                         Navigator.of(context).push(MaterialPageRoute(
                             builder: (context) => const Player1Page()));
                       })

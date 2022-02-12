@@ -269,6 +269,9 @@ class _CompareImagesState extends State<CompareImages> {
                           child: PixButton(
                               name: "Switch Roles for Next Round",
                               onPressed: () {
+                                int num = imageCache!.currentSize;
+                                debugPrint("compare: $num");
+                                imageCache!.clear();
                                 Navigator.of(context).push(MaterialPageRoute(
                                     builder: (context) => const Player1Page()));
                               },
