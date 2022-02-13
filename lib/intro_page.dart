@@ -2,8 +2,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:new_gradient_app_bar/new_gradient_app_bar.dart';
-import 'package:path_provider/path_provider.dart';
-import 'package:scavenger_hunt_pictures/player1.dart';
+import 'package:scavenger_hunt_pictures/settings_screen.dart';
 import 'package:scavenger_hunt_pictures/widgets/pix_button.dart';
 import 'package:scavenger_hunt_pictures/widgets/size_config.dart';
 
@@ -17,7 +16,7 @@ class IntroPage extends StatelessWidget {
         appBar: NewGradientAppBar(
           automaticallyImplyLeading: false,
           title: AutoSizeText(
-            "Hunt n Pic",
+            "Match This!",
             style: TextStyle(
                 color: HexColor('#E7E6DC'),
                 fontFamily: 'CaveatBrush',
@@ -46,8 +45,8 @@ class IntroPage extends StatelessWidget {
                         height: 50,
                         width: 50,
                       ),
-                      applicationName: "Hunt n Pic",
-                      applicationVersion: "1.1.1",
+                      applicationName: "Match This!",
+                      applicationVersion: "1.0.1",
                       applicationLegalese: '©2022 borderlineBoomer',
                       children: <Widget>[
                         Padding(
@@ -55,7 +54,7 @@ class IntroPage extends StatelessWidget {
                             child: Column(
                               children: [
                                 Text(
-                                  "Use the device's camera to play a scavenger hunt game with kids.",
+                                  "Use the device's camera to play a scavenger hunt matching game with kids.",
                                   style: TextStyle(color: HexColor('#4A5E43')),
                                 ),
                               ],
@@ -100,11 +99,11 @@ class IntroPage extends StatelessWidget {
                   PixButton(
                       name: "Start",
                       fontSize: SizeConfig.blockSizeHorizontal * 10,
-                      onPressed: () async {
+                      onPressed: () {
                         int num = imageCache!.currentSize;
                         debugPrint("Cache: $num");
                         Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => const Player1Page()));
+                            builder: (context) => const SettingsScreen()));
                       })
                 ]),
           ),

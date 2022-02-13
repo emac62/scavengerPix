@@ -4,8 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:new_gradient_app_bar/new_gradient_app_bar.dart';
+import 'package:provider/provider.dart';
 import 'package:scavenger_hunt_pictures/compare_images.dart';
 import 'package:scavenger_hunt_pictures/full_screen_image.dart';
+import 'package:scavenger_hunt_pictures/providers/settings_provider.dart';
 import 'package:scavenger_hunt_pictures/widgets/dialogs.dart';
 import 'package:scavenger_hunt_pictures/widgets/image_title.dart';
 import 'package:scavenger_hunt_pictures/widgets/pix_button.dart';
@@ -43,6 +45,7 @@ class _Player2PageState extends State<Player2Page> {
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
+    var settingsProvider = Provider.of<SettingsProvider>(context);
     return WillPopScope(
       onWillPop: () async => false,
       child: Scaffold(
@@ -93,6 +96,29 @@ class _Player2PageState extends State<Player2Page> {
           child: Column(children: [
             SizedBox(
               height: SizeConfig.blockSizeVertical * 2,
+            ),
+            Padding(
+              padding: EdgeInsets.symmetric(
+                  horizontal: SizeConfig.blockSizeHorizontal * 5,
+                  vertical: SizeConfig.blockSizeVertical * 1),
+              child: Text("Round 1",
+                  style: TextStyle(
+                    fontSize: SizeConfig.blockSizeHorizontal * 8,
+                    fontWeight: FontWeight.w400,
+                  )),
+            ),
+            Padding(
+              padding: EdgeInsets.symmetric(
+                  horizontal: SizeConfig.blockSizeHorizontal * 5,
+                  vertical: SizeConfig.blockSizeVertical * 1),
+              child: AutoSizeText(
+                "${settingsProvider.player2} match ${settingsProvider.player1}'s Pictures!",
+                style: const TextStyle(
+                  fontWeight: FontWeight.w400,
+                ),
+                minFontSize: 18,
+                maxLines: 1,
+              ),
             ),
             Padding(
               padding: const EdgeInsets.all(8.0),
@@ -197,24 +223,14 @@ class _Player2PageState extends State<Player2Page> {
         child: Column(
           children: [
             ListTile(
-              title: ImageTitle(
-                title: imgNum,
-              ),
-              subtitle: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
+              title: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Padding(
-                    padding: EdgeInsets.only(
-                        right: SizeConfig.blockSizeHorizontal * 2),
-                    child: AutoSizeText(
-                      'Match this picture:',
-                      style: TextStyle(
-                          fontSize: SizeConfig.blockSizeHorizontal * 6,
-                          color: HexColor('#4A5E43')),
-                    ),
+                  ImageTitle(
+                    title: imgNumCompare,
                   ),
                   PixButton(
-                    name: "$imgNumCompare Pic",
+                    name: "Match this Pic",
                     onPressed: () {
                       Navigator.of(context).push(MaterialPageRoute(
                           builder: (context) => FullscreenImage(
@@ -246,26 +262,13 @@ class _Player2PageState extends State<Player2Page> {
               children: [
                 Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: PixButton(
-                    name: "Retake",
-                    onPressed: () => takePicture(imgNum),
-                    fontSize: SizeConfig.blockSizeHorizontal * 4,
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: PixButton(
-                      name: "Enlarge",
-                      fontSize: SizeConfig.blockSizeHorizontal * 4,
-                      onPressed: () {
-                        imgUrl == ""
-                            ? null
-                            : Navigator.of(context).push(MaterialPageRoute(
-                                builder: (context) => FullscreenImage(
-                                      imagePix: imgNum,
-                                      imageUrl: imgUrl,
-                                    )));
-                      }),
+                  child: imgUrl != ""
+                      ? PixButton(
+                          name: "Retake",
+                          onPressed: () => takePicture(imgNum),
+                          fontSize: SizeConfig.blockSizeHorizontal * 4,
+                        )
+                      : null,
                 ),
               ],
             )

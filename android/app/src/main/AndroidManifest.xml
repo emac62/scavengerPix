@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.scavenger_hunt_pictures">
    <application
-        android:label="Hunt n Pic"
+        android:label="Match This!"
         android:icon="@mipmap/launcher_icon">
         <activity
             android:name=".MainActivity"
