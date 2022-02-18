@@ -1,11 +1,15 @@
+// ignore_for_file: prefer_typing_uninitialized_variables
+
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:custom_sliding_segmented_control/custom_sliding_segmented_control.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:new_gradient_app_bar/new_gradient_app_bar.dart';
 import 'package:provider/provider.dart';
-import 'package:scavenger_hunt_pictures/player1.dart';
+import 'package:scavenger_hunt_pictures/original_pictures.dart';
 import 'package:scavenger_hunt_pictures/providers/settings_provider.dart';
+import 'package:scavenger_hunt_pictures/widgets/app_colors.dart';
 import 'package:scavenger_hunt_pictures/widgets/pix_button.dart';
 import 'package:scavenger_hunt_pictures/widgets/size_config.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -19,13 +23,9 @@ class SettingsScreen extends StatefulWidget {
 
 class _SettingsScreenState extends State<SettingsScreen> {
   bool keepScore = false;
-  int p1Score = 0;
-  int p2Score = 0;
-  var rounds = 1;
-  var roundsDisplay = "1";
-  var player1 = "Player 1";
-  var player2 = "Player 2";
-  TextEditingController? roundsController;
+  var player1;
+  var player2;
+
   TextEditingController? p1Controller;
   TextEditingController? p2Controller;
 
@@ -33,7 +33,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
   void initState() {
     super.initState();
     loadSettings().then((_) {
-      roundsController = TextEditingController(text: roundsDisplay);
       p1Controller = TextEditingController(text: player1);
       p2Controller = TextEditingController(text: player2);
     });
@@ -42,13 +41,16 @@ class _SettingsScreenState extends State<SettingsScreen> {
   loadSettings() async {
     SharedPreferences savedPref = await SharedPreferences.getInstance();
     setState(() {
-      rounds = (savedPref.getInt('numberOfRounds') ?? 1);
-      keepScore = (savedPref.getBool('keepScore') ?? false);
-      p1Score = (savedPref.getInt('p1Score') ?? 0);
-      p2Score = (savedPref.getInt('p2Score') ?? 0);
-      player1 = (savedPref.getString('player1') ?? "Player 1");
-      player2 = (savedPref.getString('player2') ?? "Player 2");
+      player1 = (savedPref.getString('player1') ?? "");
+      player2 = (savedPref.getString('player2') ?? "");
     });
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    p1Controller!.dispose();
+    p2Controller!.dispose();
   }
 
   @override
@@ -61,15 +63,21 @@ class _SettingsScreenState extends State<SettingsScreen> {
         title: AutoSizeText("Settings",
             style: TextStyle(
                 fontSize: SizeConfig.blockSizeHorizontal * 15,
+                color: HexColor('#2d3a64'),
                 letterSpacing: 2.0)),
-        gradient:
-            LinearGradient(colors: [HexColor('#9E9A75'), HexColor('#4A5E43')]),
+        gradient: LinearGradient(colors: [
+          HexColor('#d5ebf6'),
+          HexColor('#8f76af'),
+          HexColor('#d5ebf6'),
+        ]),
         actions: const [],
       ),
-      body: Center(
-          child: ListView(
+      body: ListView(
         shrinkWrap: true,
         children: [
+          const SizedBox(
+            height: 15,
+          ),
           Padding(
             padding: EdgeInsets.symmetric(
                 horizontal: SizeConfig.blockSizeHorizontal * 3),
@@ -82,52 +90,100 @@ class _SettingsScreenState extends State<SettingsScreen> {
             padding: EdgeInsets.symmetric(
                 horizontal: SizeConfig.blockSizeHorizontal * 10),
             child: AutoSizeText(
-              "One round consists of each player taking 3 pictures and comparing them. The number correct is given to the player that correctly matched the pictures.",
+              "One round consists of each player taking pictures and comparing them. The number correct is given to the player that correctly matched the pictures.",
               style: TextStyle(fontSize: SizeConfig.blockSizeHorizontal * 4),
+            ),
+          ),
+          Center(
+            child: CustomSlidingSegmentedControl(
+              radius: 8,
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(8),
+                  gradient: const LinearGradient(
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                      colors: [Color(0xff6fcff5), Color(0xff007cc2)])),
+              children: {
+                1: Text(
+                  "1",
+                  style:
+                      TextStyle(fontSize: SizeConfig.blockSizeHorizontal * 5),
+                ),
+                2: Text(
+                  "2",
+                  style:
+                      TextStyle(fontSize: SizeConfig.blockSizeHorizontal * 5),
+                ),
+                3: Text(
+                  "3",
+                  style:
+                      TextStyle(fontSize: SizeConfig.blockSizeHorizontal * 5),
+                )
+              },
+              onValueChanged: (int value) {
+                setState(() {
+                  Provider.of<SettingsProvider>(context, listen: false)
+                      .setNumberOfRounds(value);
+                });
+                debugPrint(
+                    'Settings - Rounds: ${settingsProvider.numberOfRounds}');
+              },
+              initialValue: settingsProvider.numberOfRounds,
+              fixedWidth: SizeConfig.blockSizeHorizontal * 20,
             ),
           ),
           Padding(
             padding: EdgeInsets.symmetric(
-                horizontal: SizeConfig.blockSizeHorizontal * 10,
-                vertical: SizeConfig.blockSizeVertical * 1),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                AutoSizeText(
-                  "Number of Rounds:",
+                horizontal: SizeConfig.blockSizeHorizontal * 3),
+            child: AutoSizeText(
+              "Pictures per Round",
+              style: TextStyle(fontSize: SizeConfig.blockSizeHorizontal * 8),
+            ),
+          ),
+          Padding(
+            padding: EdgeInsets.symmetric(
+                horizontal: SizeConfig.blockSizeHorizontal * 10),
+            child: AutoSizeText(
+              "The number of pictures each player takes before comparing them.",
+              style: TextStyle(fontSize: SizeConfig.blockSizeHorizontal * 4),
+            ),
+          ),
+          Center(
+            child: CustomSlidingSegmentedControl(
+              radius: 8,
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(8),
+                  gradient: LinearGradient(
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                      colors: [AppColor.yellow, AppColor.orange])),
+              children: {
+                1: Text(
+                  "1",
                   style:
-                      TextStyle(fontSize: SizeConfig.blockSizeHorizontal * 6),
+                      TextStyle(fontSize: SizeConfig.blockSizeHorizontal * 5),
                 ),
-                Flexible(
-                  child: FractionallySizedBox(
-                      widthFactor: 0.5,
-                      child: TextField(
-                        controller: roundsController,
-                        textAlign: TextAlign.center,
-                        keyboardType: TextInputType.number,
-                        textInputAction: TextInputAction.done,
-                        decoration: InputDecoration(
-                          isCollapsed: true,
-                          filled: true,
-                          fillColor: HexColor("#4A5E43"),
-                          border: OutlineInputBorder(
-                              borderSide: BorderSide.none,
-                              borderRadius: BorderRadius.circular(50)),
-                        ),
-                        cursorColor: HexColor('#E7E6DC'),
-                        style: TextStyle(
-                            color: HexColor('#E7E6DC'),
-                            fontSize: SizeConfig.blockSizeHorizontal * 6),
-                        onChanged: (value) {
-                          setState(() {
-                            roundsDisplay = value;
-                            rounds = int.tryParse(value) ?? 1;
-                            settingsProvider.setNumberOfRounds(rounds);
-                          });
-                        },
-                      )),
+                2: Text(
+                  "2",
+                  style:
+                      TextStyle(fontSize: SizeConfig.blockSizeHorizontal * 5),
                 ),
-              ],
+                3: Text(
+                  "3",
+                  style:
+                      TextStyle(fontSize: SizeConfig.blockSizeHorizontal * 5),
+                )
+              },
+              onValueChanged: (int value) {
+                setState(() {
+                  Provider.of<SettingsProvider>(context, listen: false)
+                      .setNumberOfPictures(value);
+                });
+                debugPrint(
+                    'Settings - Pictures: ${settingsProvider.numberOfPictures}');
+              },
+              initialValue: settingsProvider.numberOfPictures,
+              fixedWidth: SizeConfig.blockSizeHorizontal * 20,
             ),
           ),
           Padding(
@@ -148,12 +204,15 @@ class _SettingsScreenState extends State<SettingsScreen> {
                         EdgeInsets.only(top: SizeConfig.blockSizeVertical * 3),
                     child: CupertinoSwitch(
                         value: keepScore,
-                        activeColor: HexColor('#4A5E43'),
-                        thumbColor: HexColor('#E7E6DC'),
+                        activeColor: HexColor('#2d3a64'),
+                        thumbColor: Colors.white,
+                        trackColor: HexColor('#6fcff5'),
                         onChanged: (value) {
                           setState(() {
                             keepScore = value;
-                            settingsProvider.setKeepScore(keepScore);
+                            Provider.of<SettingsProvider>(context,
+                                    listen: false)
+                                .setKeepScore(keepScore);
                           });
                         }),
                   ),
@@ -165,7 +224,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
             padding: EdgeInsets.symmetric(
                 horizontal: SizeConfig.blockSizeHorizontal * 3),
             child: AutoSizeText(
-              "Customize Names",
+              "Add Names",
               style: TextStyle(fontSize: SizeConfig.blockSizeHorizontal * 8),
             ),
           ),
@@ -177,20 +236,24 @@ class _SettingsScreenState extends State<SettingsScreen> {
               controller: p1Controller,
               keyboardType: TextInputType.text,
               textCapitalization: TextCapitalization.words,
-              decoration: const InputDecoration(
-                isCollapsed: true,
-                border: UnderlineInputBorder(),
-                hintText: "Enter Player 1's Name Here",
-              ),
+              decoration: InputDecoration(
+                  isCollapsed: true,
+                  border: const UnderlineInputBorder(),
+                  hintText: "Enter Player 1's Name Here",
+                  hintStyle: TextStyle(color: HexColor('#bb8b1f'))),
               style: TextStyle(
                 fontSize: SizeConfig.blockSizeHorizontal * 5,
-                color: HexColor('#4A5E43'),
               ),
-              onChanged: (value) {
-                setState(() {
-                  player1 = value;
-                  settingsProvider.setPlayer1(player1);
-                });
+              onChanged: (value) async {
+                if (value == "") {
+                  SharedPreferences pref =
+                      await SharedPreferences.getInstance();
+                  pref.remove('player1');
+                } else {
+                  Provider.of<SettingsProvider>(context, listen: false)
+                      .setPlayer1(value);
+                }
+                debugPrint(settingsProvider.player1);
               },
             ),
           ),
@@ -202,19 +265,23 @@ class _SettingsScreenState extends State<SettingsScreen> {
               controller: p2Controller,
               keyboardType: TextInputType.text,
               textCapitalization: TextCapitalization.words,
-              decoration: const InputDecoration(
-                isCollapsed: true,
-                border: UnderlineInputBorder(),
-                hintText: "Enter Player 2's Name Here",
-              ),
+              decoration: InputDecoration(
+                  isCollapsed: true,
+                  border: const UnderlineInputBorder(),
+                  hintText: "Enter Player 2's Name Here",
+                  hintStyle: TextStyle(color: HexColor('#bb8b1f'))),
               style: TextStyle(
-                  fontSize: SizeConfig.blockSizeHorizontal * 5,
-                  color: HexColor('#4A5E43')),
-              onChanged: (value) {
-                setState(() {
-                  player2 = value;
-                  settingsProvider.setPlayer2(player2);
-                });
+                fontSize: SizeConfig.blockSizeHorizontal * 5,
+              ),
+              onChanged: (value) async {
+                if (value == "") {
+                  SharedPreferences pref =
+                      await SharedPreferences.getInstance();
+                  pref.remove('player2');
+                } else {
+                  Provider.of<SettingsProvider>(context, listen: false)
+                      .setPlayer2(value);
+                }
               },
             ),
           ),
@@ -223,15 +290,24 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 horizontal: SizeConfig.blockSizeHorizontal * 15,
                 vertical: SizeConfig.blockSizeVertical * 5),
             child: PixButton(
-                name: "Play",
+                name: "Let's Play!",
                 onPressed: () {
+                  int turn = 1;
+                  Provider.of<SettingsProvider>(context, listen: false)
+                      .setPlayerTurns(turn);
+                  Provider.of<SettingsProvider>(context, listen: false)
+                      .setCurrentRound(turn);
+                  Provider.of<SettingsProvider>(context, listen: false)
+                      .setP1Score(0);
+                  Provider.of<SettingsProvider>(context, listen: false)
+                      .setP2Score(0);
                   Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => const Player1Page()));
+                      builder: (context) => const OriginalPage()));
                 },
                 fontSize: SizeConfig.blockSizeHorizontal * 8),
           )
         ],
-      )),
+      ),
       bottomNavigationBar: Container(
         color: Colors.black26,
         child: const SizedBox(

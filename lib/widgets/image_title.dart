@@ -17,7 +17,7 @@ class ImageTitle extends StatelessWidget {
       child: AutoSizeText(
         "$title Pic",
         style: TextStyle(
-            color: HexColor('#4A5E43'),
+            color: HexColor('#2d3a64'),
             fontSize: (SizeConfig.blockSizeHorizontal * 8),
             fontWeight: FontWeight.w400),
       ),

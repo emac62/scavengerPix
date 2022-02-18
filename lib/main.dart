@@ -22,15 +22,15 @@ class ScavengerHuntPictures extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: ThemeData(
-        scaffoldBackgroundColor: HexColor('#E7E6DC'),
+        scaffoldBackgroundColor: HexColor('#a7d8f6'),
         fontFamily: 'CaveatBrush',
-        primarySwatch: createMaterialColor(const Color(0xff4A5E43)),
+        primarySwatch: createMaterialColor(const Color(0xff2d3a64)),
         textTheme: const TextTheme(
           bodyText1: TextStyle(),
           bodyText2: TextStyle(),
         ).apply(
-          bodyColor: HexColor('#4A5E43'),
-          displayColor: HexColor('#4A5E43'),
+          bodyColor: HexColor('#2d3a64'),
+          displayColor: HexColor('#2d3a64'),
         ),
       ),
       debugShowCheckedModeBanner: false,

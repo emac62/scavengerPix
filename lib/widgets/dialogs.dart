@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:scavenger_hunt_pictures/player1.dart';
+import 'package:scavenger_hunt_pictures/settings_screen.dart';
 
 showPlayer1Instructions(BuildContext context) {
   // set up the button
@@ -62,8 +62,8 @@ restartGame(BuildContext context) {
   Widget okButton = TextButton(
     child: const Text("OK"),
     onPressed: () {
-      Navigator.of(context)
-          .push(MaterialPageRoute(builder: (context) => const Player1Page()));
+      Navigator.of(context).push(
+          MaterialPageRoute(builder: (context) => const SettingsScreen()));
     },
   );
 

@@ -24,10 +24,16 @@ class _FullscreenImageState extends State<FullscreenImage> {
       appBar: NewGradientAppBar(
         title: AutoSizeText(
           '${widget.imagePix} Pic',
-          style: TextStyle(fontSize: SizeConfig.blockSizeHorizontal * 8),
+          style: TextStyle(
+            fontSize: SizeConfig.blockSizeHorizontal * 8,
+            color: HexColor('#2d3a64'),
+          ),
         ),
-        gradient:
-            LinearGradient(colors: [HexColor('#9E9A75'), HexColor('#4A5E43')]),
+        gradient: LinearGradient(colors: [
+          HexColor('#d5ebf6'),
+          HexColor('#007cc2'),
+          HexColor('#d5ebf6'),
+        ]),
       ),
       body: Image(
         image: FileImage(File(widget.imageUrl)),

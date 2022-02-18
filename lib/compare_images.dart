@@ -1,30 +1,38 @@
+// ignore_for_file: must_be_immutable
+
 import 'dart:io';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:before_after/before_after.dart';
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:new_gradient_app_bar/new_gradient_app_bar.dart';
+import 'package:provider/provider.dart';
 import 'package:scavenger_hunt_pictures/intro_page.dart';
-import 'package:scavenger_hunt_pictures/player1.dart';
+import 'package:scavenger_hunt_pictures/original_pictures.dart';
+import 'package:scavenger_hunt_pictures/providers/settings_provider.dart';
+import 'package:scavenger_hunt_pictures/settings_screen.dart';
+import 'package:scavenger_hunt_pictures/widgets/app_colors.dart';
+import 'package:scavenger_hunt_pictures/widgets/ordinal.dart';
 import 'package:scavenger_hunt_pictures/widgets/pix_button.dart';
 import 'package:scavenger_hunt_pictures/widgets/size_config.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class CompareImages extends StatefulWidget {
   final String firstImgPath;
-  final String secondImgPath;
-  final String thirdImgPath;
+  String? secondImgPath;
+  String? thirdImgPath;
   final String fourthImgPath;
-  final String fifthImgPath;
-  final String sixthImgPath;
+  String? fifthImgPath;
+  String? sixthImgPath;
 
-  const CompareImages(
+  CompareImages(
       {Key? key,
       required this.firstImgPath,
-      required this.secondImgPath,
-      required this.thirdImgPath,
+      this.secondImgPath,
+      this.thirdImgPath,
       required this.fourthImgPath,
-      required this.fifthImgPath,
-      required this.sixthImgPath})
+      this.fifthImgPath,
+      this.sixthImgPath})
       : super(key: key);
 
   @override
@@ -45,9 +53,59 @@ class _CompareImagesState extends State<CompareImages> {
   bool same3 = false;
   bool notSame3 = false;
   int numberCorrect = 0;
+  int numberIncorrect = 0;
+  var player1 = "";
+  var player2 = "";
+  bool scoreUpdated = false;
+
+  var p1Score = 0;
+  var p2Score = 0;
+
+  setSame(int position) {
+    if (position == 0) {
+      return same1;
+    } else if (position == 1) {
+      return same2;
+    } else if (position == 2) {
+      return same3;
+    }
+  }
+
+  setNotSame(int position) {
+    if (position == 0) {
+      return notSame1;
+    } else if (position == 1) {
+      return notSame2;
+    } else if (position == 2) {
+      return notSame3;
+    }
+  }
+
+  getP1ImgPath(int position) {
+    if (position == 0) {
+      return firstImgPath!;
+    } else if (position == 1) {
+      return secondImgPath!;
+    } else if (position == 2) {
+      return thirdImgPath!;
+    }
+  }
+
+  getP2ImgPath(int position) {
+    if (position == 0) {
+      return fourthImgPath!;
+    } else if (position == 1) {
+      return fifthImgPath!;
+    } else if (position == 2) {
+      return sixthImgPath!;
+    }
+  }
 
   toggleSame1() {
     setState(() {
+      if (notSame1 == true) {
+        numberIncorrect = -1;
+      }
       if (same1 == false) {
         same1 = !same1;
         numberCorrect += 1;
@@ -62,6 +120,9 @@ class _CompareImagesState extends State<CompareImages> {
 
   toggleSame2() {
     setState(() {
+      if (notSame2 == true) {
+        numberIncorrect = -1;
+      }
       if (same2 == false) {
         same2 = !same2;
         numberCorrect += 1;
@@ -76,6 +137,9 @@ class _CompareImagesState extends State<CompareImages> {
 
   toggleSame3() {
     setState(() {
+      if (notSame3 == true) {
+        numberIncorrect = -1;
+      }
       if (same3 == false) {
         same3 = !same3;
         numberCorrect += 1;
@@ -84,7 +148,6 @@ class _CompareImagesState extends State<CompareImages> {
         numberCorrect -= 1;
       }
       notSame3 = false;
-      debugPrint('$numberCorrect');
     });
   }
 
@@ -93,8 +156,15 @@ class _CompareImagesState extends State<CompareImages> {
       if (same1 == true) {
         numberCorrect -= 1;
       }
-      notSame1 = !notSame1;
+      if (notSame1 == false) {
+        notSame1 = !notSame1;
+        numberIncorrect += 1;
+      } else {
+        notSame1 = !notSame1;
+        numberIncorrect -= 1;
+      }
       same1 = false;
+      debugPrint('$numberIncorrect');
     });
   }
 
@@ -103,17 +173,29 @@ class _CompareImagesState extends State<CompareImages> {
       if (same2 == true) {
         numberCorrect -= 1;
       }
-      notSame2 = !notSame2;
+      if (notSame2 == false) {
+        notSame2 = !notSame2;
+        numberIncorrect += 1;
+      } else {
+        notSame2 = !notSame2;
+        numberIncorrect -= 1;
+      }
       same2 = false;
     });
   }
 
   toggleNotSame3() {
-    if (same3 == true) {
-      numberCorrect -= 1;
-    }
     setState(() {
-      notSame3 = !notSame3;
+      if (same3 == true) {
+        numberCorrect -= 1;
+      }
+      if (notSame3 == false) {
+        notSame3 = !notSame3;
+        numberIncorrect += 1;
+      } else {
+        notSame3 = !notSame3;
+        numberIncorrect -= 1;
+      }
       same3 = false;
     });
   }
@@ -122,35 +204,69 @@ class _CompareImagesState extends State<CompareImages> {
   void initState() {
     super.initState();
     setVariables();
+    loadSettings().then((_) {
+      scoreUpdated = false;
+      debugPrint(
+          'Compare init playerTurns: ${Provider.of<SettingsProvider>(context, listen: false).playerTurns}');
+    });
   }
 
-  setVariables() async {
-    firstImgPath = File(widget.firstImgPath);
-    secondImgPath = File(widget.secondImgPath);
-    thirdImgPath = File(widget.thirdImgPath);
-    fourthImgPath = File(widget.fourthImgPath);
-    fifthImgPath = File(widget.fifthImgPath);
-    sixthImgPath = File(widget.sixthImgPath);
+  loadSettings() async {
+    SharedPreferences savedPref = await SharedPreferences.getInstance();
+    setState(() {
+      player1 = (savedPref.getString('player1') ?? "Player1");
+      player2 = (savedPref.getString('player2') ?? "Player2");
+    });
+  }
+
+  setVariables() {
+    var settingsProvider =
+        Provider.of<SettingsProvider>(context, listen: false);
+    switch (settingsProvider.numberOfPictures) {
+      case 1:
+        firstImgPath = File(widget.firstImgPath);
+        fourthImgPath = File(widget.fourthImgPath);
+        break;
+      case 2:
+        firstImgPath = File(widget.firstImgPath);
+        fourthImgPath = File(widget.fourthImgPath);
+        secondImgPath = File(widget.secondImgPath!);
+        fifthImgPath = File(widget.fifthImgPath!);
+        break;
+      case 3:
+        firstImgPath = File(widget.firstImgPath);
+        fourthImgPath = File(widget.fourthImgPath);
+        secondImgPath = File(widget.secondImgPath!);
+        fifthImgPath = File(widget.fifthImgPath!);
+        thirdImgPath = File(widget.thirdImgPath!);
+        sixthImgPath = File(widget.sixthImgPath!);
+
+        break;
+      default:
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
-
+    var settingsProvider = Provider.of<SettingsProvider>(context);
     return Scaffold(
       appBar: NewGradientAppBar(
         automaticallyImplyLeading: false,
         title: AutoSizeText(
           "Compare Pics",
           style: TextStyle(
-            color: HexColor('#E7E6DC'),
+            color: HexColor('#2d3a64'),
             fontFamily: 'CaveatBrush',
             fontSize: SizeConfig.blockSizeHorizontal * 10,
             fontWeight: FontWeight.w400,
           ),
         ),
-        gradient:
-            LinearGradient(colors: [HexColor('#9E9A75'), HexColor('#4A5E43')]),
+        gradient: LinearGradient(colors: [
+          HexColor('#d5ebf6'),
+          HexColor('#007cc2'),
+          HexColor('#d5ebf6'),
+        ]),
         actions: [
           Padding(
               padding:
@@ -158,7 +274,7 @@ class _CompareImagesState extends State<CompareImages> {
               child: GestureDetector(
                 child: Icon(
                   Icons.restart_alt,
-                  color: HexColor('#E7E6DC'),
+                  color: HexColor('#f6911f'),
                 ),
                 onTap: () {
                   Navigator.of(context).push(MaterialPageRoute(
@@ -174,42 +290,54 @@ class _CompareImagesState extends State<CompareImages> {
               height: SizeConfig.blockSizeVertical * 2,
             ),
             Padding(
-                padding: EdgeInsets.symmetric(
-                    horizontal: SizeConfig.blockSizeVertical * 2,
-                    vertical: SizeConfig.blockSizeVertical * 1),
-                child: buildCompareCard(
-                    p1Img: "1st",
-                    p2Img: "4th",
-                    p1ImgPath: firstImgPath!,
-                    p2ImgPath: fourthImgPath!,
-                    same: same1,
-                    notSame: notSame1)),
-            Padding(
-                padding: EdgeInsets.symmetric(
-                    horizontal: SizeConfig.blockSizeVertical * 2,
-                    vertical: SizeConfig.blockSizeVertical * 1),
-                child: buildCompareCard(
-                    p1Img: "2nd",
-                    p2Img: "5th",
-                    p1ImgPath: secondImgPath!,
-                    p2ImgPath: fifthImgPath!,
-                    same: same2,
-                    notSame: notSame2)),
-            Padding(
-                padding: EdgeInsets.symmetric(
-                    horizontal: SizeConfig.blockSizeVertical * 2,
-                    vertical: SizeConfig.blockSizeVertical * 1),
-                child: buildCompareCard(
-                    p1Img: "3rd",
-                    p2Img: "6th",
-                    p1ImgPath: thirdImgPath!,
-                    p2ImgPath: sixthImgPath!,
-                    same: same3,
-                    notSame: notSame3)),
-            numberCorrect == 0
+              padding: EdgeInsets.symmetric(
+                  horizontal: SizeConfig.blockSizeHorizontal * 2),
+              child: Card(
+                elevation: 4,
+                child: Container(
+                  decoration: const BoxDecoration(
+                      gradient: LinearGradient(
+                          colors: [Color(0xffbb8b1f), Color(0xffffdf21)])),
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text(
+                      "$player1 and $player2 work together to decide if the pictures match!",
+                      style: TextStyle(
+                        fontSize: SizeConfig.blockSizeHorizontal * 6,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            ListView.builder(
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              itemCount: settingsProvider.numberOfPictures,
+              itemBuilder: (context, position) {
+                return Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: buildCompareCard(
+                      p1Img: toOrdinal(position + 1),
+                      p1ImgPath: getP1ImgPath(position),
+                      p2ImgPath: getP2ImgPath(position),
+                      same: setSame(position),
+                      notSame: setNotSame(position)),
+                );
+              },
+            ),
+            (numberCorrect + numberIncorrect !=
+                    settingsProvider.numberOfPictures)
                 ? Card(
                     elevation: 4,
-                    child: SizedBox(
+                    child: Container(
+                      decoration: BoxDecoration(
+                          gradient: LinearGradient(colors: [
+                        HexColor('#d5ebf6'),
+                        HexColor('#8f76af'),
+                        HexColor('#d5ebf6'),
+                      ])),
                       width: SizeConfig.blockSizeHorizontal * 95,
                       child: Column(children: [
                         Padding(
@@ -239,7 +367,13 @@ class _CompareImagesState extends State<CompareImages> {
                   )
                 : Card(
                     elevation: 4,
-                    child: SizedBox(
+                    child: Container(
+                      decoration: BoxDecoration(
+                          gradient: LinearGradient(colors: [
+                        HexColor('#d5ebf6'),
+                        HexColor('#8f76af'),
+                        HexColor('#d5ebf6'),
+                      ])),
                       width: SizeConfig.blockSizeHorizontal * 95,
                       child: Column(children: [
                         Padding(
@@ -256,26 +390,104 @@ class _CompareImagesState extends State<CompareImages> {
                           padding: EdgeInsets.symmetric(
                               horizontal: SizeConfig.blockSizeVertical * 3,
                               vertical: SizeConfig.blockSizeVertical * 2),
-                          child: AutoSizeText(
-                            "$numberCorrect correct!",
-                            style: TextStyle(
-                                fontSize: SizeConfig.blockSizeHorizontal * 6),
-                          ),
+                          child: (settingsProvider.playerTurns == 2 ||
+                                  settingsProvider.playerTurns == 3)
+                              ? AutoSizeText(
+                                  "$player2 got $numberCorrect correct!",
+                                  style: TextStyle(
+                                      fontSize:
+                                          SizeConfig.blockSizeHorizontal * 6),
+                                )
+                              : AutoSizeText(
+                                  "$player1 got $numberCorrect correct!",
+                                  style: TextStyle(
+                                      fontSize:
+                                          SizeConfig.blockSizeHorizontal * 6),
+                                ),
                         ),
                         Padding(
                           padding: EdgeInsets.symmetric(
                               horizontal: SizeConfig.blockSizeVertical * 3,
                               vertical: SizeConfig.blockSizeVertical * 2),
                           child: PixButton(
-                              name: "Switch Roles for Next Round",
-                              onPressed: () {
-                                int num = imageCache!.currentSize;
-                                debugPrint("compare: $num");
-                                imageCache!.clear();
-                                Navigator.of(context).push(MaterialPageRoute(
-                                    builder: (context) => const Player1Page()));
-                              },
-                              fontSize: SizeConfig.blockSizeHorizontal * 5),
+                            fontSize: SizeConfig.blockSizeHorizontal * 8,
+                            name: "Update Score",
+                            onPressed: () {
+                              scoreUpdated == false
+                                  ? updatePlayerScore()
+                                  : null;
+                            },
+                          ),
+                        ),
+                        scoreUpdated == true
+                            ? SizedBox(
+                                child: Column(
+                                  children: [
+                                    Text(
+                                      "$player1 - ${settingsProvider.p1Score}",
+                                      style: TextStyle(
+                                          fontSize:
+                                              SizeConfig.blockSizeHorizontal *
+                                                  6),
+                                    ),
+                                    Text(
+                                      "$player2 - ${settingsProvider.p2Score}",
+                                      style: TextStyle(
+                                          fontSize:
+                                              SizeConfig.blockSizeHorizontal *
+                                                  6),
+                                    ),
+                                  ],
+                                ),
+                              )
+                            : const SizedBox(
+                                height: 0,
+                              ),
+                        Padding(
+                          padding: EdgeInsets.symmetric(
+                              horizontal: SizeConfig.blockSizeVertical * 3,
+                              vertical: SizeConfig.blockSizeVertical * 2),
+                          child: (settingsProvider.playerTurns == 4 &&
+                                  settingsProvider.currentRound ==
+                                      settingsProvider
+                                          .numberOfRounds) //End of Game
+                              ? PixButton(
+                                  name: getFinalButtonTitle(),
+                                  onPressed: () {
+                                    setState(() {
+                                      scoreUpdated == false
+                                          ? updatePlayerScore()
+                                          : null;
+                                      updateRound();
+                                    });
+
+                                    imageCache!.clear();
+
+                                    Navigator.of(context).push(
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                const SettingsScreen()));
+                                  },
+                                  fontSize: SizeConfig.blockSizeHorizontal * 5)
+                              : PixButton(
+                                  //Switch to finish
+                                  name: getFinalButtonTitle(),
+                                  onPressed: () {
+                                    setState(() {
+                                      scoreUpdated == false
+                                          ? updatePlayerScore()
+                                          : null;
+                                      updateRound();
+                                    });
+
+                                    imageCache!.clear();
+
+                                    Navigator.of(context).push(
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                const OriginalPage()));
+                                  },
+                                  fontSize: SizeConfig.blockSizeHorizontal * 5),
                         )
                       ]),
                     ),
@@ -296,9 +508,72 @@ class _CompareImagesState extends State<CompareImages> {
     );
   }
 
+  updatePlayerScore() {
+    scoreUpdated = true;
+    var settingsProvider =
+        Provider.of<SettingsProvider>(context, listen: false);
+    int addToScore = numberCorrect;
+    (settingsProvider.playerTurns == 2)
+        ? addToScore = settingsProvider.p2Score + addToScore
+        : addToScore = settingsProvider.p1Score + addToScore;
+    setState(() {
+      (settingsProvider.playerTurns == 2)
+          ? Provider.of<SettingsProvider>(context, listen: false)
+              .setP2Score(addToScore)
+          : Provider.of<SettingsProvider>(context, listen: false)
+              .setP1Score(addToScore);
+    });
+  }
+
+  updatePlayerTurns() {
+    var settingsProvider =
+        Provider.of<SettingsProvider>(context, listen: false);
+    if (settingsProvider.playerTurns == 2) {
+      int playerTurns = settingsProvider.playerTurns + 1;
+      Provider.of<SettingsProvider>(context, listen: false)
+          .setPlayerTurns(playerTurns);
+    } else {
+      Provider.of<SettingsProvider>(context, listen: false).setPlayerTurns(1);
+    }
+  }
+
+  updateRound() {
+    var settingsProvider =
+        Provider.of<SettingsProvider>(context, listen: false);
+    if (settingsProvider.playerTurns == 4 &&
+        settingsProvider.currentRound == settingsProvider.numberOfRounds) {
+      debugPrint("End of Game");
+    } else if (settingsProvider.playerTurns == 4 &&
+        settingsProvider.currentRound != settingsProvider.numberOfRounds) {
+      int currentRound = settingsProvider.currentRound + 1;
+      Provider.of<SettingsProvider>(context, listen: false)
+          .setCurrentRound(currentRound);
+      updatePlayerTurns();
+    } else {
+      updatePlayerTurns();
+    }
+  }
+
+  getFinalButtonTitle() {
+    var settingsProvider =
+        Provider.of<SettingsProvider>(context, listen: false);
+    String title;
+    if (settingsProvider.playerTurns == 2) {
+      title = "Switch to Finish the Round";
+    } else if (settingsProvider.playerTurns == 4 &&
+        settingsProvider.currentRound != settingsProvider.numberOfRounds) {
+      title = 'Next Round';
+    } else if (settingsProvider.currentRound ==
+        settingsProvider.numberOfRounds) {
+      title = 'New Game';
+    } else {
+      title = "Next";
+    }
+    return title;
+  }
+
   Card buildCompareCard({
     required String p1Img,
-    required String p2Img,
     required File p1ImgPath,
     required File p2ImgPath,
     required bool same,
@@ -306,82 +581,111 @@ class _CompareImagesState extends State<CompareImages> {
   }) {
     return Card(
       elevation: 4.0,
-      child: Column(
-        children: [
-          ListTile(
-            title: Padding(
+      child: Container(
+        decoration: BoxDecoration(
+          border: Border(
+              top: BorderSide(width: 15, color: AppColor.orange),
+              right: BorderSide(width: 20, color: AppColor.yellow),
+              bottom: BorderSide(width: 25, color: AppColor.yellow),
+              left: BorderSide(width: 18, color: AppColor.orange)),
+          gradient: LinearGradient(
+            colors: [AppColor.yellow, AppColor.orange],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+          ),
+        ),
+        child: Column(
+          children: [
+            ListTile(
+              title: Padding(
+                padding: EdgeInsets.symmetric(
+                    horizontal: SizeConfig.blockSizeHorizontal * 3,
+                    vertical: SizeConfig.blockSizeVertical * 2),
+                child: AutoSizeText(
+                  "Slide the white line left and right to compare the pix.",
+                  style: TextStyle(
+                      fontSize: SizeConfig.blockSizeHorizontal * 5,
+                      color: HexColor('#2d3a64')),
+                  textAlign: TextAlign.center,
+                ),
+              ),
+              subtitle: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  AutoSizeText(
+                    "Original $p1Img Pic",
+                    style: TextStyle(
+                        fontSize: SizeConfig.blockSizeHorizontal * 4,
+                        color: HexColor('#2d3a64')),
+                  ),
+                  AutoSizeText(
+                    "Matching $p1Img Pic",
+                    style: TextStyle(
+                        fontSize: SizeConfig.blockSizeHorizontal * 4,
+                        color: HexColor('#2d3a64')),
+                  ),
+                ],
+              ),
+            ),
+            Stack(alignment: Alignment.center, children: [
+              Padding(
+                padding: EdgeInsets.symmetric(
+                    horizontal: SizeConfig.blockSizeHorizontal * 2,
+                    vertical: SizeConfig.blockSizeVertical * 1),
+                child: SizedBox(
+                  child: BeforeAfter(
+                      beforeImage: Image(image: FileImage(p1ImgPath)),
+                      afterImage: Image(
+                        image: FileImage(p2ImgPath),
+                      )),
+                  //
+                ),
+              ),
+              Visibility(
+                visible: same,
+                child: Positioned(
+                    child: Image.asset(
+                  'assets/images/Matched.png',
+                  height: 250,
+                )),
+              ),
+              Visibility(
+                visible: notSame,
+                child: Positioned(
+                    child: Image.asset(
+                  'assets/images/NoMatch.png',
+                  height: 250,
+                )),
+              )
+            ]),
+            Padding(
               padding: EdgeInsets.symmetric(
-                  horizontal: SizeConfig.blockSizeHorizontal * 3,
-                  vertical: SizeConfig.blockSizeVertical * 2),
+                  vertical: SizeConfig.blockSizeVertical * 3),
               child: AutoSizeText(
-                "Slide the white line left and right to compare the pix.",
-                style: TextStyle(
-                    fontSize: SizeConfig.blockSizeHorizontal * 5,
-                    color: HexColor('#4A5E43')),
+                "Are these pictures the same?",
+                style: TextStyle(fontSize: SizeConfig.blockSizeHorizontal * 6),
                 textAlign: TextAlign.center,
               ),
             ),
-            subtitle: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                AutoSizeText(
-                  "Original $p1Img Pix",
-                  style:
-                      TextStyle(fontSize: SizeConfig.blockSizeHorizontal * 4),
-                ),
-                AutoSizeText(
-                  "Matching $p2Img Pix",
-                  style:
-                      TextStyle(fontSize: SizeConfig.blockSizeHorizontal * 4),
-                ),
-              ],
-            ),
-          ),
-          Stack(children: [
             Padding(
-              padding: EdgeInsets.symmetric(
-                  horizontal: SizeConfig.blockSizeHorizontal * 2,
-                  vertical: SizeConfig.blockSizeVertical * 1),
-              child: SizedBox(
-                child: BeforeAfter(
-                    beforeImage: Image(image: FileImage(p1ImgPath)),
-                    afterImage: Image(
-                      image: FileImage(p2ImgPath),
-                    )),
-                //
-              ),
-            ),
-            Visibility(
-              visible: same,
-              child: Positioned(
-                  bottom: SizeConfig.blockSizeVertical * 5,
-                  right: SizeConfig.blockSizeHorizontal * 5,
-                  child: Image.asset('assets/images/CheckMark.png')),
-            ),
-            Visibility(
-              visible: notSame,
-              child: Positioned(
-                  bottom: SizeConfig.blockSizeVertical * 5,
-                  right: SizeConfig.blockSizeHorizontal * 5,
-                  child: Image.asset('assets/images/NotTheSame.png')),
-            )
-          ]),
-          Padding(
-            padding: EdgeInsets.symmetric(
-                vertical: SizeConfig.blockSizeVertical * 3),
-            child: AutoSizeText(
-              "Are these pictures the same?",
-              style: TextStyle(fontSize: SizeConfig.blockSizeHorizontal * 6),
-              textAlign: TextAlign.center,
-            ),
-          ),
-          Padding(
-            padding: EdgeInsets.only(bottom: SizeConfig.blockSizeVertical * 3),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                PixButton(
-                    name: "Yes",
+              padding:
+                  EdgeInsets.only(bottom: SizeConfig.blockSizeVertical * 3),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  ElevatedButton.icon(
+                    style: ElevatedButton.styleFrom(
+                        primary: HexColor('6EB440'),
+                        onPrimary: AppColor.textColor),
+                    icon: ImageIcon(
+                      const AssetImage("assets/images/CheckMark.png"),
+                      size: SizeConfig.blockSizeHorizontal * 8,
+                    ),
+                    label: Text(
+                      "YES!",
+                      style: TextStyle(
+                          fontSize: SizeConfig.blockSizeHorizontal * 8),
+                    ),
                     onPressed: () {
                       switch (p1Img) {
                         case ("1st"):
@@ -396,9 +700,20 @@ class _CompareImagesState extends State<CompareImages> {
                         default:
                       }
                     },
-                    fontSize: 16),
-                PixButton(
-                    name: "No",
+                  ),
+                  ElevatedButton.icon(
+                    style: ElevatedButton.styleFrom(
+                        primary: AppColor.lightBlue,
+                        onPrimary: HexColor('#BF2C24')),
+                    icon: ImageIcon(
+                      const AssetImage("assets/images/NotTheSame.png"),
+                      size: SizeConfig.blockSizeHorizontal * 8,
+                    ),
+                    label: Text(
+                      "NO!",
+                      style: TextStyle(
+                          fontSize: SizeConfig.blockSizeHorizontal * 8),
+                    ),
                     onPressed: () {
                       switch (p1Img) {
                         case ("1st"):
@@ -413,11 +728,12 @@ class _CompareImagesState extends State<CompareImages> {
                         default:
                       }
                     },
-                    fontSize: 16)
-              ],
-            ),
-          )
-        ],
+                  )
+                ],
+              ),
+            )
+          ],
+        ),
       ),
     );
   }
