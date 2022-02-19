@@ -1,7 +1,6 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
-import 'package:scavenger_hunt_pictures/widgets/app_colors.dart';
 import 'package:scavenger_hunt_pictures/widgets/color_arrays.dart';
 import 'package:scavenger_hunt_pictures/widgets/size_config.dart';
 
@@ -21,9 +20,7 @@ class PixButton extends StatelessWidget {
     return TextButton(
         style: TextButton.styleFrom(
           primary: HexColor('#a7d8f6'),
-          padding: EdgeInsets.symmetric(
-            horizontal: SizeConfig.blockSizeHorizontal * 10,
-          ),
+          padding: EdgeInsets.zero,
         ),
         onPressed: onPressed,
         child: Ink(
@@ -33,18 +30,21 @@ class PixButton extends StatelessWidget {
                 end: Alignment.bottomRight,
                 colors: ColorArrays.orangeYellow),
           ),
-          child: Container(
+          child: Padding(
             padding: EdgeInsets.symmetric(
                 horizontal: SizeConfig.blockSizeHorizontal * 10,
                 vertical: SizeConfig.blockSizeVertical * 2),
-            child: Text(name,
-                style: TextStyle(
-                  fontFamily: 'CaveatBrush',
-                  fontSize: fontSize,
-                  fontWeight: FontWeight.w400,
-                  color: HexColor('#4b4272'),
-                ),
-                textAlign: TextAlign.center),
+            child: SizedBox(
+              width: SizeConfig.blockSizeHorizontal * 50,
+              child: AutoSizeText(name,
+                  style: TextStyle(
+                    fontFamily: 'CaveatBrush',
+                    fontSize: fontSize,
+                    fontWeight: FontWeight.w400,
+                    color: HexColor('#4b4272'),
+                  ),
+                  textAlign: TextAlign.center),
+            ),
           ),
         ));
   }

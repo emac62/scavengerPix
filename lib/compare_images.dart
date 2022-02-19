@@ -13,6 +13,7 @@ import 'package:scavenger_hunt_pictures/providers/settings_provider.dart';
 import 'package:scavenger_hunt_pictures/settings_screen.dart';
 import 'package:scavenger_hunt_pictures/widgets/app_colors.dart';
 import 'package:scavenger_hunt_pictures/widgets/color_arrays.dart';
+import 'package:scavenger_hunt_pictures/widgets/dialogs.dart';
 import 'package:scavenger_hunt_pictures/widgets/ordinal.dart';
 import 'package:scavenger_hunt_pictures/widgets/pix_button.dart';
 import 'package:scavenger_hunt_pictures/widgets/size_config.dart';
@@ -417,37 +418,45 @@ class _CompareImagesState extends State<CompareImages> {
                                     scoreUpdated == false
                                         ? updatePlayerScore()
                                         : null;
+                                    showScore(
+                                        context,
+                                        settingsProvider.player1,
+                                        settingsProvider.player2,
+                                        settingsProvider.p1Score,
+                                        settingsProvider.p2Score);
                                   },
                                 ),
                               )
                             : const SizedBox(
                                 height: 0,
                               ),
-                        scoreUpdated == true &&
-                                settingsProvider.keepScore == true
-                            ? SizedBox(
-                                child: Column(
-                                  children: [
-                                    Text(
-                                      "$player1 - ${settingsProvider.p1Score}",
-                                      style: TextStyle(
-                                          fontSize:
-                                              SizeConfig.blockSizeHorizontal *
-                                                  6),
-                                    ),
-                                    Text(
-                                      "$player2 - ${settingsProvider.p2Score}",
-                                      style: TextStyle(
-                                          fontSize:
-                                              SizeConfig.blockSizeHorizontal *
-                                                  6),
-                                    ),
-                                  ],
-                                ),
-                              )
-                            : const SizedBox(
-                                height: 0,
-                              ),
+                        // scoreUpdated == true &&
+                        //         settingsProvider.keepScore == true
+                        //     ? SizedBox(
+                        //         child: Column(
+                        //           children: [
+                        //             Text(
+                        //               "$player1 - ${settingsProvider.p1Score}",
+                        //               style: TextStyle(
+                        //                   fontSize:
+                        //                       SizeConfig.blockSizeHorizontal *
+                        //                           6,
+                        //                   color: HexColor('#fefefe')),
+                        //             ),
+                        //             Text(
+                        //               "$player2 - ${settingsProvider.p2Score}",
+                        //               style: TextStyle(
+                        //                   fontSize:
+                        //                       SizeConfig.blockSizeHorizontal *
+                        //                           6,
+                        //                   color: HexColor('#fefefe')),
+                        //             ),
+                        //           ],
+                        //         ),
+                        //       )
+                        //     : const SizedBox(
+                        //         height: 0,
+                        //       ),
                         Padding(
                           padding: EdgeInsets.symmetric(
                               horizontal: SizeConfig.blockSizeVertical * 3,

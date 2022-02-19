@@ -2,8 +2,6 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:new_gradient_app_bar/new_gradient_app_bar.dart';
-import 'package:provider/provider.dart';
-import 'package:scavenger_hunt_pictures/providers/settings_provider.dart';
 
 import 'package:scavenger_hunt_pictures/settings_screen.dart';
 import 'package:scavenger_hunt_pictures/widgets/color_arrays.dart';
@@ -44,7 +42,7 @@ class _IntroPageState extends State<IntroPage> {
                     child: Icon(
                       Icons.info,
                       color: HexColor('#4b4272'),
-                      size: SizeConfig.blockSizeHorizontal * 4,
+                      size: SizeConfig.blockSizeHorizontal * 6,
                     ),
                   ),
                   onTap: () {

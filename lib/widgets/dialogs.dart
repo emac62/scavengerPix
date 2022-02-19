@@ -145,3 +145,58 @@ restartGame(BuildContext context) {
     },
   );
 }
+
+showScore(BuildContext context, String player1, String player2, int p1Score,
+    int p2Score) {
+  // set up the button
+  Widget okButton = TextButton(
+    child: Text(
+      "OK",
+      style: TextStyle(
+          fontSize: SizeConfig.blockSizeHorizontal * 6,
+          color: AppColor.iconColor),
+    ),
+    onPressed: () {
+      Navigator.of(context).pop();
+    },
+  );
+
+  // set up the AlertDialog
+  AlertDialog alert = AlertDialog(
+    backgroundColor: AppColor.lightBlue,
+    title: Text(
+      "Updated Score",
+      style: TextStyle(
+          fontSize: SizeConfig.blockSizeHorizontal * 8,
+          color: AppColor.textColor),
+    ),
+    content: Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Text(
+          "$player1 - $p1Score",
+          style: TextStyle(
+              fontSize: SizeConfig.blockSizeHorizontal * 6,
+              color: HexColor('#fefefe')),
+        ),
+        Text(
+          "$player2 - $p2Score",
+          style: TextStyle(
+              fontSize: SizeConfig.blockSizeHorizontal * 6,
+              color: HexColor('#fefefe')),
+        ),
+      ],
+    ),
+    actions: [
+      okButton,
+    ],
+  );
+
+  // show the dialog
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return alert;
+    },
+  );
+}

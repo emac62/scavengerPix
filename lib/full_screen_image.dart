@@ -4,6 +4,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:new_gradient_app_bar/new_gradient_app_bar.dart';
+import 'package:scavenger_hunt_pictures/widgets/color_arrays.dart';
 import 'package:scavenger_hunt_pictures/widgets/size_config.dart';
 
 class FullscreenImage extends StatefulWidget {
@@ -26,14 +27,10 @@ class _FullscreenImageState extends State<FullscreenImage> {
           '${widget.imagePix} Pic',
           style: TextStyle(
             fontSize: SizeConfig.blockSizeHorizontal * 8,
-            color: HexColor('#2d3a64'),
+            color: HexColor('#fefefe'),
           ),
         ),
-        gradient: LinearGradient(colors: [
-          HexColor('#d5ebf6'),
-          HexColor('#007cc2'),
-          HexColor('#d5ebf6'),
-        ]),
+        gradient: LinearGradient(colors: ColorArrays.purple),
       ),
       body: Image(
         image: FileImage(File(widget.imageUrl)),

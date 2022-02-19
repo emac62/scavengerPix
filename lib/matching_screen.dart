@@ -56,7 +56,10 @@ class _MatchingPageState extends State<MatchingPage> {
   initState() {
     super.initState();
     loadSettings().then((_) {
-      debugPrint('Matching init: ${widget.firstImgPath}');
+      int playerTurns =
+          Provider.of<SettingsProvider>(context, listen: false).playerTurns + 1;
+      Provider.of<SettingsProvider>(context, listen: false)
+          .setPlayerTurns(playerTurns);
     });
   }
 

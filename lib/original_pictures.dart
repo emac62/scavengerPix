@@ -8,7 +8,6 @@ import 'package:provider/provider.dart';
 import 'package:scavenger_hunt_pictures/matching_screen.dart';
 import 'package:scavenger_hunt_pictures/providers/settings_provider.dart';
 import 'package:scavenger_hunt_pictures/settings_screen.dart';
-import 'package:scavenger_hunt_pictures/widgets/app_colors.dart';
 import 'package:scavenger_hunt_pictures/widgets/color_arrays.dart';
 import 'package:scavenger_hunt_pictures/widgets/dialogs.dart';
 import 'package:scavenger_hunt_pictures/widgets/image_title.dart';
@@ -90,7 +89,7 @@ class _OriginalPageState extends State<OriginalPage> {
                   child: Icon(
                     Icons.info,
                     color: HexColor('#4b4272'),
-                    size: SizeConfig.blockSizeHorizontal * 4,
+                    size: SizeConfig.blockSizeHorizontal * 6,
                   ),
                 ),
                 onTap: () {
@@ -106,7 +105,7 @@ class _OriginalPageState extends State<OriginalPage> {
                     child: Icon(
                       Icons.settings,
                       color: HexColor('#4b4272'),
-                      size: SizeConfig.blockSizeHorizontal * 4,
+                      size: SizeConfig.blockSizeHorizontal * 6,
                     ),
                   ),
                   onTap: () {
@@ -173,12 +172,9 @@ class _OriginalPageState extends State<OriginalPage> {
             child: PixButton(
                 name: "Next",
                 onPressed: () {
-                  int playerTurns = settingsProvider.playerTurns + 1;
-                  Provider.of<SettingsProvider>(context, listen: false)
-                      .setPlayerTurns(playerTurns);
                   switch (settingsProvider.numberOfPictures) {
                     case 1:
-                      (firstImage == null || firstImage!.path == "")
+                      (firstImage == null)
                           ? null
                           : Navigator.of(context).push(MaterialPageRoute(
                               builder: (context) => MatchingPage(
@@ -317,12 +313,19 @@ class _OriginalPageState extends State<OriginalPage> {
                           ImageTitle(
                             title: imgNum,
                           ),
-                          PixButton(
-                            name: "Retake",
+                          TextButton(
                             onPressed: () {
                               takePicture(imgNum);
                             },
-                            fontSize: SizeConfig.blockSizeHorizontal * 4,
+                            child: Text(
+                              "Retake",
+                              style: TextStyle(
+                                  fontSize: SizeConfig.blockSizeHorizontal * 4,
+                                  color: HexColor('#fefefe')),
+                            ),
+                            style: ButtonStyle(
+                                backgroundColor: MaterialStateProperty.all(
+                                    HexColor('#7d74a4'))),
                           ),
                         ],
                       )

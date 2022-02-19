@@ -9,6 +9,7 @@ import 'package:new_gradient_app_bar/new_gradient_app_bar.dart';
 import 'package:provider/provider.dart';
 import 'package:scavenger_hunt_pictures/original_pictures.dart';
 import 'package:scavenger_hunt_pictures/providers/settings_provider.dart';
+// ignore: unused_import
 import 'package:scavenger_hunt_pictures/widgets/app_colors.dart';
 import 'package:scavenger_hunt_pictures/widgets/color_arrays.dart';
 import 'package:scavenger_hunt_pictures/widgets/pix_button.dart';
@@ -95,39 +96,42 @@ class _SettingsScreenState extends State<SettingsScreen> {
             ),
           ),
           Center(
-            child: CustomSlidingSegmentedControl(
-              radius: 8,
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(8),
-                  gradient: LinearGradient(
-                      begin: Alignment.topLeft,
-                      end: Alignment.bottomRight,
-                      colors: ColorArrays.orangeYellow)),
-              children: {
-                1: Text(
-                  "1",
-                  style:
-                      TextStyle(fontSize: SizeConfig.blockSizeHorizontal * 5),
-                ),
-                2: Text(
-                  "2",
-                  style:
-                      TextStyle(fontSize: SizeConfig.blockSizeHorizontal * 5),
-                ),
-                3: Text(
-                  "3",
-                  style:
-                      TextStyle(fontSize: SizeConfig.blockSizeHorizontal * 5),
-                )
-              },
-              onValueChanged: (int value) {
-                setState(() {
-                  Provider.of<SettingsProvider>(context, listen: false)
-                      .setNumberOfRounds(value);
-                });
-              },
-              initialValue: settingsProvider.numberOfRounds,
-              fixedWidth: SizeConfig.blockSizeHorizontal * 20,
+            child: Padding(
+              padding: const EdgeInsets.only(top: 5),
+              child: CustomSlidingSegmentedControl(
+                radius: 8,
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(8),
+                    gradient: LinearGradient(
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
+                        colors: ColorArrays.orangeYellow)),
+                children: {
+                  1: Text(
+                    "1",
+                    style:
+                        TextStyle(fontSize: SizeConfig.blockSizeHorizontal * 5),
+                  ),
+                  2: Text(
+                    "2",
+                    style:
+                        TextStyle(fontSize: SizeConfig.blockSizeHorizontal * 5),
+                  ),
+                  3: Text(
+                    "3",
+                    style:
+                        TextStyle(fontSize: SizeConfig.blockSizeHorizontal * 5),
+                  )
+                },
+                onValueChanged: (int value) {
+                  setState(() {
+                    Provider.of<SettingsProvider>(context, listen: false)
+                        .setNumberOfRounds(value);
+                  });
+                },
+                initialValue: settingsProvider.numberOfRounds,
+                fixedWidth: SizeConfig.blockSizeHorizontal * 20,
+              ),
             ),
           ),
           Padding(
@@ -147,39 +151,42 @@ class _SettingsScreenState extends State<SettingsScreen> {
             ),
           ),
           Center(
-            child: CustomSlidingSegmentedControl(
-              radius: 8,
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(8),
-                  gradient: LinearGradient(
-                      begin: Alignment.topLeft,
-                      end: Alignment.bottomRight,
-                      colors: ColorArrays.whiteBlue)),
-              children: {
-                1: Text(
-                  "1",
-                  style:
-                      TextStyle(fontSize: SizeConfig.blockSizeHorizontal * 5),
-                ),
-                2: Text(
-                  "2",
-                  style:
-                      TextStyle(fontSize: SizeConfig.blockSizeHorizontal * 5),
-                ),
-                3: Text(
-                  "3",
-                  style:
-                      TextStyle(fontSize: SizeConfig.blockSizeHorizontal * 5),
-                )
-              },
-              onValueChanged: (int value) {
-                setState(() {
-                  Provider.of<SettingsProvider>(context, listen: false)
-                      .setNumberOfPictures(value);
-                });
-              },
-              initialValue: settingsProvider.numberOfPictures,
-              fixedWidth: SizeConfig.blockSizeHorizontal * 20,
+            child: Padding(
+              padding: const EdgeInsets.only(top: 5),
+              child: CustomSlidingSegmentedControl(
+                radius: 8,
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(8),
+                    gradient: LinearGradient(
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
+                        colors: ColorArrays.whiteBlue)),
+                children: {
+                  1: Text(
+                    "1",
+                    style:
+                        TextStyle(fontSize: SizeConfig.blockSizeHorizontal * 5),
+                  ),
+                  2: Text(
+                    "2",
+                    style:
+                        TextStyle(fontSize: SizeConfig.blockSizeHorizontal * 5),
+                  ),
+                  3: Text(
+                    "3",
+                    style:
+                        TextStyle(fontSize: SizeConfig.blockSizeHorizontal * 5),
+                  )
+                },
+                onValueChanged: (int value) {
+                  setState(() {
+                    Provider.of<SettingsProvider>(context, listen: false)
+                        .setNumberOfPictures(value);
+                  });
+                },
+                initialValue: settingsProvider.numberOfPictures,
+                fixedWidth: SizeConfig.blockSizeHorizontal * 20,
+              ),
             ),
           ),
           Padding(
