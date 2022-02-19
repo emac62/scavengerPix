@@ -7,7 +7,9 @@ import 'package:new_gradient_app_bar/new_gradient_app_bar.dart';
 import 'package:provider/provider.dart';
 import 'package:scavenger_hunt_pictures/matching_screen.dart';
 import 'package:scavenger_hunt_pictures/providers/settings_provider.dart';
+import 'package:scavenger_hunt_pictures/settings_screen.dart';
 import 'package:scavenger_hunt_pictures/widgets/app_colors.dart';
+import 'package:scavenger_hunt_pictures/widgets/color_arrays.dart';
 import 'package:scavenger_hunt_pictures/widgets/dialogs.dart';
 import 'package:scavenger_hunt_pictures/widgets/image_title.dart';
 import 'package:scavenger_hunt_pictures/widgets/ordinal.dart';
@@ -16,8 +18,9 @@ import 'package:scavenger_hunt_pictures/widgets/size_config.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class OriginalPage extends StatefulWidget {
-  const OriginalPage({Key? key})
-      : super(
+  const OriginalPage({
+    Key? key,
+  }) : super(
           key: key,
         );
 
@@ -47,12 +50,7 @@ class _OriginalPageState extends State<OriginalPage> {
     super.initState();
     loadSettings().then((_) {});
 
-    debugPrint(
-        'Original init playerTurns: ${Provider.of<SettingsProvider>(context, listen: false).playerTurns}');
-    debugPrint(
-        'Original init player1: ${Provider.of<SettingsProvider>(context, listen: false).player1}');
-    debugPrint(
-        'Original init player2: ${Provider.of<SettingsProvider>(context, listen: false).player2}');
+    debugPrint('Original init first image: $firstImage');
   }
 
   getImgUrl(int position) {
@@ -75,17 +73,13 @@ class _OriginalPageState extends State<OriginalPage> {
         title: AutoSizeText(
           "Take Original Pics",
           style: TextStyle(
-            color: HexColor('#2d3a64'),
+            color: HexColor('#fefefe'),
             fontFamily: 'CaveatBrush',
             fontSize: SizeConfig.blockSizeHorizontal * 8,
             fontWeight: FontWeight.w500,
           ),
         ),
-        gradient: LinearGradient(colors: [
-          HexColor('#d5ebf6'),
-          HexColor('#007cc2'),
-          HexColor('#d5ebf6'),
-        ]),
+        gradient: LinearGradient(colors: ColorArrays.purple),
         actions: [
           Padding(
               padding:
@@ -95,13 +89,30 @@ class _OriginalPageState extends State<OriginalPage> {
                   padding: const EdgeInsets.all(8.0),
                   child: Icon(
                     Icons.info,
-                    color: HexColor('#f6911f'),
+                    color: HexColor('#4b4272'),
+                    size: SizeConfig.blockSizeHorizontal * 4,
                   ),
                 ),
                 onTap: () {
                   showPlayer1Instructions(context);
                 },
-              ))
+              )),
+          Padding(
+              padding:
+                  EdgeInsets.only(right: SizeConfig.blockSizeHorizontal * 3),
+              child: GestureDetector(
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Icon(
+                      Icons.settings,
+                      color: HexColor('#4b4272'),
+                      size: SizeConfig.blockSizeHorizontal * 4,
+                    ),
+                  ),
+                  onTap: () {
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => const SettingsScreen()));
+                  }))
         ],
       ),
       body: SingleChildScrollView(
@@ -167,7 +178,7 @@ class _OriginalPageState extends State<OriginalPage> {
                       .setPlayerTurns(playerTurns);
                   switch (settingsProvider.numberOfPictures) {
                     case 1:
-                      firstImage == null
+                      (firstImage == null || firstImage!.path == "")
                           ? null
                           : Navigator.of(context).push(MaterialPageRoute(
                               builder: (context) => MatchingPage(
@@ -262,15 +273,39 @@ class _OriginalPageState extends State<OriginalPage> {
         child: Container(
           decoration: BoxDecoration(
             border: Border(
-                top: BorderSide(width: 15, color: AppColor.orange),
-                right: BorderSide(width: 20, color: AppColor.yellow),
-                bottom: BorderSide(width: 25, color: AppColor.yellow),
-                left: BorderSide(width: 18, color: AppColor.orange)),
-            gradient: LinearGradient(
-              colors: [AppColor.yellow, AppColor.orange],
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-            ),
+                top: BorderSide(width: 15, color: HexColor('#4b4272')),
+                right: BorderSide(width: 20, color: HexColor('#afa6d6')),
+                bottom: BorderSide(width: 25, color: HexColor('#4b4272')),
+                left: BorderSide(width: 18, color: HexColor('#afa6d6'))),
+            gradient: (Provider.of<SettingsProvider>(context, listen: false)
+                        .playerTurns ==
+                    1)
+                ? LinearGradient(
+                    colors: [
+                      Color(
+                          Provider.of<SettingsProvider>(context, listen: false)
+                              .p1ColorInt),
+                      Colors.white,
+                      Color(
+                          Provider.of<SettingsProvider>(context, listen: false)
+                              .p1ColorInt),
+                    ],
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                  )
+                : LinearGradient(
+                    colors: [
+                      Color(
+                          Provider.of<SettingsProvider>(context, listen: false)
+                              .p2ColorInt),
+                      Colors.white,
+                      Color(
+                          Provider.of<SettingsProvider>(context, listen: false)
+                              .p2ColorInt),
+                    ],
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                  ),
           ),
           child: Column(
             children: [
@@ -296,7 +331,7 @@ class _OriginalPageState extends State<OriginalPage> {
                       ),
                 subtitle: imgUrl == ""
                     ? Text(
-                        'Take a close up picture',
+                        'Take a close up picture within your boundaries!',
                         textAlign: TextAlign.center,
                         style: TextStyle(
                             fontSize: SizeConfig.blockSizeHorizontal * 4),

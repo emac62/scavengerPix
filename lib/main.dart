@@ -24,13 +24,13 @@ class ScavengerHuntPictures extends StatelessWidget {
       theme: ThemeData(
         scaffoldBackgroundColor: HexColor('#a7d8f6'),
         fontFamily: 'CaveatBrush',
-        primarySwatch: createMaterialColor(const Color(0xff2d3a64)),
+        primarySwatch: createMaterialColor(const Color(0xff4b4272)),
         textTheme: const TextTheme(
           bodyText1: TextStyle(),
           bodyText2: TextStyle(),
         ).apply(
-          bodyColor: HexColor('#2d3a64'),
-          displayColor: HexColor('#2d3a64'),
+          bodyColor: HexColor('#4b4272'),
+          displayColor: HexColor('#4b4272'),
         ),
       ),
       debugShowCheckedModeBanner: false,

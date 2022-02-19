@@ -10,7 +10,9 @@ import 'package:provider/provider.dart';
 import 'package:scavenger_hunt_pictures/original_pictures.dart';
 import 'package:scavenger_hunt_pictures/providers/settings_provider.dart';
 import 'package:scavenger_hunt_pictures/widgets/app_colors.dart';
+import 'package:scavenger_hunt_pictures/widgets/color_arrays.dart';
 import 'package:scavenger_hunt_pictures/widgets/pix_button.dart';
+import 'package:scavenger_hunt_pictures/widgets/player_color_picker.dart';
 import 'package:scavenger_hunt_pictures/widgets/size_config.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -25,6 +27,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
   bool keepScore = false;
   var player1;
   var player2;
+  Color p1Color = Colors.blue;
+  Color p2Color = Colors.yellow;
 
   TextEditingController? p1Controller;
   TextEditingController? p2Controller;
@@ -63,13 +67,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
         title: AutoSizeText("Settings",
             style: TextStyle(
                 fontSize: SizeConfig.blockSizeHorizontal * 15,
-                color: HexColor('#2d3a64'),
+                color: HexColor('#fefefe'),
                 letterSpacing: 2.0)),
-        gradient: LinearGradient(colors: [
-          HexColor('#d5ebf6'),
-          HexColor('#8f76af'),
-          HexColor('#d5ebf6'),
-        ]),
+        gradient: LinearGradient(colors: ColorArrays.purple),
         actions: const [],
       ),
       body: ListView(
@@ -99,10 +99,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
               radius: 8,
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(8),
-                  gradient: const LinearGradient(
+                  gradient: LinearGradient(
                       begin: Alignment.topLeft,
                       end: Alignment.bottomRight,
-                      colors: [Color(0xff6fcff5), Color(0xff007cc2)])),
+                      colors: ColorArrays.orangeYellow)),
               children: {
                 1: Text(
                   "1",
@@ -125,8 +125,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   Provider.of<SettingsProvider>(context, listen: false)
                       .setNumberOfRounds(value);
                 });
-                debugPrint(
-                    'Settings - Rounds: ${settingsProvider.numberOfRounds}');
               },
               initialValue: settingsProvider.numberOfRounds,
               fixedWidth: SizeConfig.blockSizeHorizontal * 20,
@@ -156,7 +154,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   gradient: LinearGradient(
                       begin: Alignment.topLeft,
                       end: Alignment.bottomRight,
-                      colors: [AppColor.yellow, AppColor.orange])),
+                      colors: ColorArrays.whiteBlue)),
               children: {
                 1: Text(
                   "1",
@@ -179,8 +177,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   Provider.of<SettingsProvider>(context, listen: false)
                       .setNumberOfPictures(value);
                 });
-                debugPrint(
-                    'Settings - Pictures: ${settingsProvider.numberOfPictures}');
               },
               initialValue: settingsProvider.numberOfPictures,
               fixedWidth: SizeConfig.blockSizeHorizontal * 20,
@@ -200,13 +196,14 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 Transform.scale(
                   scale: SizeConfig.blockSizeHorizontal * 0.2,
                   child: Padding(
-                    padding:
-                        EdgeInsets.only(top: SizeConfig.blockSizeVertical * 3),
+                    padding: EdgeInsets.only(
+                        top: SizeConfig.blockSizeVertical * 3,
+                        right: SizeConfig.blockSizeHorizontal * 5),
                     child: CupertinoSwitch(
                         value: keepScore,
-                        activeColor: HexColor('#2d3a64'),
-                        thumbColor: Colors.white,
-                        trackColor: HexColor('#6fcff5'),
+                        activeColor: HexColor('#f0a142'),
+                        thumbColor: HexColor('#fefefe'),
+                        trackColor: HexColor('#71a4db'),
                         onChanged: (value) {
                           setState(() {
                             keepScore = value;
@@ -230,77 +227,155 @@ class _SettingsScreenState extends State<SettingsScreen> {
           ),
           Padding(
             padding: EdgeInsets.symmetric(
-                horizontal: SizeConfig.blockSizeHorizontal * 10,
-                vertical: SizeConfig.blockSizeVertical * 1),
-            child: TextField(
-              controller: p1Controller,
-              keyboardType: TextInputType.text,
-              textCapitalization: TextCapitalization.words,
-              decoration: InputDecoration(
-                  isCollapsed: true,
-                  border: const UnderlineInputBorder(),
-                  hintText: "Enter Player 1's Name Here",
-                  hintStyle: TextStyle(color: HexColor('#bb8b1f'))),
-              style: TextStyle(
-                fontSize: SizeConfig.blockSizeHorizontal * 5,
-              ),
-              onChanged: (value) async {
-                if (value == "") {
-                  SharedPreferences pref =
-                      await SharedPreferences.getInstance();
-                  pref.remove('player1');
-                } else {
-                  Provider.of<SettingsProvider>(context, listen: false)
-                      .setPlayer1(value);
-                }
-                debugPrint(settingsProvider.player1);
-              },
+                horizontal: SizeConfig.blockSizeHorizontal * 10),
+            child: AutoSizeText(
+              "Player One takes pictures and has Player Two matches it. Players compare the ‘match’ and a point is awarded to Player Two if correct. Then reverse.",
+              style: TextStyle(fontSize: SizeConfig.blockSizeHorizontal * 4),
+            ),
+          ),
+          Padding(
+            padding: EdgeInsets.only(
+                left: SizeConfig.blockSizeHorizontal * 10,
+                top: SizeConfig.blockSizeVertical * 2,
+                bottom: SizeConfig.blockSizeVertical * 1),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Flexible(
+                  child: TextField(
+                    controller: p1Controller,
+                    keyboardType: TextInputType.text,
+                    textCapitalization: TextCapitalization.words,
+                    decoration: InputDecoration(
+                        isCollapsed: true,
+                        border: const UnderlineInputBorder(),
+                        hintText: "Enter Player 1's Name Here",
+                        hintStyle: TextStyle(color: HexColor('#bb8b1f'))),
+                    style: TextStyle(
+                      fontSize: SizeConfig.blockSizeHorizontal * 5,
+                    ),
+                    onChanged: (value) async {
+                      if (value == "") {
+                        SharedPreferences pref =
+                            await SharedPreferences.getInstance();
+                        pref.remove('player1');
+                      } else {
+                        Provider.of<SettingsProvider>(context, listen: false)
+                            .setPlayer1(value);
+                      }
+                    },
+                  ),
+                ),
+                SizedBox(
+                  width: SizeConfig.blockSizeHorizontal * 40,
+                  child: PlayerColorPicker(
+                    onSelectColor: (color) {
+                      String p1ColorString = color.value.toString();
+                      int value = int.parse(p1ColorString);
+                      Provider.of<SettingsProvider>(context, listen: false)
+                          .setP1ColorInt(value);
+                    },
+                    availableColors: const [
+                      Colors.yellow,
+                      Colors.blue,
+                      Colors.orange,
+                      Colors.green,
+                    ],
+                    initialColor:
+                        (Provider.of<SettingsProvider>(context, listen: false)
+                                    .p1ColorInt ==
+                                0)
+                            ? Colors.blue
+                            : Color(Provider.of<SettingsProvider>(context,
+                                    listen: false)
+                                .p1ColorInt),
+                    player: settingsProvider.player1,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Padding(
+            padding: EdgeInsets.only(
+                left: SizeConfig.blockSizeHorizontal * 10,
+                top: SizeConfig.blockSizeVertical * 1,
+                bottom: SizeConfig.blockSizeVertical * 1),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Flexible(
+                  child: TextField(
+                    controller: p2Controller,
+                    keyboardType: TextInputType.text,
+                    textCapitalization: TextCapitalization.words,
+                    decoration: InputDecoration(
+                        isCollapsed: true,
+                        border: const UnderlineInputBorder(),
+                        hintText: "Enter Player 2's Name Here",
+                        hintStyle: TextStyle(color: HexColor('#bb8b1f'))),
+                    style: TextStyle(
+                      fontSize: SizeConfig.blockSizeHorizontal * 5,
+                    ),
+                    onChanged: (value) async {
+                      if (value == "") {
+                        SharedPreferences pref =
+                            await SharedPreferences.getInstance();
+                        pref.remove('player2');
+                      } else {
+                        Provider.of<SettingsProvider>(context, listen: false)
+                            .setPlayer2(value);
+                      }
+                    },
+                  ),
+                ),
+                SizedBox(
+                  width: SizeConfig.blockSizeHorizontal * 40,
+                  child: PlayerColorPicker(
+                    onSelectColor: (color) {
+                      String p2ColorString = color.value.toString();
+                      int value = int.parse(p2ColorString);
+                      Provider.of<SettingsProvider>(context, listen: false)
+                          .setP2ColorInt(value);
+                    },
+                    availableColors: const [
+                      Colors.yellow,
+                      Colors.blue,
+                      Colors.orange,
+                      Colors.green,
+                    ],
+                    initialColor:
+                        (Provider.of<SettingsProvider>(context, listen: false)
+                                    .p2ColorInt ==
+                                0)
+                            ? Colors.yellow
+                            : Color(Provider.of<SettingsProvider>(context,
+                                    listen: false)
+                                .p2ColorInt),
+                    player: settingsProvider.player2,
+                  ),
+                ),
+              ],
             ),
           ),
           Padding(
             padding: EdgeInsets.symmetric(
-                horizontal: SizeConfig.blockSizeHorizontal * 10,
-                vertical: SizeConfig.blockSizeVertical * 1),
-            child: TextField(
-              controller: p2Controller,
-              keyboardType: TextInputType.text,
-              textCapitalization: TextCapitalization.words,
-              decoration: InputDecoration(
-                  isCollapsed: true,
-                  border: const UnderlineInputBorder(),
-                  hintText: "Enter Player 2's Name Here",
-                  hintStyle: TextStyle(color: HexColor('#bb8b1f'))),
-              style: TextStyle(
-                fontSize: SizeConfig.blockSizeHorizontal * 5,
-              ),
-              onChanged: (value) async {
-                if (value == "") {
-                  SharedPreferences pref =
-                      await SharedPreferences.getInstance();
-                  pref.remove('player2');
-                } else {
-                  Provider.of<SettingsProvider>(context, listen: false)
-                      .setPlayer2(value);
-                }
-              },
-            ),
-          ),
-          Padding(
-            padding: EdgeInsets.symmetric(
-                horizontal: SizeConfig.blockSizeHorizontal * 15,
-                vertical: SizeConfig.blockSizeVertical * 5),
+                vertical: SizeConfig.blockSizeVertical * 2),
             child: PixButton(
                 name: "Let's Play!",
                 onPressed: () {
                   int turn = 1;
-                  Provider.of<SettingsProvider>(context, listen: false)
-                      .setPlayerTurns(turn);
-                  Provider.of<SettingsProvider>(context, listen: false)
-                      .setCurrentRound(turn);
-                  Provider.of<SettingsProvider>(context, listen: false)
-                      .setP1Score(0);
-                  Provider.of<SettingsProvider>(context, listen: false)
-                      .setP2Score(0);
+                  setState(() {
+                    Provider.of<SettingsProvider>(context, listen: false)
+                        .setPlayerTurns(turn);
+                    Provider.of<SettingsProvider>(context, listen: false)
+                        .setCurrentRound(turn);
+                    Provider.of<SettingsProvider>(context, listen: false)
+                        .setP1Score(0);
+                    Provider.of<SettingsProvider>(context, listen: false)
+                        .setP2Score(0);
+                  });
+                  debugPrint(
+                      'Original => Matching player Turns: ${settingsProvider.playerTurns}');
                   Navigator.of(context).push(MaterialPageRoute(
                       builder: (context) => const OriginalPage()));
                 },

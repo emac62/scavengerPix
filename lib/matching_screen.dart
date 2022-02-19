@@ -11,6 +11,7 @@ import 'package:scavenger_hunt_pictures/compare_images.dart';
 import 'package:scavenger_hunt_pictures/full_screen_image.dart';
 import 'package:scavenger_hunt_pictures/providers/settings_provider.dart';
 import 'package:scavenger_hunt_pictures/widgets/app_colors.dart';
+import 'package:scavenger_hunt_pictures/widgets/color_arrays.dart';
 import 'package:scavenger_hunt_pictures/widgets/dialogs.dart';
 import 'package:scavenger_hunt_pictures/widgets/image_title.dart';
 import 'package:scavenger_hunt_pictures/widgets/ordinal.dart';
@@ -54,7 +55,9 @@ class _MatchingPageState extends State<MatchingPage> {
   @override
   initState() {
     super.initState();
-    loadSettings().then((_) {});
+    loadSettings().then((_) {
+      debugPrint('Matching init: ${widget.firstImgPath}');
+    });
   }
 
   getImgUrl(int position) {
@@ -87,17 +90,13 @@ class _MatchingPageState extends State<MatchingPage> {
         title: AutoSizeText(
           "Match the Pics",
           style: TextStyle(
-            color: HexColor('#2d3a64'),
+            color: HexColor('#fefefe'),
             fontFamily: 'CaveatBrush',
             fontSize: SizeConfig.blockSizeHorizontal * 10,
             fontWeight: FontWeight.w400,
           ),
         ),
-        gradient: LinearGradient(colors: [
-          HexColor('#d5ebf6'),
-          HexColor('#007cc2'),
-          HexColor('#d5ebf6'),
-        ]),
+        gradient: LinearGradient(colors: ColorArrays.purple),
         actions: [
           Padding(
               padding:
@@ -105,7 +104,7 @@ class _MatchingPageState extends State<MatchingPage> {
               child: GestureDetector(
                 child: Icon(
                   Icons.info,
-                  color: AppColor.orange,
+                  color: AppColor.iconColor,
                 ),
                 onTap: () {
                   showPlayer2Instructions(context);
@@ -119,7 +118,7 @@ class _MatchingPageState extends State<MatchingPage> {
                   padding: const EdgeInsets.all(8.0),
                   child: Icon(
                     Icons.restart_alt,
-                    color: AppColor.orange,
+                    color: AppColor.iconColor,
                   ),
                 ),
                 onTap: () {
@@ -137,8 +136,7 @@ class _MatchingPageState extends State<MatchingPage> {
             elevation: 10,
             child: Container(
               decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                      colors: [AppColor.yellow, AppColor.orange])),
+                  gradient: LinearGradient(colors: ColorArrays.orangeYellow)),
               child: Padding(
                   padding: EdgeInsets.symmetric(
                       horizontal: SizeConfig.blockSizeHorizontal * 8,
@@ -191,10 +189,6 @@ class _MatchingPageState extends State<MatchingPage> {
             child: PixButton(
                 name: "Next",
                 onPressed: () {
-                  debugPrint('Player1: $player1');
-                  debugPrint('Player2: $player2');
-                  debugPrint('Player1: ${settingsProvider.player1}');
-                  debugPrint('Player1: ${settingsProvider.player2}');
                   switch (settingsProvider.numberOfPictures) {
                     case 1:
                       fourthImage == null
@@ -298,15 +292,39 @@ class _MatchingPageState extends State<MatchingPage> {
         child: Container(
           decoration: BoxDecoration(
             border: Border(
-                top: BorderSide(width: 15, color: AppColor.orangeRed),
-                right: BorderSide(width: 20, color: AppColor.orange),
-                bottom: BorderSide(width: 25, color: AppColor.orange),
-                left: BorderSide(width: 18, color: AppColor.orangeRed)),
-            gradient: LinearGradient(
-              colors: [AppColor.orange, AppColor.yellow],
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-            ),
+                top: BorderSide(width: 15, color: HexColor('#4b4272')),
+                right: BorderSide(width: 20, color: HexColor('#afa6d6')),
+                bottom: BorderSide(width: 25, color: HexColor('#4b4272')),
+                left: BorderSide(width: 18, color: HexColor('#afa6d6'))),
+            gradient: (Provider.of<SettingsProvider>(context, listen: false)
+                        .playerTurns ==
+                    4)
+                ? LinearGradient(
+                    colors: [
+                      Color(
+                          Provider.of<SettingsProvider>(context, listen: false)
+                              .p1ColorInt),
+                      Colors.white,
+                      Color(
+                          Provider.of<SettingsProvider>(context, listen: false)
+                              .p1ColorInt),
+                    ],
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                  )
+                : LinearGradient(
+                    colors: [
+                      Color(
+                          Provider.of<SettingsProvider>(context, listen: false)
+                              .p2ColorInt),
+                      Colors.white,
+                      Color(
+                          Provider.of<SettingsProvider>(context, listen: false)
+                              .p2ColorInt),
+                    ],
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                  ),
           ),
           child: Column(
             children: [
@@ -317,8 +335,7 @@ class _MatchingPageState extends State<MatchingPage> {
                     ImageTitle(
                       title: imgNumCompare,
                     ),
-                    PixButton(
-                      name: "Match this Pic",
+                    TextButton(
                       onPressed: () {
                         Navigator.of(context).push(MaterialPageRoute(
                             builder: (context) => FullscreenImage(
@@ -326,8 +343,19 @@ class _MatchingPageState extends State<MatchingPage> {
                                   imageUrl: imgUrlCompare,
                                 )));
                       },
-                      fontSize: SizeConfig.blockSizeHorizontal * 4,
-                    )
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(
+                          "Match this Pic",
+                          style: TextStyle(
+                              fontSize: SizeConfig.blockSizeHorizontal * 4,
+                              color: HexColor('#fefefe')),
+                        ),
+                      ),
+                      style: ButtonStyle(
+                          backgroundColor:
+                              MaterialStateProperty.all(HexColor('#7d74a4'))),
+                    ),
                   ],
                 ),
               ),

@@ -1,6 +1,9 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
+import 'package:hexcolor/hexcolor.dart';
 import 'package:scavenger_hunt_pictures/widgets/app_colors.dart';
+import 'package:scavenger_hunt_pictures/widgets/color_arrays.dart';
+import 'package:scavenger_hunt_pictures/widgets/size_config.dart';
 
 class PixButton extends StatelessWidget {
   final String name;
@@ -15,19 +18,33 @@ class PixButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ElevatedButton(
+    return TextButton(
+        style: TextButton.styleFrom(
+          primary: HexColor('#a7d8f6'),
+          padding: EdgeInsets.symmetric(
+            horizontal: SizeConfig.blockSizeHorizontal * 10,
+          ),
+        ),
         onPressed: onPressed,
-        style: ElevatedButton.styleFrom(
-            primary: AppColor.orange, onPrimary: AppColor.textColor),
-        child: Padding(
-          padding: const EdgeInsets.all(10.0),
-          child: AutoSizeText(
-            name,
-            style: TextStyle(
-              fontFamily: 'CaveatBrush',
-              fontSize: fontSize,
-              fontWeight: FontWeight.w400,
-            ),
+        child: Ink(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+                colors: ColorArrays.orangeYellow),
+          ),
+          child: Container(
+            padding: EdgeInsets.symmetric(
+                horizontal: SizeConfig.blockSizeHorizontal * 10,
+                vertical: SizeConfig.blockSizeVertical * 2),
+            child: Text(name,
+                style: TextStyle(
+                  fontFamily: 'CaveatBrush',
+                  fontSize: fontSize,
+                  fontWeight: FontWeight.w400,
+                  color: HexColor('#4b4272'),
+                ),
+                textAlign: TextAlign.center),
           ),
         ));
   }

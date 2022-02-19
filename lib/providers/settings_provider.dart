@@ -11,6 +11,8 @@ class SettingsProvider extends ChangeNotifier {
   late int _p2Score;
   late int _currentRound;
   late int _playerTurns;
+  late int _p1ColorInt;
+  late int _p2ColorInt;
 
   SettingsProvider() {
     _player1 = "";
@@ -22,6 +24,8 @@ class SettingsProvider extends ChangeNotifier {
     _p2Score = 0;
     _currentRound = 1;
     _playerTurns = 1;
+    _p1ColorInt = 0;
+    _p2ColorInt = 0;
 
     loadPreferences();
   }
@@ -35,6 +39,8 @@ class SettingsProvider extends ChangeNotifier {
   int get p2Score => _p2Score;
   int get currentRound => _currentRound;
   int get playerTurns => _playerTurns;
+  int get p1ColorInt => _p1ColorInt;
+  int get p2ColorInt => _p2ColorInt;
 
   void setPlayer1(String player1) {
     _player1 = player1;
@@ -80,6 +86,16 @@ class SettingsProvider extends ChangeNotifier {
 
   void setPlayerTurns(int playerTurns) {
     _playerTurns = playerTurns;
+    notifyListeners();
+  }
+
+  void setP1ColorInt(int p1ColorInt) {
+    _p1ColorInt = p1ColorInt;
+    notifyListeners();
+  }
+
+  void setP2ColorInt(int p2ColorInt) {
+    _p2ColorInt = p2ColorInt;
     notifyListeners();
   }
 

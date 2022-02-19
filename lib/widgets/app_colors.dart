@@ -8,5 +8,6 @@ class AppColor {
   static Color orange = HexColor('#f6911f');
   static Color medBlue = HexColor('#0294c7');
   static Color lightBlue = HexColor('#6fcff5');
-  static Color textColor = HexColor('2d3a64');
+  static Color textColor = HexColor('#4b4272');
+  static Color iconColor = HexColor('#4b4272');
 }

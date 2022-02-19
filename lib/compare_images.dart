@@ -12,6 +12,7 @@ import 'package:scavenger_hunt_pictures/original_pictures.dart';
 import 'package:scavenger_hunt_pictures/providers/settings_provider.dart';
 import 'package:scavenger_hunt_pictures/settings_screen.dart';
 import 'package:scavenger_hunt_pictures/widgets/app_colors.dart';
+import 'package:scavenger_hunt_pictures/widgets/color_arrays.dart';
 import 'package:scavenger_hunt_pictures/widgets/ordinal.dart';
 import 'package:scavenger_hunt_pictures/widgets/pix_button.dart';
 import 'package:scavenger_hunt_pictures/widgets/size_config.dart';
@@ -256,17 +257,13 @@ class _CompareImagesState extends State<CompareImages> {
         title: AutoSizeText(
           "Compare Pics",
           style: TextStyle(
-            color: HexColor('#2d3a64'),
+            color: HexColor('#fefefe'),
             fontFamily: 'CaveatBrush',
             fontSize: SizeConfig.blockSizeHorizontal * 10,
             fontWeight: FontWeight.w400,
           ),
         ),
-        gradient: LinearGradient(colors: [
-          HexColor('#d5ebf6'),
-          HexColor('#007cc2'),
-          HexColor('#d5ebf6'),
-        ]),
+        gradient: LinearGradient(colors: ColorArrays.purple),
         actions: [
           Padding(
               padding:
@@ -274,7 +271,8 @@ class _CompareImagesState extends State<CompareImages> {
               child: GestureDetector(
                 child: Icon(
                   Icons.restart_alt,
-                  color: HexColor('#f6911f'),
+                  color: AppColor.iconColor,
+                  size: SizeConfig.blockSizeHorizontal * 4,
                 ),
                 onTap: () {
                   Navigator.of(context).push(MaterialPageRoute(
@@ -295,9 +293,9 @@ class _CompareImagesState extends State<CompareImages> {
               child: Card(
                 elevation: 4,
                 child: Container(
-                  decoration: const BoxDecoration(
-                      gradient: LinearGradient(
-                          colors: [Color(0xffbb8b1f), Color(0xffffdf21)])),
+                  decoration: BoxDecoration(
+                      gradient:
+                          LinearGradient(colors: ColorArrays.orangeYellow)),
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Text(
@@ -333,11 +331,7 @@ class _CompareImagesState extends State<CompareImages> {
                     elevation: 4,
                     child: Container(
                       decoration: BoxDecoration(
-                          gradient: LinearGradient(colors: [
-                        HexColor('#d5ebf6'),
-                        HexColor('#8f76af'),
-                        HexColor('#d5ebf6'),
-                      ])),
+                          gradient: LinearGradient(colors: ColorArrays.purple)),
                       width: SizeConfig.blockSizeHorizontal * 95,
                       child: Column(children: [
                         Padding(
@@ -347,7 +341,8 @@ class _CompareImagesState extends State<CompareImages> {
                           child: Text(
                             'Results',
                             style: TextStyle(
-                                fontSize: SizeConfig.blockSizeHorizontal * 10),
+                                fontSize: SizeConfig.blockSizeHorizontal * 10,
+                                color: HexColor('#fefefe')),
                           ),
                         ),
                         Padding(
@@ -358,8 +353,8 @@ class _CompareImagesState extends State<CompareImages> {
                             "Click 'Yes' or 'No' for each pair of pix to get the results",
                             textAlign: TextAlign.center,
                             style: TextStyle(
-                              fontSize: SizeConfig.blockSizeHorizontal * 6,
-                            ),
+                                fontSize: SizeConfig.blockSizeHorizontal * 6,
+                                color: HexColor('#fefefe')),
                           ),
                         ),
                       ]),
@@ -369,11 +364,7 @@ class _CompareImagesState extends State<CompareImages> {
                     elevation: 4,
                     child: Container(
                       decoration: BoxDecoration(
-                          gradient: LinearGradient(colors: [
-                        HexColor('#d5ebf6'),
-                        HexColor('#8f76af'),
-                        HexColor('#d5ebf6'),
-                      ])),
+                          gradient: LinearGradient(colors: ColorArrays.purple)),
                       width: SizeConfig.blockSizeHorizontal * 95,
                       child: Column(children: [
                         Padding(
@@ -383,7 +374,8 @@ class _CompareImagesState extends State<CompareImages> {
                           child: Text(
                             'Results',
                             style: TextStyle(
-                                fontSize: SizeConfig.blockSizeHorizontal * 10),
+                                fontSize: SizeConfig.blockSizeHorizontal * 10,
+                                color: HexColor('#fefefe')),
                           ),
                         ),
                         Padding(
@@ -396,30 +388,43 @@ class _CompareImagesState extends State<CompareImages> {
                                   "$player2 got $numberCorrect correct!",
                                   style: TextStyle(
                                       fontSize:
-                                          SizeConfig.blockSizeHorizontal * 6),
+                                          SizeConfig.blockSizeHorizontal * 6,
+                                      color: HexColor('#fefefe')),
                                 )
                               : AutoSizeText(
                                   "$player1 got $numberCorrect correct!",
                                   style: TextStyle(
                                       fontSize:
-                                          SizeConfig.blockSizeHorizontal * 6),
+                                          SizeConfig.blockSizeHorizontal * 6,
+                                      color: HexColor('#fefefe')),
                                 ),
                         ),
-                        Padding(
-                          padding: EdgeInsets.symmetric(
-                              horizontal: SizeConfig.blockSizeVertical * 3,
-                              vertical: SizeConfig.blockSizeVertical * 2),
-                          child: PixButton(
-                            fontSize: SizeConfig.blockSizeHorizontal * 8,
-                            name: "Update Score",
-                            onPressed: () {
-                              scoreUpdated == false
-                                  ? updatePlayerScore()
-                                  : null;
-                            },
-                          ),
-                        ),
-                        scoreUpdated == true
+                        settingsProvider.keepScore
+                            ? Padding(
+                                padding: EdgeInsets.symmetric(
+                                    horizontal:
+                                        SizeConfig.blockSizeVertical * 3,
+                                    vertical: SizeConfig.blockSizeVertical * 2),
+                                child: TextButton(
+                                  child: Text(
+                                    "Update Score",
+                                    style: TextStyle(
+                                        fontSize:
+                                            SizeConfig.blockSizeHorizontal * 8,
+                                        color: HexColor('#fefefe')),
+                                  ),
+                                  onPressed: () {
+                                    scoreUpdated == false
+                                        ? updatePlayerScore()
+                                        : null;
+                                  },
+                                ),
+                              )
+                            : const SizedBox(
+                                height: 0,
+                              ),
+                        scoreUpdated == true &&
+                                settingsProvider.keepScore == true
                             ? SizedBox(
                                 child: Column(
                                   children: [
@@ -559,7 +564,7 @@ class _CompareImagesState extends State<CompareImages> {
         Provider.of<SettingsProvider>(context, listen: false);
     String title;
     if (settingsProvider.playerTurns == 2) {
-      title = "Switch to Finish the Round";
+      title = "$player2 find your Pics";
     } else if (settingsProvider.playerTurns == 4 &&
         settingsProvider.currentRound != settingsProvider.numberOfRounds) {
       title = 'Next Round';
@@ -584,15 +589,29 @@ class _CompareImagesState extends State<CompareImages> {
       child: Container(
         decoration: BoxDecoration(
           border: Border(
-              top: BorderSide(width: 15, color: AppColor.orange),
-              right: BorderSide(width: 20, color: AppColor.yellow),
-              bottom: BorderSide(width: 25, color: AppColor.yellow),
-              left: BorderSide(width: 18, color: AppColor.orange)),
-          gradient: LinearGradient(
-            colors: [AppColor.yellow, AppColor.orange],
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-          ),
+              top: BorderSide(width: 15, color: HexColor('#4b4272')),
+              right: BorderSide(width: 20, color: HexColor('#afa6d6')),
+              bottom: BorderSide(width: 25, color: HexColor('#4b4272')),
+              left: BorderSide(width: 18, color: HexColor('#afa6d6'))),
+          gradient: (Provider.of<SettingsProvider>(context, listen: false)
+                      .playerTurns ==
+                  2)
+              ? LinearGradient(
+                  colors: [
+                    Color(Provider.of<SettingsProvider>(context, listen: false)
+                        .p1ColorInt),
+                    Color(Provider.of<SettingsProvider>(context, listen: false)
+                        .p2ColorInt),
+                  ],
+                )
+              : LinearGradient(
+                  colors: [
+                    Color(Provider.of<SettingsProvider>(context, listen: false)
+                        .p2ColorInt),
+                    Color(Provider.of<SettingsProvider>(context, listen: false)
+                        .p1ColorInt),
+                  ],
+                ),
         ),
         child: Column(
           children: [
@@ -676,7 +695,11 @@ class _CompareImagesState extends State<CompareImages> {
                   ElevatedButton.icon(
                     style: ElevatedButton.styleFrom(
                         primary: HexColor('6EB440'),
-                        onPrimary: AppColor.textColor),
+                        onPrimary: AppColor.textColor,
+                        side: BorderSide(
+                          color: AppColor.textColor,
+                          width: 2,
+                        )),
                     icon: ImageIcon(
                       const AssetImage("assets/images/CheckMark.png"),
                       size: SizeConfig.blockSizeHorizontal * 8,
@@ -704,7 +727,8 @@ class _CompareImagesState extends State<CompareImages> {
                   ElevatedButton.icon(
                     style: ElevatedButton.styleFrom(
                         primary: AppColor.lightBlue,
-                        onPrimary: HexColor('#BF2C24')),
+                        onPrimary: HexColor('#BF2C24'),
+                        side: BorderSide(color: HexColor('#BF2C24'), width: 2)),
                     icon: ImageIcon(
                       const AssetImage("assets/images/NotTheSame.png"),
                       size: SizeConfig.blockSizeHorizontal * 8,
