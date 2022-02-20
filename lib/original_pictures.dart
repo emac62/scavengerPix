@@ -89,7 +89,7 @@ class _OriginalPageState extends State<OriginalPage> {
                   child: Icon(
                     Icons.info,
                     color: HexColor('#4b4272'),
-                    size: SizeConfig.blockSizeHorizontal * 6,
+                    size: SizeConfig.blockSizeHorizontal * 5,
                   ),
                 ),
                 onTap: () {
@@ -105,7 +105,7 @@ class _OriginalPageState extends State<OriginalPage> {
                     child: Icon(
                       Icons.settings,
                       color: HexColor('#4b4272'),
-                      size: SizeConfig.blockSizeHorizontal * 6,
+                      size: SizeConfig.blockSizeHorizontal * 5,
                     ),
                   ),
                   onTap: () {
@@ -122,12 +122,11 @@ class _OriginalPageState extends State<OriginalPage> {
           Card(
             elevation: 10,
             child: Container(
-              decoration: const BoxDecoration(
-                  gradient: LinearGradient(
-                      colors: [Color(0xffbb8b1f), Color(0xffffdf21)])),
+              decoration: BoxDecoration(
+                  gradient: LinearGradient(colors: ColorArrays.orangeYellow)),
               child: Padding(
                   padding: EdgeInsets.symmetric(
-                      horizontal: SizeConfig.blockSizeHorizontal * 8,
+                      horizontal: SizeConfig.blockSizeHorizontal * 15,
                       vertical: SizeConfig.blockSizeVertical * 1),
                   child: Column(
                     children: [
@@ -269,10 +268,10 @@ class _OriginalPageState extends State<OriginalPage> {
         child: Container(
           decoration: BoxDecoration(
             border: Border(
-                top: BorderSide(width: 15, color: HexColor('#4b4272')),
+                top: BorderSide(width: 25, color: HexColor('#4b4272')),
                 right: BorderSide(width: 20, color: HexColor('#afa6d6')),
                 bottom: BorderSide(width: 25, color: HexColor('#4b4272')),
-                left: BorderSide(width: 18, color: HexColor('#afa6d6'))),
+                left: BorderSide(width: 20, color: HexColor('#afa6d6'))),
             gradient: (Provider.of<SettingsProvider>(context, listen: false)
                         .playerTurns ==
                     1)

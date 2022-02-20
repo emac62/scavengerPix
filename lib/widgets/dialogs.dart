@@ -63,13 +63,13 @@ showPlayer2Instructions(BuildContext context) {
   // set up the AlertDialog
   AlertDialog alert = AlertDialog(
     title: Text(
-      "Matching Pics",
+      "Match This!",
       style: TextStyle(
           fontSize: SizeConfig.blockSizeHorizontal * 8,
           color: AppColor.textColor),
     ),
     content: Text(
-      "Click on 'Match this picture:' to see the original image. Try to find that item within the set boundaries and take exactly the same picture. Click 'Next' when finished.",
+      "Click on 'Match This' to see the original image. Try to find that item within the set boundaries and take exactly the same picture. Click 'Next' when finished.",
       style: TextStyle(
           fontSize: SizeConfig.blockSizeHorizontal * 4,
           color: AppColor.textColor),
@@ -174,7 +174,7 @@ showScore(BuildContext context, String player1, String player2, int p1Score,
       mainAxisSize: MainAxisSize.min,
       children: [
         Text(
-          "$player1 - $p1Score",
+          "$player1  - $p1Score",
           style: TextStyle(
               fontSize: SizeConfig.blockSizeHorizontal * 6,
               color: HexColor('#fefefe')),

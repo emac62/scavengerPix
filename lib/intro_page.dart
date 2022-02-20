@@ -42,7 +42,7 @@ class _IntroPageState extends State<IntroPage> {
                     child: Icon(
                       Icons.info,
                       color: HexColor('#4b4272'),
-                      size: SizeConfig.blockSizeHorizontal * 6,
+                      size: SizeConfig.blockSizeHorizontal * 5,
                     ),
                   ),
                   onTap: () {
@@ -62,7 +62,7 @@ class _IntroPageState extends State<IntroPage> {
                             child: Column(
                               children: const [
                                 Text(
-                                  "Use the device's camera to play a scavenger hunt matching game with kids.",
+                                  "Use the internal camera to play an active, cooperative scavenger hunt matching game with kids.",
                                 ),
                               ],
                             ))
@@ -88,14 +88,30 @@ class _IntroPageState extends State<IntroPage> {
               ),
               Padding(
                 padding: EdgeInsets.all(SizeConfig.blockSizeVertical * 4),
-                child: Text(
-                  "It’s scavenger hunt with a camera. Take photos and have your partner find them within set boundaries.",
-                  style: TextStyle(
-                    fontFamily: 'CaveatBrush',
-                    fontSize: SizeConfig.blockSizeHorizontal * 6,
-                    fontWeight: FontWeight.w400,
-                  ),
-                  textAlign: TextAlign.justify,
+                child: Column(
+                  children: [
+                    Text(
+                      "An active picture scavenger hunt.",
+                      style: TextStyle(
+                        fontFamily: 'CaveatBrush',
+                        fontSize: SizeConfig.blockSizeHorizontal * 6,
+                        fontWeight: FontWeight.w400,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                    const SizedBox(
+                      height: 15,
+                    ),
+                    Text(
+                      "Set your boundaries, take photos and have your partner match them.",
+                      style: TextStyle(
+                        fontFamily: 'CaveatBrush',
+                        fontSize: SizeConfig.blockSizeHorizontal * 6,
+                        fontWeight: FontWeight.w400,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                  ],
                 ),
               ),
               const SizedBox(

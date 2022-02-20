@@ -252,271 +252,253 @@ class _CompareImagesState extends State<CompareImages> {
   Widget build(BuildContext context) {
     SizeConfig().init(context);
     var settingsProvider = Provider.of<SettingsProvider>(context);
-    return Scaffold(
-      appBar: NewGradientAppBar(
-        automaticallyImplyLeading: false,
-        title: AutoSizeText(
-          "Compare Pics",
-          style: TextStyle(
-            color: HexColor('#fefefe'),
-            fontFamily: 'CaveatBrush',
-            fontSize: SizeConfig.blockSizeHorizontal * 10,
-            fontWeight: FontWeight.w400,
-          ),
-        ),
-        gradient: LinearGradient(colors: ColorArrays.purple),
-        actions: [
-          Padding(
-              padding:
-                  EdgeInsets.only(right: SizeConfig.blockSizeHorizontal * 3),
-              child: GestureDetector(
-                child: Icon(
-                  Icons.restart_alt,
-                  color: AppColor.iconColor,
-                  size: SizeConfig.blockSizeHorizontal * 4,
-                ),
-                onTap: () {
-                  Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => const IntroPage()));
-                },
-              )),
-        ],
-      ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            SizedBox(
-              height: SizeConfig.blockSizeVertical * 2,
+    return WillPopScope(
+      onWillPop: () async => false,
+      child: Scaffold(
+        appBar: NewGradientAppBar(
+          automaticallyImplyLeading: false,
+          title: AutoSizeText(
+            "Compare Pics",
+            style: TextStyle(
+              color: HexColor('#fefefe'),
+              fontFamily: 'CaveatBrush',
+              fontSize: SizeConfig.blockSizeHorizontal * 10,
+              fontWeight: FontWeight.w400,
             ),
+          ),
+          gradient: LinearGradient(colors: ColorArrays.purple),
+          actions: [
             Padding(
-              padding: EdgeInsets.symmetric(
-                  horizontal: SizeConfig.blockSizeHorizontal * 2),
-              child: Card(
-                elevation: 4,
-                child: Container(
-                  decoration: BoxDecoration(
-                      gradient:
-                          LinearGradient(colors: ColorArrays.orangeYellow)),
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text(
-                      "$player1 and $player2 work together to decide if the pictures match!",
-                      style: TextStyle(
-                        fontSize: SizeConfig.blockSizeHorizontal * 6,
+                padding:
+                    EdgeInsets.only(right: SizeConfig.blockSizeHorizontal * 3),
+                child: GestureDetector(
+                  child: Icon(
+                    Icons.restart_alt,
+                    color: AppColor.iconColor,
+                    size: SizeConfig.blockSizeHorizontal * 6,
+                  ),
+                  onTap: () {
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => const IntroPage()));
+                  },
+                )),
+          ],
+        ),
+        body: SingleChildScrollView(
+          child: Column(
+            children: [
+              SizedBox(
+                height: SizeConfig.blockSizeVertical * 2,
+              ),
+              Padding(
+                padding: EdgeInsets.symmetric(
+                    horizontal: SizeConfig.blockSizeHorizontal * 2),
+                child: Card(
+                  elevation: 4,
+                  child: Container(
+                    decoration: BoxDecoration(
+                        gradient:
+                            LinearGradient(colors: ColorArrays.orangeYellow)),
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(
+                        "$player1 and $player2 work together to decide if the pictures match!",
+                        style: TextStyle(
+                          fontSize: SizeConfig.blockSizeHorizontal * 6,
+                        ),
+                        textAlign: TextAlign.center,
                       ),
-                      textAlign: TextAlign.center,
                     ),
                   ),
                 ),
               ),
-            ),
-            ListView.builder(
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              itemCount: settingsProvider.numberOfPictures,
-              itemBuilder: (context, position) {
-                return Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: buildCompareCard(
-                      p1Img: toOrdinal(position + 1),
-                      p1ImgPath: getP1ImgPath(position),
-                      p2ImgPath: getP2ImgPath(position),
-                      same: setSame(position),
-                      notSame: setNotSame(position)),
-                );
-              },
-            ),
-            (numberCorrect + numberIncorrect !=
-                    settingsProvider.numberOfPictures)
-                ? Card(
-                    elevation: 4,
-                    child: Container(
-                      decoration: BoxDecoration(
-                          gradient: LinearGradient(colors: ColorArrays.purple)),
-                      width: SizeConfig.blockSizeHorizontal * 95,
-                      child: Column(children: [
-                        Padding(
-                          padding: EdgeInsets.symmetric(
-                              horizontal: SizeConfig.blockSizeVertical * 3,
-                              vertical: SizeConfig.blockSizeVertical * 2),
-                          child: Text(
-                            'Results',
-                            style: TextStyle(
-                                fontSize: SizeConfig.blockSizeHorizontal * 10,
-                                color: HexColor('#fefefe')),
+              ListView.builder(
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                itemCount: settingsProvider.numberOfPictures,
+                itemBuilder: (context, position) {
+                  return Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: buildCompareCard(
+                        p1Img: toOrdinal(position + 1),
+                        p1ImgPath: getP1ImgPath(position),
+                        p2ImgPath: getP2ImgPath(position),
+                        same: setSame(position),
+                        notSame: setNotSame(position)),
+                  );
+                },
+              ),
+              (numberCorrect + numberIncorrect !=
+                      settingsProvider.numberOfPictures)
+                  ? Card(
+                      elevation: 4,
+                      child: Container(
+                        decoration: BoxDecoration(
+                            gradient:
+                                LinearGradient(colors: ColorArrays.purple)),
+                        width: SizeConfig.blockSizeHorizontal * 95,
+                        child: Column(children: [
+                          Padding(
+                            padding: EdgeInsets.symmetric(
+                                horizontal: SizeConfig.blockSizeVertical * 3,
+                                vertical: SizeConfig.blockSizeVertical * 2),
+                            child: Text(
+                              'Results',
+                              style: TextStyle(
+                                  fontSize: SizeConfig.blockSizeHorizontal * 10,
+                                  color: HexColor('#fefefe')),
+                            ),
                           ),
-                        ),
-                        Padding(
-                          padding: EdgeInsets.symmetric(
-                              horizontal: SizeConfig.blockSizeVertical * 3,
-                              vertical: SizeConfig.blockSizeVertical * 2),
-                          child: AutoSizeText(
-                            "Click 'Yes' or 'No' for each pair of pix to get the results",
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                                fontSize: SizeConfig.blockSizeHorizontal * 6,
-                                color: HexColor('#fefefe')),
+                          Padding(
+                            padding: EdgeInsets.symmetric(
+                                horizontal: SizeConfig.blockSizeVertical * 3,
+                                vertical: SizeConfig.blockSizeVertical * 2),
+                            child: AutoSizeText(
+                              "Click 'Yes' or 'No' for each pair of photos to get the score",
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  fontSize: SizeConfig.blockSizeHorizontal * 6,
+                                  color: HexColor('#fefefe')),
+                            ),
                           ),
-                        ),
-                      ]),
-                    ),
-                  )
-                : Card(
-                    elevation: 4,
-                    child: Container(
-                      decoration: BoxDecoration(
-                          gradient: LinearGradient(colors: ColorArrays.purple)),
-                      width: SizeConfig.blockSizeHorizontal * 95,
-                      child: Column(children: [
-                        Padding(
-                          padding: EdgeInsets.symmetric(
-                              horizontal: SizeConfig.blockSizeVertical * 3,
-                              vertical: SizeConfig.blockSizeVertical * 2),
-                          child: Text(
-                            'Results',
-                            style: TextStyle(
-                                fontSize: SizeConfig.blockSizeHorizontal * 10,
-                                color: HexColor('#fefefe')),
+                        ]),
+                      ),
+                    )
+                  : Card(
+                      elevation: 4,
+                      child: Container(
+                        decoration: BoxDecoration(
+                            gradient:
+                                LinearGradient(colors: ColorArrays.purple)),
+                        width: SizeConfig.blockSizeHorizontal * 95,
+                        child: Column(children: [
+                          Padding(
+                            padding: EdgeInsets.symmetric(
+                                horizontal: SizeConfig.blockSizeVertical * 3,
+                                vertical: SizeConfig.blockSizeVertical * 2),
+                            child: Text(
+                              'Results',
+                              style: TextStyle(
+                                  fontSize: SizeConfig.blockSizeHorizontal * 10,
+                                  color: HexColor('#fefefe')),
+                            ),
                           ),
-                        ),
-                        Padding(
-                          padding: EdgeInsets.symmetric(
-                              horizontal: SizeConfig.blockSizeVertical * 3,
-                              vertical: SizeConfig.blockSizeVertical * 2),
-                          child: (settingsProvider.playerTurns == 2 ||
-                                  settingsProvider.playerTurns == 3)
-                              ? AutoSizeText(
-                                  "$player2 got $numberCorrect correct!",
-                                  style: TextStyle(
-                                      fontSize:
-                                          SizeConfig.blockSizeHorizontal * 6,
-                                      color: HexColor('#fefefe')),
-                                )
-                              : AutoSizeText(
-                                  "$player1 got $numberCorrect correct!",
-                                  style: TextStyle(
-                                      fontSize:
-                                          SizeConfig.blockSizeHorizontal * 6,
-                                      color: HexColor('#fefefe')),
-                                ),
-                        ),
-                        settingsProvider.keepScore
-                            ? Padding(
-                                padding: EdgeInsets.symmetric(
-                                    horizontal:
-                                        SizeConfig.blockSizeVertical * 3,
-                                    vertical: SizeConfig.blockSizeVertical * 2),
-                                child: TextButton(
-                                  child: Text(
-                                    "Update Score",
+                          Padding(
+                            padding: EdgeInsets.symmetric(
+                                horizontal: SizeConfig.blockSizeVertical * 3,
+                                vertical: SizeConfig.blockSizeVertical * 2),
+                            child: (settingsProvider.playerTurns == 2 ||
+                                    settingsProvider.playerTurns == 3)
+                                ? AutoSizeText(
+                                    "$player2 got $numberCorrect correct!",
                                     style: TextStyle(
                                         fontSize:
-                                            SizeConfig.blockSizeHorizontal * 8,
+                                            SizeConfig.blockSizeHorizontal * 6,
+                                        color: HexColor('#fefefe')),
+                                  )
+                                : AutoSizeText(
+                                    "$player1 got $numberCorrect correct!",
+                                    style: TextStyle(
+                                        fontSize:
+                                            SizeConfig.blockSizeHorizontal * 6,
                                         color: HexColor('#fefefe')),
                                   ),
-                                  onPressed: () {
-                                    scoreUpdated == false
-                                        ? updatePlayerScore()
-                                        : null;
-                                    showScore(
-                                        context,
-                                        settingsProvider.player1,
-                                        settingsProvider.player2,
-                                        settingsProvider.p1Score,
-                                        settingsProvider.p2Score);
-                                  },
+                          ),
+                          settingsProvider.keepScore
+                              ? Padding(
+                                  padding: EdgeInsets.symmetric(
+                                      horizontal:
+                                          SizeConfig.blockSizeVertical * 3,
+                                      vertical:
+                                          SizeConfig.blockSizeVertical * 2),
+                                  child: TextButton(
+                                    child: Text(
+                                      "Update Score",
+                                      style: TextStyle(
+                                          fontSize:
+                                              SizeConfig.blockSizeHorizontal *
+                                                  8,
+                                          color: HexColor('#fefefe')),
+                                    ),
+                                    onPressed: () {
+                                      scoreUpdated == false
+                                          ? updatePlayerScore()
+                                          : null;
+                                      showScore(
+                                          context,
+                                          player1,
+                                          player2,
+                                          settingsProvider.p1Score,
+                                          settingsProvider.p2Score);
+                                    },
+                                  ),
+                                )
+                              : const SizedBox(
+                                  height: 0,
                                 ),
-                              )
-                            : const SizedBox(
-                                height: 0,
-                              ),
-                        // scoreUpdated == true &&
-                        //         settingsProvider.keepScore == true
-                        //     ? SizedBox(
-                        //         child: Column(
-                        //           children: [
-                        //             Text(
-                        //               "$player1 - ${settingsProvider.p1Score}",
-                        //               style: TextStyle(
-                        //                   fontSize:
-                        //                       SizeConfig.blockSizeHorizontal *
-                        //                           6,
-                        //                   color: HexColor('#fefefe')),
-                        //             ),
-                        //             Text(
-                        //               "$player2 - ${settingsProvider.p2Score}",
-                        //               style: TextStyle(
-                        //                   fontSize:
-                        //                       SizeConfig.blockSizeHorizontal *
-                        //                           6,
-                        //                   color: HexColor('#fefefe')),
-                        //             ),
-                        //           ],
-                        //         ),
-                        //       )
-                        //     : const SizedBox(
-                        //         height: 0,
-                        //       ),
-                        Padding(
-                          padding: EdgeInsets.symmetric(
-                              horizontal: SizeConfig.blockSizeVertical * 3,
-                              vertical: SizeConfig.blockSizeVertical * 2),
-                          child: (settingsProvider.playerTurns == 4 &&
-                                  settingsProvider.currentRound ==
-                                      settingsProvider
-                                          .numberOfRounds) //End of Game
-                              ? PixButton(
-                                  name: getFinalButtonTitle(),
-                                  onPressed: () {
-                                    setState(() {
-                                      scoreUpdated == false
-                                          ? updatePlayerScore()
-                                          : null;
-                                      updateRound();
-                                    });
+                          Padding(
+                            padding: EdgeInsets.symmetric(
+                                horizontal: SizeConfig.blockSizeVertical * 3,
+                                vertical: SizeConfig.blockSizeVertical * 2),
+                            child: (settingsProvider.playerTurns == 4 &&
+                                    settingsProvider.currentRound ==
+                                        settingsProvider
+                                            .numberOfRounds) //End of Game
+                                ? PixButton(
+                                    name: getFinalButtonTitle(),
+                                    onPressed: () {
+                                      setState(() {
+                                        scoreUpdated == false
+                                            ? updatePlayerScore()
+                                            : null;
+                                        updateRound();
+                                      });
 
-                                    imageCache!.clear();
+                                      imageCache!.clear();
 
-                                    Navigator.of(context).push(
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                const SettingsScreen()));
-                                  },
-                                  fontSize: SizeConfig.blockSizeHorizontal * 5)
-                              : PixButton(
-                                  //Switch to finish
-                                  name: getFinalButtonTitle(),
-                                  onPressed: () {
-                                    setState(() {
-                                      scoreUpdated == false
-                                          ? updatePlayerScore()
-                                          : null;
-                                      updateRound();
-                                    });
+                                      Navigator.of(context).push(
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  const SettingsScreen()));
+                                    },
+                                    fontSize:
+                                        SizeConfig.blockSizeHorizontal * 5)
+                                : PixButton(
+                                    //Switch to finish
+                                    name: getFinalButtonTitle(),
+                                    onPressed: () {
+                                      setState(() {
+                                        scoreUpdated == false
+                                            ? updatePlayerScore()
+                                            : null;
+                                        updateRound();
+                                      });
 
-                                    imageCache!.clear();
+                                      imageCache!.clear();
 
-                                    Navigator.of(context).push(
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                const OriginalPage()));
-                                  },
-                                  fontSize: SizeConfig.blockSizeHorizontal * 5),
-                        )
-                      ]),
+                                      Navigator.of(context).push(
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  const OriginalPage()));
+                                    },
+                                    fontSize:
+                                        SizeConfig.blockSizeHorizontal * 5),
+                          )
+                        ]),
+                      ),
                     ),
-                  ),
-            const SizedBox(
-              height: 10,
-            )
-          ],
+              const SizedBox(
+                height: 10,
+              )
+            ],
+          ),
         ),
-      ),
-      bottomNavigationBar: Container(
-        color: Colors.black26,
-        child: const SizedBox(
-          height: 60,
-          child: Center(child: Text("Banner Ad")),
+        bottomNavigationBar: Container(
+          color: Colors.black26,
+          child: const SizedBox(
+            height: 60,
+            child: Center(child: Text("Banner Ad")),
+          ),
         ),
       ),
     );
@@ -573,7 +555,7 @@ class _CompareImagesState extends State<CompareImages> {
         Provider.of<SettingsProvider>(context, listen: false);
     String title;
     if (settingsProvider.playerTurns == 2) {
-      title = "$player2 find your Pics";
+      title = "$player2 take your photos";
     } else if (settingsProvider.playerTurns == 4 &&
         settingsProvider.currentRound != settingsProvider.numberOfRounds) {
       title = 'Next Round';
@@ -598,10 +580,10 @@ class _CompareImagesState extends State<CompareImages> {
       child: Container(
         decoration: BoxDecoration(
           border: Border(
-              top: BorderSide(width: 15, color: HexColor('#4b4272')),
+              top: BorderSide(width: 25, color: HexColor('#4b4272')),
               right: BorderSide(width: 20, color: HexColor('#afa6d6')),
               bottom: BorderSide(width: 25, color: HexColor('#4b4272')),
-              left: BorderSide(width: 18, color: HexColor('#afa6d6'))),
+              left: BorderSide(width: 20, color: HexColor('#afa6d6'))),
           gradient: (Provider.of<SettingsProvider>(context, listen: false)
                       .playerTurns ==
                   2)
@@ -630,7 +612,7 @@ class _CompareImagesState extends State<CompareImages> {
                     horizontal: SizeConfig.blockSizeHorizontal * 3,
                     vertical: SizeConfig.blockSizeVertical * 2),
                 child: AutoSizeText(
-                  "Slide the white line left and right to compare the pix.",
+                  "Slide the white line left and right to compare the photos in this round.",
                   style: TextStyle(
                       fontSize: SizeConfig.blockSizeHorizontal * 5,
                       color: HexColor('#2d3a64')),
@@ -641,13 +623,13 @@ class _CompareImagesState extends State<CompareImages> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   AutoSizeText(
-                    "Original $p1Img Pic",
+                    "Original",
                     style: TextStyle(
                         fontSize: SizeConfig.blockSizeHorizontal * 4,
                         color: HexColor('#2d3a64')),
                   ),
                   AutoSizeText(
-                    "Matching $p1Img Pic",
+                    "Match",
                     style: TextStyle(
                         fontSize: SizeConfig.blockSizeHorizontal * 4,
                         color: HexColor('#2d3a64')),

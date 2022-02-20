@@ -87,173 +87,178 @@ class _MatchingPageState extends State<MatchingPage> {
   Widget build(BuildContext context) {
     SizeConfig().init(context);
     var settingsProvider = Provider.of<SettingsProvider>(context);
-    return Scaffold(
-      appBar: NewGradientAppBar(
-        automaticallyImplyLeading: false,
-        title: AutoSizeText(
-          "Match the Pics",
-          style: TextStyle(
-            color: HexColor('#fefefe'),
-            fontFamily: 'CaveatBrush',
-            fontSize: SizeConfig.blockSizeHorizontal * 10,
-            fontWeight: FontWeight.w400,
-          ),
-        ),
-        gradient: LinearGradient(colors: ColorArrays.purple),
-        actions: [
-          Padding(
-              padding:
-                  EdgeInsets.only(right: SizeConfig.blockSizeHorizontal * 3),
-              child: GestureDetector(
-                child: Icon(
-                  Icons.info,
-                  color: AppColor.iconColor,
-                ),
-                onTap: () {
-                  showPlayer2Instructions(context);
-                },
-              )),
-          Padding(
-              padding:
-                  EdgeInsets.only(right: SizeConfig.blockSizeHorizontal * 3),
-              child: GestureDetector(
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Icon(
-                    Icons.restart_alt,
-                    color: AppColor.iconColor,
-                  ),
-                ),
-                onTap: () {
-                  restartGame(context);
-                },
-              )),
-        ],
-      ),
-      body: SingleChildScrollView(
-        child: Column(children: [
-          SizedBox(
-            height: SizeConfig.blockSizeVertical * 2,
-          ),
-          Card(
-            elevation: 10,
-            child: Container(
-              decoration: BoxDecoration(
-                  gradient: LinearGradient(colors: ColorArrays.orangeYellow)),
-              child: Padding(
-                  padding: EdgeInsets.symmetric(
-                      horizontal: SizeConfig.blockSizeHorizontal * 8,
-                      vertical: SizeConfig.blockSizeVertical * 1),
-                  child: Column(
-                    children: [
-                      Text(
-                          "Round ${settingsProvider.currentRound} of ${settingsProvider.numberOfRounds}",
-                          style: TextStyle(
-                            fontSize: SizeConfig.blockSizeHorizontal * 8,
-                            fontWeight: FontWeight.w400,
-                          )),
-                      (settingsProvider.playerTurns == 2)
-                          ? Text("$player2 match the Pics!",
-                              style: TextStyle(
-                                fontSize: SizeConfig.blockSizeHorizontal * 6,
-                                fontWeight: FontWeight.w400,
-                              ))
-                          : Text("$player1 - match the Pics!",
-                              style: TextStyle(
-                                fontSize: SizeConfig.blockSizeHorizontal * 6,
-                                fontWeight: FontWeight.w400,
-                              )),
-                    ],
-                  )),
+    return WillPopScope(
+      onWillPop: () async => false,
+      child: Scaffold(
+        appBar: NewGradientAppBar(
+          automaticallyImplyLeading: false,
+          title: AutoSizeText(
+            "Match This!",
+            style: TextStyle(
+              color: HexColor('#fefefe'),
+              fontFamily: 'CaveatBrush',
+              fontSize: SizeConfig.blockSizeHorizontal * 10,
+              fontWeight: FontWeight.w400,
             ),
           ),
-          ListView.builder(
-            shrinkWrap: true,
-            physics: const NeverScrollableScrollPhysics(),
-            itemCount: settingsProvider.numberOfPictures,
-            itemBuilder: (context, position) {
-              return Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: buildPlayer2ImageCard(
-                    imgNum: toOrdinal(position + 4),
-                    imgUrl: getImgUrl(position) == null
-                        ? ""
-                        : getImgUrl(position)!.path,
-                    imgNumCompare: toOrdinal(position + 1),
-                    imgUrlCompare: getImgUrlCompare(position)),
-              );
-            },
-          ),
-          SizedBox(
-            height: SizeConfig.blockSizeVertical * 2,
-          ),
-          Padding(
-            padding: const EdgeInsets.all(10.0),
-            child: PixButton(
-                name: "Next",
-                onPressed: () {
-                  switch (settingsProvider.numberOfPictures) {
-                    case 1:
-                      fourthImage == null
-                          ? null
-                          : Navigator.of(context).push(MaterialPageRoute(
-                              builder: (context) => CompareImages(
-                                    firstImgPath: widget.firstImgPath,
-                                    fourthImgPath: fourthImage!.path,
-                                  )));
-                      break;
-                    case 2:
-                      (fourthImage == null || fifthImage == null)
-                          ? null
-                          : Navigator.of(context).push(MaterialPageRoute(
-                              builder: (context) => CompareImages(
-                                    firstImgPath: widget.firstImgPath,
-                                    fourthImgPath: fourthImage!.path,
-                                    secondImgPath: widget.secondImgPath,
-                                    fifthImgPath: fifthImage!.path,
-                                  )));
-                      break;
-                    case 3:
-                      (fourthImage == null ||
-                              fifthImage == null ||
-                              sixthImage == null)
-                          ? null
-                          : Navigator.of(context).push(MaterialPageRoute(
-                              builder: (context) => CompareImages(
-                                    firstImgPath: widget.firstImgPath,
-                                    fourthImgPath: fourthImage!.path,
-                                    secondImgPath: widget.secondImgPath,
-                                    fifthImgPath: fifthImage!.path,
-                                    thirdImgPath: widget.thirdImgPath,
-                                    sixthImgPath: sixthImage!.path,
-                                  )));
-                      break;
-                    default:
-                  }
+          gradient: LinearGradient(colors: ColorArrays.purple),
+          actions: [
+            Padding(
+                padding:
+                    EdgeInsets.only(right: SizeConfig.blockSizeHorizontal * 3),
+                child: GestureDetector(
+                  child: Icon(
+                    Icons.info,
+                    color: AppColor.iconColor,
+                    size: SizeConfig.blockSizeHorizontal * 5,
+                  ),
+                  onTap: () {
+                    showPlayer2Instructions(context);
+                  },
+                )),
+            Padding(
+                padding:
+                    EdgeInsets.only(right: SizeConfig.blockSizeHorizontal * 3),
+                child: GestureDetector(
+                  child: Padding(
+                    padding: const EdgeInsets.all(10.0),
+                    child: Icon(
+                      Icons.restart_alt,
+                      color: AppColor.iconColor,
+                      size: SizeConfig.blockSizeHorizontal * 5,
+                    ),
+                  ),
+                  onTap: () {
+                    restartGame(context);
+                  },
+                )),
+          ],
+        ),
+        body: SingleChildScrollView(
+          child: Column(children: [
+            SizedBox(
+              height: SizeConfig.blockSizeVertical * 2,
+            ),
+            Card(
+              elevation: 10,
+              child: Container(
+                decoration: BoxDecoration(
+                    gradient: LinearGradient(colors: ColorArrays.orangeYellow)),
+                child: Padding(
+                    padding: EdgeInsets.symmetric(
+                        horizontal: SizeConfig.blockSizeHorizontal * 15,
+                        vertical: SizeConfig.blockSizeVertical * 1),
+                    child: Column(
+                      children: [
+                        Text(
+                            "Round ${settingsProvider.currentRound} of ${settingsProvider.numberOfRounds}",
+                            style: TextStyle(
+                              fontSize: SizeConfig.blockSizeHorizontal * 8,
+                              fontWeight: FontWeight.w400,
+                            )),
+                        (settingsProvider.playerTurns == 2)
+                            ? Text("$player2 Match the Photos!",
+                                style: TextStyle(
+                                  fontSize: SizeConfig.blockSizeHorizontal * 6,
+                                  fontWeight: FontWeight.w400,
+                                ))
+                            : Text("$player1 - Match the Photos!",
+                                style: TextStyle(
+                                  fontSize: SizeConfig.blockSizeHorizontal * 6,
+                                  fontWeight: FontWeight.w400,
+                                )),
+                      ],
+                    )),
+              ),
+            ),
+            ListView.builder(
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              itemCount: settingsProvider.numberOfPictures,
+              itemBuilder: (context, position) {
+                return Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: buildPlayer2ImageCard(
+                      imgNum: toOrdinal(position + 4),
+                      imgUrl: getImgUrl(position) == null
+                          ? ""
+                          : getImgUrl(position)!.path,
+                      imgNumCompare: toOrdinal(position + 1),
+                      imgUrlCompare: getImgUrlCompare(position)),
+                );
+              },
+            ),
+            SizedBox(
+              height: SizeConfig.blockSizeVertical * 2,
+            ),
+            Padding(
+              padding: const EdgeInsets.all(10.0),
+              child: PixButton(
+                  name: "Next",
+                  onPressed: () {
+                    switch (settingsProvider.numberOfPictures) {
+                      case 1:
+                        fourthImage == null
+                            ? null
+                            : Navigator.of(context).push(MaterialPageRoute(
+                                builder: (context) => CompareImages(
+                                      firstImgPath: widget.firstImgPath,
+                                      fourthImgPath: fourthImage!.path,
+                                    )));
+                        break;
+                      case 2:
+                        (fourthImage == null || fifthImage == null)
+                            ? null
+                            : Navigator.of(context).push(MaterialPageRoute(
+                                builder: (context) => CompareImages(
+                                      firstImgPath: widget.firstImgPath,
+                                      fourthImgPath: fourthImage!.path,
+                                      secondImgPath: widget.secondImgPath,
+                                      fifthImgPath: fifthImage!.path,
+                                    )));
+                        break;
+                      case 3:
+                        (fourthImage == null ||
+                                fifthImage == null ||
+                                sixthImage == null)
+                            ? null
+                            : Navigator.of(context).push(MaterialPageRoute(
+                                builder: (context) => CompareImages(
+                                      firstImgPath: widget.firstImgPath,
+                                      fourthImgPath: fourthImage!.path,
+                                      secondImgPath: widget.secondImgPath,
+                                      fifthImgPath: fifthImage!.path,
+                                      thirdImgPath: widget.thirdImgPath,
+                                      sixthImgPath: sixthImage!.path,
+                                    )));
+                        break;
+                      default:
+                    }
 
-                  (fourthImage == null ||
-                          fifthImage == null ||
-                          sixthImage == null)
-                      ? null
-                      : Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) => CompareImages(
-                                firstImgPath: widget.firstImgPath,
-                                secondImgPath: widget.secondImgPath,
-                                thirdImgPath: widget.thirdImgPath,
-                                fourthImgPath: fourthImage!.path,
-                                fifthImgPath: fifthImage!.path,
-                                sixthImgPath: sixthImage!.path,
-                              )));
-                },
-                fontSize: SizeConfig.blockSizeHorizontal * 8),
-          )
-        ]),
-      ),
-      bottomNavigationBar: Container(
-        color: Colors.black26,
-        child: const SizedBox(
-          height: 60,
-          child: Center(child: Text("Banner Ad")),
+                    (fourthImage == null ||
+                            fifthImage == null ||
+                            sixthImage == null)
+                        ? null
+                        : Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => CompareImages(
+                                  firstImgPath: widget.firstImgPath,
+                                  secondImgPath: widget.secondImgPath,
+                                  thirdImgPath: widget.thirdImgPath,
+                                  fourthImgPath: fourthImage!.path,
+                                  fifthImgPath: fifthImage!.path,
+                                  sixthImgPath: sixthImage!.path,
+                                )));
+                  },
+                  fontSize: SizeConfig.blockSizeHorizontal * 8),
+            )
+          ]),
+        ),
+        bottomNavigationBar: Container(
+          color: Colors.black26,
+          child: const SizedBox(
+            height: 60,
+            child: Center(child: Text("Banner Ad")),
+          ),
         ),
       ),
     );
@@ -295,10 +300,10 @@ class _MatchingPageState extends State<MatchingPage> {
         child: Container(
           decoration: BoxDecoration(
             border: Border(
-                top: BorderSide(width: 15, color: HexColor('#4b4272')),
+                top: BorderSide(width: 25, color: HexColor('#4b4272')),
                 right: BorderSide(width: 20, color: HexColor('#afa6d6')),
                 bottom: BorderSide(width: 25, color: HexColor('#4b4272')),
-                left: BorderSide(width: 18, color: HexColor('#afa6d6'))),
+                left: BorderSide(width: 20, color: HexColor('#afa6d6'))),
             gradient: (Provider.of<SettingsProvider>(context, listen: false)
                         .playerTurns ==
                     4)
@@ -333,7 +338,7 @@ class _MatchingPageState extends State<MatchingPage> {
             children: [
               ListTile(
                 title: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     ImageTitle(
                       title: imgNumCompare,
@@ -349,7 +354,7 @@ class _MatchingPageState extends State<MatchingPage> {
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Text(
-                          "Match this Pic",
+                          "Match This!",
                           style: TextStyle(
                               fontSize: SizeConfig.blockSizeHorizontal * 4,
                               color: HexColor('#fefefe')),

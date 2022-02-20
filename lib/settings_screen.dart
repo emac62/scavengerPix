@@ -28,8 +28,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
   bool keepScore = false;
   var player1;
   var player2;
-  Color p1Color = Colors.blue;
-  Color p2Color = Colors.yellow;
 
   TextEditingController? p1Controller;
   TextEditingController? p2Controller;
@@ -51,6 +49,21 @@ class _SettingsScreenState extends State<SettingsScreen> {
     });
   }
 
+  colorNotSet(String player) {
+    if (player ==
+        Provider.of<SettingsProvider>(context, listen: false).player1) {
+      String p1ColorString = Colors.blue.value.toString();
+      int value = int.parse(p1ColorString);
+      Provider.of<SettingsProvider>(context, listen: false)
+          .setP1ColorInt(value);
+    } else {
+      String p2ColorString = Colors.yellow.value.toString();
+      int value = int.parse(p2ColorString);
+      Provider.of<SettingsProvider>(context, listen: false)
+          .setP2ColorInt(value);
+    }
+  }
+
   @override
   void dispose() {
     super.dispose();
@@ -67,7 +80,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
         automaticallyImplyLeading: false,
         title: AutoSizeText("Settings",
             style: TextStyle(
-                fontSize: SizeConfig.blockSizeHorizontal * 15,
+                fontSize: SizeConfig.blockSizeHorizontal * 10,
                 color: HexColor('#fefefe'),
                 letterSpacing: 2.0)),
         gradient: LinearGradient(colors: ColorArrays.purple),
@@ -91,7 +104,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
             padding: EdgeInsets.symmetric(
                 horizontal: SizeConfig.blockSizeHorizontal * 10),
             child: AutoSizeText(
-              "One round consists of each player taking pictures and comparing them. The number correct is given to the player that correctly matched the pictures.",
+              "A single round consists of each player taking photos and matching photos.",
               style: TextStyle(fontSize: SizeConfig.blockSizeHorizontal * 4),
             ),
           ),
@@ -138,7 +151,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
             padding: EdgeInsets.symmetric(
                 horizontal: SizeConfig.blockSizeHorizontal * 3),
             child: AutoSizeText(
-              "Pictures per Round",
+              "Photos per Round",
               style: TextStyle(fontSize: SizeConfig.blockSizeHorizontal * 8),
             ),
           ),
@@ -146,7 +159,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
             padding: EdgeInsets.symmetric(
                 horizontal: SizeConfig.blockSizeHorizontal * 10),
             child: AutoSizeText(
-              "The number of pictures each player takes before comparing them.",
+              "Decide the number of photos taken before matching them.",
               style: TextStyle(fontSize: SizeConfig.blockSizeHorizontal * 4),
             ),
           ),
@@ -204,7 +217,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   scale: SizeConfig.blockSizeHorizontal * 0.2,
                   child: Padding(
                     padding: EdgeInsets.only(
-                        top: SizeConfig.blockSizeVertical * 3,
+                        top: SizeConfig.blockSizeVertical * 2,
                         right: SizeConfig.blockSizeHorizontal * 5),
                     child: CupertinoSwitch(
                         value: keepScore,
@@ -225,6 +238,14 @@ class _SettingsScreenState extends State<SettingsScreen> {
             ),
           ),
           Padding(
+            padding: EdgeInsets.fromLTRB(SizeConfig.blockSizeHorizontal * 10, 0,
+                SizeConfig.blockSizeHorizontal * 10, 10),
+            child: AutoSizeText(
+              "A point is awarded and tallied for each correct match.",
+              style: TextStyle(fontSize: SizeConfig.blockSizeHorizontal * 4),
+            ),
+          ),
+          Padding(
             padding: EdgeInsets.symmetric(
                 horizontal: SizeConfig.blockSizeHorizontal * 3),
             child: AutoSizeText(
@@ -236,7 +257,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
             padding: EdgeInsets.symmetric(
                 horizontal: SizeConfig.blockSizeHorizontal * 10),
             child: AutoSizeText(
-              "Player One takes pictures and has Player Two matches it. Players compare the ‘match’ and a point is awarded to Player Two if correct. Then reverse.",
+              "Enter name and choose canvas background.",
               style: TextStyle(fontSize: SizeConfig.blockSizeHorizontal * 4),
             ),
           ),
@@ -256,7 +277,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     decoration: InputDecoration(
                         isCollapsed: true,
                         border: const UnderlineInputBorder(),
-                        hintText: "Enter Player 1's Name Here",
+                        hintText: "Enter Player 1's Name",
                         hintStyle: TextStyle(color: HexColor('#bb8b1f'))),
                     style: TextStyle(
                       fontSize: SizeConfig.blockSizeHorizontal * 5,
@@ -288,14 +309,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       Colors.orange,
                       Colors.green,
                     ],
-                    initialColor:
-                        (Provider.of<SettingsProvider>(context, listen: false)
-                                    .p1ColorInt ==
-                                0)
-                            ? Colors.blue
-                            : Color(Provider.of<SettingsProvider>(context,
-                                    listen: false)
-                                .p1ColorInt),
+                    initialColor: Colors.blue,
                     player: settingsProvider.player1,
                   ),
                 ),
@@ -318,7 +332,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     decoration: InputDecoration(
                         isCollapsed: true,
                         border: const UnderlineInputBorder(),
-                        hintText: "Enter Player 2's Name Here",
+                        hintText: "Enter Player 2's Name",
                         hintStyle: TextStyle(color: HexColor('#bb8b1f'))),
                     style: TextStyle(
                       fontSize: SizeConfig.blockSizeHorizontal * 5,
@@ -350,14 +364,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       Colors.orange,
                       Colors.green,
                     ],
-                    initialColor:
-                        (Provider.of<SettingsProvider>(context, listen: false)
-                                    .p2ColorInt ==
-                                0)
-                            ? Colors.yellow
-                            : Color(Provider.of<SettingsProvider>(context,
-                                    listen: false)
-                                .p2ColorInt),
+                    initialColor: Colors.yellow,
                     player: settingsProvider.player2,
                   ),
                 ),
@@ -380,9 +387,18 @@ class _SettingsScreenState extends State<SettingsScreen> {
                         .setP1Score(0);
                     Provider.of<SettingsProvider>(context, listen: false)
                         .setP2Score(0);
+                    (Provider.of<SettingsProvider>(context, listen: false)
+                                .p1ColorInt ==
+                            0)
+                        ? colorNotSet(player1)
+                        : null;
+                    (Provider.of<SettingsProvider>(context, listen: false)
+                                .p2ColorInt ==
+                            0)
+                        ? colorNotSet(player2)
+                        : null;
                   });
-                  debugPrint(
-                      'Original => Matching player Turns: ${settingsProvider.playerTurns}');
+
                   Navigator.of(context).push(MaterialPageRoute(
                       builder: (context) => const OriginalPage()));
                 },
