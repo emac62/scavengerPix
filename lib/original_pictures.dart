@@ -47,9 +47,7 @@ class _OriginalPageState extends State<OriginalPage> {
   @override
   initState() {
     super.initState();
-    loadSettings().then((_) {});
-
-    debugPrint('Original init first image: $firstImage');
+    loadSettings();
   }
 
   getImgUrl(int position) {
@@ -66,164 +64,167 @@ class _OriginalPageState extends State<OriginalPage> {
   Widget build(BuildContext context) {
     SizeConfig().init(context);
     var settingsProvider = Provider.of<SettingsProvider>(context);
-    return Scaffold(
-      appBar: NewGradientAppBar(
-        automaticallyImplyLeading: false,
-        title: AutoSizeText(
-          "Take Original Pics",
-          style: TextStyle(
-            color: HexColor('#fefefe'),
-            fontFamily: 'CaveatBrush',
-            fontSize: SizeConfig.blockSizeHorizontal * 8,
-            fontWeight: FontWeight.w500,
+    return WillPopScope(
+      onWillPop: () async => false,
+      child: Scaffold(
+        appBar: NewGradientAppBar(
+          automaticallyImplyLeading: false,
+          title: AutoSizeText(
+            "Take Original Photos",
+            style: TextStyle(
+              color: HexColor('#fefefe'),
+              fontFamily: 'CaveatBrush',
+              fontSize: SizeConfig.blockSizeHorizontal * 8,
+              fontWeight: FontWeight.w500,
+            ),
           ),
-        ),
-        gradient: LinearGradient(colors: ColorArrays.purple),
-        actions: [
-          Padding(
-              padding:
-                  EdgeInsets.only(right: SizeConfig.blockSizeHorizontal * 3),
-              child: GestureDetector(
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Icon(
-                    Icons.info,
-                    color: HexColor('#4b4272'),
-                    size: SizeConfig.blockSizeHorizontal * 5,
-                  ),
-                ),
-                onTap: () {
-                  showPlayer1Instructions(context);
-                },
-              )),
-          Padding(
-              padding:
-                  EdgeInsets.only(right: SizeConfig.blockSizeHorizontal * 3),
-              child: GestureDetector(
+          gradient: LinearGradient(colors: ColorArrays.purple),
+          actions: [
+            Padding(
+                padding:
+                    EdgeInsets.only(right: SizeConfig.blockSizeHorizontal * 3),
+                child: GestureDetector(
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Icon(
-                      Icons.settings,
+                      Icons.info,
                       color: HexColor('#4b4272'),
                       size: SizeConfig.blockSizeHorizontal * 5,
                     ),
                   ),
                   onTap: () {
-                    Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => const SettingsScreen()));
-                  }))
-        ],
-      ),
-      body: SingleChildScrollView(
-        child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-          SizedBox(
-            height: SizeConfig.blockSizeVertical * 2,
-          ),
-          Card(
-            elevation: 10,
-            child: Container(
-              decoration: BoxDecoration(
-                  gradient: LinearGradient(colors: ColorArrays.orangeYellow)),
-              child: Padding(
-                  padding: EdgeInsets.symmetric(
-                      horizontal: SizeConfig.blockSizeHorizontal * 15,
-                      vertical: SizeConfig.blockSizeVertical * 1),
-                  child: Column(
-                    children: [
-                      Text(
-                          "Round ${settingsProvider.currentRound} of ${settingsProvider.numberOfRounds}",
-                          style: TextStyle(
-                            fontSize: SizeConfig.blockSizeHorizontal * 8,
-                            fontWeight: FontWeight.w400,
-                          )),
-                      (settingsProvider.playerTurns == 1)
-                          ? Text("$player1 find your Pics!",
-                              style: TextStyle(
-                                fontSize: SizeConfig.blockSizeHorizontal * 6,
-                                fontWeight: FontWeight.w400,
-                              ))
-                          : Text("$player2 - find your Pics!",
-                              style: TextStyle(
-                                fontSize: SizeConfig.blockSizeHorizontal * 6,
-                                fontWeight: FontWeight.w400,
-                              )),
-                    ],
-                  )),
+                    showPlayer1Instructions(context);
+                  },
+                )),
+            Padding(
+                padding:
+                    EdgeInsets.only(right: SizeConfig.blockSizeHorizontal * 3),
+                child: GestureDetector(
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Icon(
+                        Icons.settings,
+                        color: HexColor('#4b4272'),
+                        size: SizeConfig.blockSizeHorizontal * 5,
+                      ),
+                    ),
+                    onTap: () {
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => const SettingsScreen()));
+                    }))
+          ],
+        ),
+        body: SingleChildScrollView(
+          child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+            SizedBox(
+              height: SizeConfig.blockSizeVertical * 2,
             ),
-          ),
-          ListView.builder(
-            shrinkWrap: true,
-            physics: const NeverScrollableScrollPhysics(),
-            itemCount: settingsProvider.numberOfPictures,
-            itemBuilder: (context, position) {
-              return Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: buildImageCard(
-                    imgNum: toOrdinal(position + 1),
-                    imgUrl: getImgUrl(position) == null
-                        ? ""
-                        : getImgUrl(position)!.path),
-              );
-            },
-          ),
-          Padding(
-            padding: const EdgeInsets.all(10.0),
-            child: PixButton(
-                name: "Next",
-                onPressed: () {
-                  switch (settingsProvider.numberOfPictures) {
-                    case 1:
-                      (firstImage == null)
-                          ? null
-                          : Navigator.of(context).push(MaterialPageRoute(
-                              builder: (context) => MatchingPage(
-                                    firstImgPath: firstImage!.path,
-                                  )));
-                      break;
-                    case 2:
-                      (firstImage == null || secondImage == null)
-                          ? null
-                          : Navigator.of(context).push(MaterialPageRoute(
-                              builder: (context) => MatchingPage(
-                                    firstImgPath: firstImage!.path,
-                                    secondImgPath: secondImage!.path,
-                                  )));
-                      break;
-                    case 3:
-                      (firstImage == null ||
-                              secondImage == null ||
-                              thirdImage == null)
-                          ? null
-                          : Navigator.of(context).push(MaterialPageRoute(
-                              builder: (context) => MatchingPage(
-                                    firstImgPath: firstImage!.path,
-                                    secondImgPath: secondImage!.path,
-                                    thirdImgPath: thirdImage!.path,
-                                  )));
-                      break;
-                    default:
-                  }
+            Card(
+              elevation: 10,
+              child: Container(
+                decoration: BoxDecoration(
+                    gradient: LinearGradient(colors: ColorArrays.orangeYellow)),
+                child: Padding(
+                    padding: EdgeInsets.symmetric(
+                        horizontal: SizeConfig.blockSizeHorizontal * 15,
+                        vertical: SizeConfig.blockSizeVertical * 1),
+                    child: Column(
+                      children: [
+                        Text(
+                            "Round ${settingsProvider.currentRound} of ${settingsProvider.numberOfRounds}",
+                            style: TextStyle(
+                              fontSize: SizeConfig.blockSizeHorizontal * 8,
+                              fontWeight: FontWeight.w400,
+                            )),
+                        (settingsProvider.playerTurns == 1)
+                            ? Text("$player1 find your Photos!",
+                                style: TextStyle(
+                                  fontSize: SizeConfig.blockSizeHorizontal * 6,
+                                  fontWeight: FontWeight.w400,
+                                ))
+                            : Text("$player2 - find your Pics!",
+                                style: TextStyle(
+                                  fontSize: SizeConfig.blockSizeHorizontal * 6,
+                                  fontWeight: FontWeight.w400,
+                                )),
+                      ],
+                    )),
+              ),
+            ),
+            ListView.builder(
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              itemCount: settingsProvider.numberOfPictures,
+              itemBuilder: (context, position) {
+                return Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: buildImageCard(
+                      imgNum: toOrdinal(position + 1),
+                      imgUrl: getImgUrl(position) == null
+                          ? ""
+                          : getImgUrl(position)!.path),
+                );
+              },
+            ),
+            Padding(
+              padding: const EdgeInsets.all(10.0),
+              child: PixButton(
+                  name: "Next",
+                  onPressed: () {
+                    switch (settingsProvider.numberOfPictures) {
+                      case 1:
+                        (firstImage == null)
+                            ? null
+                            : Navigator.of(context).push(MaterialPageRoute(
+                                builder: (context) => MatchingPage(
+                                      firstImgPath: firstImage!.path,
+                                    )));
+                        break;
+                      case 2:
+                        (firstImage == null || secondImage == null)
+                            ? null
+                            : Navigator.of(context).push(MaterialPageRoute(
+                                builder: (context) => MatchingPage(
+                                      firstImgPath: firstImage!.path,
+                                      secondImgPath: secondImage!.path,
+                                    )));
+                        break;
+                      case 3:
+                        (firstImage == null ||
+                                secondImage == null ||
+                                thirdImage == null)
+                            ? null
+                            : Navigator.of(context).push(MaterialPageRoute(
+                                builder: (context) => MatchingPage(
+                                      firstImgPath: firstImage!.path,
+                                      secondImgPath: secondImage!.path,
+                                      thirdImgPath: thirdImage!.path,
+                                    )));
+                        break;
+                      default:
+                    }
 
-                  (firstImage == null ||
-                          secondImage == null ||
-                          thirdImage == null)
-                      ? null
-                      : Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) => MatchingPage(
-                                firstImgPath: firstImage!.path,
-                                secondImgPath: secondImage!.path,
-                                thirdImgPath: thirdImage!.path,
-                              )));
-                },
-                fontSize: SizeConfig.blockSizeHorizontal * 8),
+                    (firstImage == null ||
+                            secondImage == null ||
+                            thirdImage == null)
+                        ? null
+                        : Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => MatchingPage(
+                                  firstImgPath: firstImage!.path,
+                                  secondImgPath: secondImage!.path,
+                                  thirdImgPath: thirdImage!.path,
+                                )));
+                  },
+                  fontSize: SizeConfig.blockSizeHorizontal * 8),
+            ),
+          ]),
+        ),
+        bottomNavigationBar: Container(
+          color: Colors.black26,
+          child: const SizedBox(
+            height: 60,
+            child: Center(child: Text("Banner Ad")),
           ),
-        ]),
-      ),
-      bottomNavigationBar: Container(
-        color: Colors.black26,
-        child: const SizedBox(
-          height: 60,
-          child: Center(child: Text("Banner Ad")),
         ),
       ),
     );

@@ -32,12 +32,23 @@ class _FullscreenImageState extends State<FullscreenImage> {
         ),
         gradient: LinearGradient(colors: ColorArrays.purple),
       ),
-      body: Image(
-        image: FileImage(File(widget.imageUrl)),
-        alignment: Alignment.center,
-        width: double.infinity,
-        height: double.infinity,
-        fit: BoxFit.contain,
+      body: Padding(
+        padding:
+            EdgeInsets.symmetric(vertical: SizeConfig.blockSizeVertical * 2),
+        child: Image(
+          image: FileImage(File(widget.imageUrl)),
+          alignment: Alignment.center,
+          width: double.infinity,
+          height: double.infinity,
+          fit: BoxFit.contain,
+        ),
+      ),
+      bottomNavigationBar: Container(
+        color: Colors.black26,
+        child: const SizedBox(
+          height: 60,
+          child: Center(child: Text("Banner Ad")),
+        ),
       ),
     );
   }

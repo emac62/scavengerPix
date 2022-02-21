@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
+import 'package:provider/provider.dart';
+import 'package:scavenger_hunt_pictures/providers/settings_provider.dart';
 import 'package:scavenger_hunt_pictures/settings_screen.dart';
 import 'package:scavenger_hunt_pictures/widgets/app_colors.dart';
 import 'package:scavenger_hunt_pictures/widgets/size_config.dart';
@@ -11,7 +13,7 @@ showPlayer1Instructions(BuildContext context) {
       "OK",
       style: TextStyle(
           fontSize: SizeConfig.blockSizeHorizontal * 6,
-          color: HexColor('#93c521')),
+          color: Colors.green[700]),
     ),
     onPressed: () {
       Navigator.of(context).pop();
@@ -20,6 +22,7 @@ showPlayer1Instructions(BuildContext context) {
 
   // set up the AlertDialog
   AlertDialog alert = AlertDialog(
+    backgroundColor: HexColor('#a7d8f6'),
     title: Text(
       "Original Pics",
       style: TextStyle(
@@ -27,7 +30,7 @@ showPlayer1Instructions(BuildContext context) {
           color: AppColor.textColor),
     ),
     content: Text(
-      "Use the camera to take close up pictures within the set boundaries. Once completed, click the 'Next' button and pass to your competitor.",
+      "Click on the camera icon to take close up pictures within the set boundaries. Once completed, click the 'Next' button and pass to your competitor.",
       style: TextStyle(
           fontSize: SizeConfig.blockSizeHorizontal * 4,
           color: AppColor.textColor),
@@ -53,7 +56,7 @@ showPlayer2Instructions(BuildContext context) {
       "OK",
       style: TextStyle(
           fontSize: SizeConfig.blockSizeHorizontal * 6,
-          color: HexColor('#93c521')),
+          color: Colors.green[700]),
     ),
     onPressed: () {
       Navigator.of(context).pop();
@@ -62,6 +65,7 @@ showPlayer2Instructions(BuildContext context) {
 
   // set up the AlertDialog
   AlertDialog alert = AlertDialog(
+    backgroundColor: HexColor('#a7d8f6'),
     title: Text(
       "Match This!",
       style: TextStyle(
@@ -69,7 +73,7 @@ showPlayer2Instructions(BuildContext context) {
           color: AppColor.textColor),
     ),
     content: Text(
-      "Click on 'Match This' to see the original image. Try to find that item within the set boundaries and take exactly the same picture. Click 'Next' when finished.",
+      "Click on 'Match This' to see the original image. Try to find that item within the set boundaries and take exactly the same photo. Click 'Next' when finished.",
       style: TextStyle(
           fontSize: SizeConfig.blockSizeHorizontal * 4,
           color: AppColor.textColor),
@@ -95,7 +99,7 @@ restartGame(BuildContext context) {
       "OK",
       style: TextStyle(
           fontSize: SizeConfig.blockSizeHorizontal * 6,
-          color: HexColor('#93c521')),
+          color: Colors.green[700]),
     ),
     onPressed: () {
       Navigator.of(context).push(
@@ -119,6 +123,7 @@ restartGame(BuildContext context) {
   );
   // set up the AlertDialog
   AlertDialog alert = AlertDialog(
+    backgroundColor: HexColor('#a7d8f6'),
     title: Text(
       "Restart the Game?",
       style: TextStyle(
@@ -126,7 +131,7 @@ restartGame(BuildContext context) {
           color: AppColor.textColor),
     ),
     content: Text(
-      "Restarting the game will remove the Original Pics.",
+      "Restarting the game will delete all photos taken.",
       style: TextStyle(
           fontSize: SizeConfig.blockSizeHorizontal * 4,
           color: AppColor.textColor),
@@ -154,7 +159,7 @@ showScore(BuildContext context, String player1, String player2, int p1Score,
       "OK",
       style: TextStyle(
           fontSize: SizeConfig.blockSizeHorizontal * 6,
-          color: AppColor.iconColor),
+          color: Colors.green[700]),
     ),
     onPressed: () {
       Navigator.of(context).pop();
@@ -163,7 +168,19 @@ showScore(BuildContext context, String player1, String player2, int p1Score,
 
   // set up the AlertDialog
   AlertDialog alert = AlertDialog(
-    backgroundColor: AppColor.lightBlue,
+    titlePadding: EdgeInsets.symmetric(
+        horizontal: SizeConfig.blockSizeHorizontal * 15,
+        vertical: SizeConfig.blockSizeVertical * 5),
+    actionsPadding: EdgeInsets.symmetric(
+        horizontal: SizeConfig.blockSizeHorizontal * 3,
+        vertical: SizeConfig.blockSizeVertical * 2),
+    backgroundColor: HexColor('#a7d8f6'),
+    shape: Border(
+        top: BorderSide(width: 25, color: HexColor('#ffffa6')),
+        right: BorderSide(width: 20, color: HexColor('#f0a142')),
+        bottom: BorderSide(width: 25, color: HexColor('#f0a142')),
+        left: BorderSide(width: 20, color: HexColor('#ffffa6'))),
+    elevation: 10,
     title: Text(
       "Updated Score",
       style: TextStyle(
@@ -177,13 +194,15 @@ showScore(BuildContext context, String player1, String player2, int p1Score,
           "$player1  - $p1Score",
           style: TextStyle(
               fontSize: SizeConfig.blockSizeHorizontal * 6,
-              color: HexColor('#fefefe')),
+              color: Color(Provider.of<SettingsProvider>(context, listen: false)
+                  .p1ColorInt)),
         ),
         Text(
           "$player2 - $p2Score",
           style: TextStyle(
               fontSize: SizeConfig.blockSizeHorizontal * 6,
-              color: HexColor('#fefefe')),
+              color: Color(Provider.of<SettingsProvider>(context, listen: false)
+                  .p2ColorInt)),
         ),
       ],
     ),

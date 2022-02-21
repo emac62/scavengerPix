@@ -340,9 +340,6 @@ class _MatchingPageState extends State<MatchingPage> {
                 title: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    ImageTitle(
-                      title: imgNumCompare,
-                    ),
                     TextButton(
                       onPressed: () {
                         Navigator.of(context).push(MaterialPageRoute(
@@ -363,6 +360,9 @@ class _MatchingPageState extends State<MatchingPage> {
                       style: ButtonStyle(
                           backgroundColor:
                               MaterialStateProperty.all(HexColor('#7d74a4'))),
+                    ),
+                    ImageTitle(
+                      title: imgNumCompare,
                     ),
                   ],
                 ),
@@ -387,10 +387,19 @@ class _MatchingPageState extends State<MatchingPage> {
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: imgUrl != ""
-                        ? PixButton(
-                            name: "Retake",
-                            onPressed: () => takePicture(imgNum),
-                            fontSize: SizeConfig.blockSizeHorizontal * 4,
+                        ? TextButton(
+                            onPressed: () {
+                              takePicture(imgNum);
+                            },
+                            child: Text(
+                              "Retake!",
+                              style: TextStyle(
+                                  fontSize: SizeConfig.blockSizeHorizontal * 4,
+                                  color: HexColor('#fefefe')),
+                            ),
+                            style: ButtonStyle(
+                                backgroundColor: MaterialStateProperty.all(
+                                    HexColor('#7d74a4'))),
                           )
                         : null,
                   ),

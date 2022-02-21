@@ -15,7 +15,7 @@ class ImageTitle extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: AutoSizeText(
-        "$title Pic",
+        "$title Photo",
         style: TextStyle(
             color: HexColor('#2d3a64'),
             fontSize: (SizeConfig.blockSizeHorizontal * 8),

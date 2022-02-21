@@ -51,7 +51,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
   colorNotSet(String player) {
     if (player ==
-        Provider.of<SettingsProvider>(context, listen: false).player1) {
+            Provider.of<SettingsProvider>(context, listen: false).player1 ||
+        player == "Player 1") {
       String p1ColorString = Colors.blue.value.toString();
       int value = int.parse(p1ColorString);
       Provider.of<SettingsProvider>(context, listen: false)
@@ -159,7 +160,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
             padding: EdgeInsets.symmetric(
                 horizontal: SizeConfig.blockSizeHorizontal * 10),
             child: AutoSizeText(
-              "Decide the number of photos taken before matching them.",
+              "Choose the number of photos to be taken before matching them.",
               style: TextStyle(fontSize: SizeConfig.blockSizeHorizontal * 4),
             ),
           ),
@@ -392,12 +393,13 @@ class _SettingsScreenState extends State<SettingsScreen> {
                             0)
                         ? colorNotSet(player1)
                         : null;
-                    (Provider.of<SettingsProvider>(context, listen: false)
-                                .p2ColorInt ==
-                            0)
-                        ? colorNotSet(player2)
-                        : null;
                   });
+
+                  (Provider.of<SettingsProvider>(context, listen: false)
+                              .p2ColorInt !=
+                          0)
+                      ? null
+                      : colorNotSet('$player2');
 
                   Navigator.of(context).push(MaterialPageRoute(
                       builder: (context) => const OriginalPage()));

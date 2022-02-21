@@ -7,7 +7,6 @@ import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:new_gradient_app_bar/new_gradient_app_bar.dart';
 import 'package:provider/provider.dart';
-import 'package:scavenger_hunt_pictures/intro_page.dart';
 import 'package:scavenger_hunt_pictures/original_pictures.dart';
 import 'package:scavenger_hunt_pictures/providers/settings_provider.dart';
 import 'package:scavenger_hunt_pictures/settings_screen.dart';
@@ -166,7 +165,6 @@ class _CompareImagesState extends State<CompareImages> {
         numberIncorrect -= 1;
       }
       same1 = false;
-      debugPrint('$numberIncorrect');
     });
   }
 
@@ -208,8 +206,6 @@ class _CompareImagesState extends State<CompareImages> {
     setVariables();
     loadSettings().then((_) {
       scoreUpdated = false;
-      debugPrint(
-          'Compare init playerTurns: ${Provider.of<SettingsProvider>(context, listen: false).playerTurns}');
     });
   }
 
@@ -258,7 +254,7 @@ class _CompareImagesState extends State<CompareImages> {
         appBar: NewGradientAppBar(
           automaticallyImplyLeading: false,
           title: AutoSizeText(
-            "Compare Pics",
+            "Compare Photos",
             style: TextStyle(
               color: HexColor('#fefefe'),
               fontFamily: 'CaveatBrush',
@@ -278,8 +274,7 @@ class _CompareImagesState extends State<CompareImages> {
                     size: SizeConfig.blockSizeHorizontal * 6,
                   ),
                   onTap: () {
-                    Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => const IntroPage()));
+                    restartGame(context);
                   },
                 )),
           ],
@@ -302,7 +297,7 @@ class _CompareImagesState extends State<CompareImages> {
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Text(
-                        "$player1 and $player2 work together to decide if the pictures match!",
+                        "$player1 and $player2 work together to decide if the photos match!",
                         style: TextStyle(
                           fontSize: SizeConfig.blockSizeHorizontal * 6,
                         ),
@@ -354,7 +349,7 @@ class _CompareImagesState extends State<CompareImages> {
                                 horizontal: SizeConfig.blockSizeVertical * 3,
                                 vertical: SizeConfig.blockSizeVertical * 2),
                             child: AutoSizeText(
-                              "Click 'Yes' or 'No' for each pair of photos to get the score",
+                              "Click 'Yes' or 'No' for each pair of photos in this round to update the score",
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                   fontSize: SizeConfig.blockSizeHorizontal * 6,
@@ -368,8 +363,20 @@ class _CompareImagesState extends State<CompareImages> {
                       elevation: 4,
                       child: Container(
                         decoration: BoxDecoration(
-                            gradient:
-                                LinearGradient(colors: ColorArrays.purple)),
+                          gradient: LinearGradient(
+                              colors: ColorArrays.purple,
+                              begin: Alignment.topCenter,
+                              end: Alignment.bottomCenter),
+                          border: Border(
+                              top: BorderSide(
+                                  width: 25, color: HexColor('#f0a142')),
+                              right: BorderSide(
+                                  width: 20, color: HexColor('#ffffa6')),
+                              bottom: BorderSide(
+                                  width: 25, color: HexColor('#ffffa6')),
+                              left: BorderSide(
+                                  width: 20, color: HexColor('#f0a142'))),
+                        ),
                         width: SizeConfig.blockSizeHorizontal * 95,
                         child: Column(children: [
                           Padding(
@@ -389,20 +396,40 @@ class _CompareImagesState extends State<CompareImages> {
                                 vertical: SizeConfig.blockSizeVertical * 2),
                             child: (settingsProvider.playerTurns == 2 ||
                                     settingsProvider.playerTurns == 3)
-                                ? AutoSizeText(
-                                    "$player2 got $numberCorrect correct!",
-                                    style: TextStyle(
-                                        fontSize:
-                                            SizeConfig.blockSizeHorizontal * 6,
-                                        color: HexColor('#fefefe')),
-                                  )
-                                : AutoSizeText(
-                                    "$player1 got $numberCorrect correct!",
-                                    style: TextStyle(
-                                        fontSize:
-                                            SizeConfig.blockSizeHorizontal * 6,
-                                        color: HexColor('#fefefe')),
-                                  ),
+                                ? numberCorrect > 0
+                                    ? AutoSizeText(
+                                        "$player2 got $numberCorrect correct!",
+                                        style: TextStyle(
+                                            fontSize:
+                                                SizeConfig.blockSizeHorizontal *
+                                                    6,
+                                            color: HexColor('#fefefe')),
+                                      )
+                                    : AutoSizeText(
+                                        "Sorry $player2, keep trying!",
+                                        style: TextStyle(
+                                            fontSize:
+                                                SizeConfig.blockSizeHorizontal *
+                                                    6,
+                                            color: HexColor('#fefefe')),
+                                      )
+                                : numberCorrect > 0
+                                    ? AutoSizeText(
+                                        "$player1 got $numberCorrect correct!",
+                                        style: TextStyle(
+                                            fontSize:
+                                                SizeConfig.blockSizeHorizontal *
+                                                    6,
+                                            color: HexColor('#fefefe')),
+                                      )
+                                    : AutoSizeText(
+                                        "Sorry $player1, keep trying!",
+                                        style: TextStyle(
+                                            fontSize:
+                                                SizeConfig.blockSizeHorizontal *
+                                                    6,
+                                            color: HexColor('#fefefe')),
+                                      ),
                           ),
                           settingsProvider.keepScore
                               ? Padding(
@@ -418,7 +445,7 @@ class _CompareImagesState extends State<CompareImages> {
                                           fontSize:
                                               SizeConfig.blockSizeHorizontal *
                                                   8,
-                                          color: HexColor('#fefefe')),
+                                          color: AppColor.orange),
                                     ),
                                     onPressed: () {
                                       scoreUpdated == false
