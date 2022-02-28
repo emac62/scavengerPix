@@ -8,6 +8,7 @@ import 'package:provider/provider.dart';
 import 'package:scavenger_hunt_pictures/matching_screen.dart';
 import 'package:scavenger_hunt_pictures/providers/settings_provider.dart';
 import 'package:scavenger_hunt_pictures/settings_screen.dart';
+import 'package:scavenger_hunt_pictures/widgets/banner_ad_widget.dart';
 import 'package:scavenger_hunt_pictures/widgets/color_arrays.dart';
 import 'package:scavenger_hunt_pictures/widgets/dialogs.dart';
 import 'package:scavenger_hunt_pictures/widgets/image_title.dart';
@@ -34,6 +35,8 @@ class _OriginalPageState extends State<OriginalPage> {
 
   String player1 = "";
   String player2 = "";
+
+  BannerAdContainer bannerAdContainer = const BannerAdContainer();
 
   loadSettings() async {
     SharedPreferences savedPref = await SharedPreferences.getInstance();
@@ -82,33 +85,27 @@ class _OriginalPageState extends State<OriginalPage> {
           actions: [
             Padding(
                 padding:
-                    EdgeInsets.only(right: SizeConfig.blockSizeHorizontal * 3),
-                child: GestureDetector(
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Icon(
-                      Icons.info,
-                      color: HexColor('#4b4272'),
-                      size: SizeConfig.blockSizeHorizontal * 5,
-                    ),
+                    EdgeInsets.only(right: SizeConfig.blockSizeHorizontal * 1),
+                child: IconButton(
+                  icon: Icon(
+                    Icons.info,
+                    color: HexColor('#4b4272'),
+                    size: SizeConfig.blockSizeHorizontal * 7,
                   ),
-                  onTap: () {
+                  onPressed: () {
                     showPlayer1Instructions(context);
                   },
                 )),
             Padding(
                 padding:
-                    EdgeInsets.only(right: SizeConfig.blockSizeHorizontal * 3),
-                child: GestureDetector(
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Icon(
-                        Icons.settings,
-                        color: HexColor('#4b4272'),
-                        size: SizeConfig.blockSizeHorizontal * 5,
-                      ),
+                    EdgeInsets.only(right: SizeConfig.blockSizeHorizontal * 1),
+                child: IconButton(
+                    icon: Icon(
+                      Icons.settings,
+                      color: HexColor('#4b4272'),
+                      size: SizeConfig.blockSizeHorizontal * 7,
                     ),
-                    onTap: () {
+                    onPressed: () {
                       Navigator.of(context).push(MaterialPageRoute(
                           builder: (context) => const SettingsScreen()));
                     }))
@@ -121,8 +118,12 @@ class _OriginalPageState extends State<OriginalPage> {
             ),
             Card(
               elevation: 10,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(15.0),
+              ),
               child: Container(
                 decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(15.0),
                     gradient: LinearGradient(colors: ColorArrays.orangeYellow)),
                 child: Padding(
                     padding: EdgeInsets.symmetric(
@@ -167,7 +168,7 @@ class _OriginalPageState extends State<OriginalPage> {
               },
             ),
             Padding(
-              padding: const EdgeInsets.all(10.0),
+              padding: const EdgeInsets.fromLTRB(10.0, 10, 10, 30),
               child: PixButton(
                   name: "Next",
                   onPressed: () {
@@ -220,12 +221,11 @@ class _OriginalPageState extends State<OriginalPage> {
           ]),
         ),
         bottomNavigationBar: Container(
-          color: Colors.black26,
-          child: const SizedBox(
-            height: 60,
-            child: Center(child: Text("Banner Ad")),
-          ),
-        ),
+            decoration: BoxDecoration(
+                border: Border(
+                    top: BorderSide(width: 3, color: HexColor('#afa6d6')))),
+            padding: const EdgeInsets.only(top: 10),
+            child: bannerAdContainer),
       ),
     );
   }

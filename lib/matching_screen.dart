@@ -3,6 +3,7 @@
 import 'dart:io';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:new_gradient_app_bar/new_gradient_app_bar.dart';
@@ -10,7 +11,8 @@ import 'package:provider/provider.dart';
 import 'package:scavenger_hunt_pictures/compare_images.dart';
 import 'package:scavenger_hunt_pictures/full_screen_image.dart';
 import 'package:scavenger_hunt_pictures/providers/settings_provider.dart';
-import 'package:scavenger_hunt_pictures/widgets/app_colors.dart';
+import 'package:scavenger_hunt_pictures/widgets/ad_helper.dart';
+import 'package:scavenger_hunt_pictures/widgets/banner_ad_widget.dart';
 import 'package:scavenger_hunt_pictures/widgets/color_arrays.dart';
 import 'package:scavenger_hunt_pictures/widgets/dialogs.dart';
 import 'package:scavenger_hunt_pictures/widgets/image_title.dart';
@@ -44,6 +46,10 @@ class _MatchingPageState extends State<MatchingPage> {
   var player1;
   var player2;
 
+  BannerAdContainer bannerAdContainer = const BannerAdContainer();
+  InterstitialAd? _interstitialAd;
+  bool _isInterstitialAdReady = false;
+
   loadSettings() async {
     SharedPreferences savedPref = await SharedPreferences.getInstance();
     setState(() {
@@ -60,7 +66,24 @@ class _MatchingPageState extends State<MatchingPage> {
           Provider.of<SettingsProvider>(context, listen: false).playerTurns + 1;
       Provider.of<SettingsProvider>(context, listen: false)
           .setPlayerTurns(playerTurns);
+
+      InterstitialAd.load(
+          adUnitId: AdHelper.interstitialAdUnitId,
+          request: const AdRequest(),
+          adLoadCallback: InterstitialAdLoadCallback(onAdLoaded: (ad) {
+            _interstitialAd = ad;
+            _isInterstitialAdReady = true;
+          }, onAdFailedToLoad: (LoadAdError error) {
+            debugPrint("Failed to Load Interstitial Ad ${error.message}");
+          }));
     });
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+
+    _interstitialAd!.dispose();
   }
 
   getImgUrl(int position) {
@@ -105,33 +128,30 @@ class _MatchingPageState extends State<MatchingPage> {
           actions: [
             Padding(
                 padding:
-                    EdgeInsets.only(right: SizeConfig.blockSizeHorizontal * 3),
-                child: GestureDetector(
-                  child: Icon(
+                    EdgeInsets.only(right: SizeConfig.blockSizeHorizontal * 1),
+                child: IconButton(
+                  icon: Icon(
                     Icons.info,
-                    color: AppColor.iconColor,
-                    size: SizeConfig.blockSizeHorizontal * 5,
+                    color: HexColor('#4b4272'),
+                    size: SizeConfig.blockSizeHorizontal * 7,
                   ),
-                  onTap: () {
+                  onPressed: () {
                     showPlayer2Instructions(context);
                   },
                 )),
             Padding(
                 padding:
                     EdgeInsets.only(right: SizeConfig.blockSizeHorizontal * 3),
-                child: GestureDetector(
-                  child: Padding(
-                    padding: const EdgeInsets.all(10.0),
-                    child: Icon(
+                child: IconButton(
+                    icon: Icon(
                       Icons.restart_alt,
-                      color: AppColor.iconColor,
-                      size: SizeConfig.blockSizeHorizontal * 5,
+                      color: HexColor('#4b4272'),
+                      size: SizeConfig.blockSizeHorizontal * 7,
                     ),
-                  ),
-                  onTap: () {
-                    restartGame(context);
-                  },
-                )),
+                    onPressed: () {
+                      restartGame(
+                          context, _isInterstitialAdReady, _interstitialAd!);
+                    })),
           ],
         ),
         body: SingleChildScrollView(
@@ -141,8 +161,12 @@ class _MatchingPageState extends State<MatchingPage> {
             ),
             Card(
               elevation: 10,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(15.0),
+              ),
               child: Container(
                 decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(15.0),
                     gradient: LinearGradient(colors: ColorArrays.orangeYellow)),
                 child: Padding(
                     padding: EdgeInsets.symmetric(
@@ -192,7 +216,7 @@ class _MatchingPageState extends State<MatchingPage> {
               height: SizeConfig.blockSizeVertical * 2,
             ),
             Padding(
-              padding: const EdgeInsets.all(10.0),
+              padding: const EdgeInsets.fromLTRB(10.0, 10, 10, 30),
               child: PixButton(
                   name: "Next",
                   onPressed: () {
@@ -254,12 +278,11 @@ class _MatchingPageState extends State<MatchingPage> {
           ]),
         ),
         bottomNavigationBar: Container(
-          color: Colors.black26,
-          child: const SizedBox(
-            height: 60,
-            child: Center(child: Text("Banner Ad")),
-          ),
-        ),
+            decoration: BoxDecoration(
+                border: Border(
+                    top: BorderSide(width: 3, color: HexColor('#afa6d6')))),
+            padding: const EdgeInsets.only(top: 10),
+            child: bannerAdContainer),
       ),
     );
   }

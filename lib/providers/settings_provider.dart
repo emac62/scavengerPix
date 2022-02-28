@@ -24,8 +24,8 @@ class SettingsProvider extends ChangeNotifier {
     _p2Score = 0;
     _currentRound = 1;
     _playerTurns = 1;
-    _p1ColorInt = 0;
-    _p2ColorInt = 0;
+    _p1ColorInt = 4280391411;
+    _p2ColorInt = 4294961979;
 
     loadPreferences();
   }

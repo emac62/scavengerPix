@@ -2,12 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:scavenger_hunt_pictures/intro_page.dart';
-
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:scavenger_hunt_pictures/providers/settings_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:scavenger_hunt_pictures/widgets/material_color.dart';
 
+const int maxFailedLoadAttempts = 3;
+
 List<String> testDeviceIDs = [
+  "F8D0842E69D7D08FBA97DE652D059DEA", //Pixel 4
   "8E3C44E0453B296DEDFBA106CDBB59CC", // Samsung S5
   "B23BF33B20AC43239D05001A504F0EF3", //iPhone8 13.0
   "77D59CAC6A854490B6A389C9B5531A12", //iPhone13 mini 15.0
@@ -17,7 +20,14 @@ List<String> testDeviceIDs = [
 ];
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await MobileAds.instance.initialize().then((InitializationStatus status) {
+    debugPrint('Initialization done: ${status.adapterStatuses}');
+  });
 
+  final RequestConfiguration requestConfiguration = RequestConfiguration(
+      tagForChildDirectedTreatment: TagForChildDirectedTreatment.yes,
+      testDeviceIds: testDeviceIDs);
+  MobileAds.instance.updateRequestConfiguration(requestConfiguration);
   await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   runApp(MultiProvider(
       providers: [ChangeNotifierProvider(create: (_) => SettingsProvider())],

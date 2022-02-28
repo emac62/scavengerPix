@@ -25,6 +25,7 @@ class PixButton extends StatelessWidget {
         onPressed: onPressed,
         child: Ink(
           decoration: BoxDecoration(
+            borderRadius: const BorderRadius.all(Radius.circular(10.0)),
             gradient: LinearGradient(
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
@@ -32,8 +33,8 @@ class PixButton extends StatelessWidget {
           ),
           child: Padding(
             padding: EdgeInsets.symmetric(
-                horizontal: SizeConfig.blockSizeHorizontal * 10,
-                vertical: SizeConfig.blockSizeVertical * 2),
+                horizontal: SizeConfig.blockSizeHorizontal * 5,
+                vertical: SizeConfig.blockSizeVertical * 1),
             child: SizedBox(
               width: SizeConfig.blockSizeHorizontal * 50,
               child: AutoSizeText(name,

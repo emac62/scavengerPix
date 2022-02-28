@@ -8,6 +8,7 @@
 .buildlog/
 .history
 .svn/
+.ad_unit_codes.txt
 
 # IntelliJ related
 *.iml

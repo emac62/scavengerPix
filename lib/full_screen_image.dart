@@ -4,6 +4,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:new_gradient_app_bar/new_gradient_app_bar.dart';
+import 'package:scavenger_hunt_pictures/widgets/banner_ad_widget.dart';
 import 'package:scavenger_hunt_pictures/widgets/color_arrays.dart';
 import 'package:scavenger_hunt_pictures/widgets/size_config.dart';
 
@@ -19,6 +20,7 @@ class FullscreenImage extends StatefulWidget {
 }
 
 class _FullscreenImageState extends State<FullscreenImage> {
+  BannerAdContainer bannerAdContainer = const BannerAdContainer();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -44,12 +46,11 @@ class _FullscreenImageState extends State<FullscreenImage> {
         ),
       ),
       bottomNavigationBar: Container(
-        color: Colors.black26,
-        child: const SizedBox(
-          height: 60,
-          child: Center(child: Text("Banner Ad")),
-        ),
-      ),
+          decoration: BoxDecoration(
+              border: Border(
+                  top: BorderSide(width: 3, color: HexColor('#afa6d6')))),
+          padding: const EdgeInsets.only(top: 10),
+          child: bannerAdContainer),
     );
   }
 }

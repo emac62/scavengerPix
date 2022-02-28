@@ -1,5 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.scavenger_hunt_pictures">
+    <uses-permission android:name="android.permission.CAMERA" />
    <application
         android:label="Match This!"
         android:icon="@mipmap/launcher_icon">
@@ -28,6 +29,7 @@
               android:name="io.flutter.embedding.android.SplashScreenDrawable"
               android:resource="@drawable/launch_background"
               />
+            
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
@@ -38,5 +40,8 @@
         <meta-data
             android:name="flutterEmbedding"
             android:value="2" />
+        <meta-data
+              android:name="com.google.android.gms.ads.APPLICATION_ID"
+              android:value="ca-app-pub-3940256099942544~3347511713"/>
     </application>
 </manifest>

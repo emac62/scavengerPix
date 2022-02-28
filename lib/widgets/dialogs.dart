@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:provider/provider.dart';
 import 'package:scavenger_hunt_pictures/providers/settings_provider.dart';
@@ -92,7 +93,7 @@ showPlayer2Instructions(BuildContext context) {
   );
 }
 
-restartGame(BuildContext context) {
+restartGame(BuildContext context, bool ready, InterstitialAd ad) {
   // set up the button
   Widget okButton = TextButton(
     child: Text(
@@ -102,6 +103,7 @@ restartGame(BuildContext context) {
           color: Colors.green[700]),
     ),
     onPressed: () {
+      if (ready) ad.show();
       Navigator.of(context).push(
           MaterialPageRoute(builder: (context) => const SettingsScreen()));
     },

@@ -11,6 +11,7 @@ import 'package:scavenger_hunt_pictures/original_pictures.dart';
 import 'package:scavenger_hunt_pictures/providers/settings_provider.dart';
 // ignore: unused_import
 import 'package:scavenger_hunt_pictures/widgets/app_colors.dart';
+import 'package:scavenger_hunt_pictures/widgets/banner_ad_widget.dart';
 import 'package:scavenger_hunt_pictures/widgets/color_arrays.dart';
 import 'package:scavenger_hunt_pictures/widgets/pix_button.dart';
 import 'package:scavenger_hunt_pictures/widgets/player_color_picker.dart';
@@ -28,6 +29,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
   bool keepScore = false;
   var player1;
   var player2;
+  BannerAdContainer bannerAdContainer = const BannerAdContainer();
 
   TextEditingController? p1Controller;
   TextEditingController? p2Controller;
@@ -47,22 +49,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
       player1 = (savedPref.getString('player1') ?? "");
       player2 = (savedPref.getString('player2') ?? "");
     });
-  }
-
-  colorNotSet(String player) {
-    if (player ==
-            Provider.of<SettingsProvider>(context, listen: false).player1 ||
-        player == "Player 1") {
-      String p1ColorString = Colors.blue.value.toString();
-      int value = int.parse(p1ColorString);
-      Provider.of<SettingsProvider>(context, listen: false)
-          .setP1ColorInt(value);
-    } else {
-      String p2ColorString = Colors.yellow.value.toString();
-      int value = int.parse(p2ColorString);
-      Provider.of<SettingsProvider>(context, listen: false)
-          .setP2ColorInt(value);
-    }
   }
 
   @override
@@ -95,10 +81,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
           ),
           Padding(
             padding: EdgeInsets.symmetric(
-                horizontal: SizeConfig.blockSizeHorizontal * 3),
+                horizontal: SizeConfig.blockSizeHorizontal * 4),
             child: AutoSizeText(
               "Rounds",
-              style: TextStyle(fontSize: SizeConfig.blockSizeHorizontal * 8),
+              style: TextStyle(fontSize: SizeConfig.blockSizeHorizontal * 7),
             ),
           ),
           Padding(
@@ -150,10 +136,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
           ),
           Padding(
             padding: EdgeInsets.symmetric(
-                horizontal: SizeConfig.blockSizeHorizontal * 3),
+                horizontal: SizeConfig.blockSizeHorizontal * 4),
             child: AutoSizeText(
               "Photos per Round",
-              style: TextStyle(fontSize: SizeConfig.blockSizeHorizontal * 8),
+              style: TextStyle(fontSize: SizeConfig.blockSizeHorizontal * 7),
             ),
           ),
           Padding(
@@ -205,14 +191,14 @@ class _SettingsScreenState extends State<SettingsScreen> {
           ),
           Padding(
             padding: EdgeInsets.symmetric(
-                horizontal: SizeConfig.blockSizeHorizontal * 3),
+                horizontal: SizeConfig.blockSizeHorizontal * 4),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 AutoSizeText(
                   "Keep Score?",
                   style:
-                      TextStyle(fontSize: SizeConfig.blockSizeHorizontal * 8),
+                      TextStyle(fontSize: SizeConfig.blockSizeHorizontal * 7),
                 ),
                 Transform.scale(
                   scale: SizeConfig.blockSizeHorizontal * 0.2,
@@ -248,10 +234,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
           ),
           Padding(
             padding: EdgeInsets.symmetric(
-                horizontal: SizeConfig.blockSizeHorizontal * 3),
+                horizontal: SizeConfig.blockSizeHorizontal * 4),
             child: AutoSizeText(
               "Add Names",
-              style: TextStyle(fontSize: SizeConfig.blockSizeHorizontal * 8),
+              style: TextStyle(fontSize: SizeConfig.blockSizeHorizontal * 7),
             ),
           ),
           Padding(
@@ -310,7 +296,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       Colors.orange,
                       Colors.green,
                     ],
-                    initialColor: Colors.blue,
+                    initialColor: Color(
+                        Provider.of<SettingsProvider>(context, listen: false)
+                            .p1ColorInt),
                     player: settingsProvider.player1,
                   ),
                 ),
@@ -365,7 +353,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       Colors.orange,
                       Colors.green,
                     ],
-                    initialColor: Colors.yellow,
+                    initialColor: Color(
+                        Provider.of<SettingsProvider>(context, listen: false)
+                            .p2ColorInt),
                     player: settingsProvider.player2,
                   ),
                 ),
@@ -388,33 +378,21 @@ class _SettingsScreenState extends State<SettingsScreen> {
                         .setP1Score(0);
                     Provider.of<SettingsProvider>(context, listen: false)
                         .setP2Score(0);
-                    (Provider.of<SettingsProvider>(context, listen: false)
-                                .p1ColorInt ==
-                            0)
-                        ? colorNotSet(player1)
-                        : null;
                   });
-
-                  (Provider.of<SettingsProvider>(context, listen: false)
-                              .p2ColorInt !=
-                          0)
-                      ? null
-                      : colorNotSet('$player2');
 
                   Navigator.of(context).push(MaterialPageRoute(
                       builder: (context) => const OriginalPage()));
                 },
-                fontSize: SizeConfig.blockSizeHorizontal * 8),
+                fontSize: SizeConfig.blockSizeHorizontal * 7),
           )
         ],
       ),
       bottomNavigationBar: Container(
-        color: Colors.black26,
-        child: const SizedBox(
-          height: 60,
-          child: Center(child: Text("Banner Ad")),
-        ),
-      ),
+          decoration: BoxDecoration(
+              border: Border(
+                  top: BorderSide(width: 3, color: HexColor('#afa6d6')))),
+          padding: const EdgeInsets.only(top: 10),
+          child: bannerAdContainer),
     );
   }
 }

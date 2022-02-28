@@ -2,15 +2,19 @@
 
 import 'dart:io';
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:avatar_glow/avatar_glow.dart';
 import 'package:before_after/before_after.dart';
 import 'package:flutter/material.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:new_gradient_app_bar/new_gradient_app_bar.dart';
 import 'package:provider/provider.dart';
 import 'package:scavenger_hunt_pictures/original_pictures.dart';
 import 'package:scavenger_hunt_pictures/providers/settings_provider.dart';
 import 'package:scavenger_hunt_pictures/settings_screen.dart';
+import 'package:scavenger_hunt_pictures/widgets/ad_helper.dart';
 import 'package:scavenger_hunt_pictures/widgets/app_colors.dart';
+import 'package:scavenger_hunt_pictures/widgets/banner_ad_widget.dart';
 import 'package:scavenger_hunt_pictures/widgets/color_arrays.dart';
 import 'package:scavenger_hunt_pictures/widgets/dialogs.dart';
 import 'package:scavenger_hunt_pictures/widgets/ordinal.dart';
@@ -40,7 +44,8 @@ class CompareImages extends StatefulWidget {
   _CompareImagesState createState() => _CompareImagesState();
 }
 
-class _CompareImagesState extends State<CompareImages> {
+class _CompareImagesState extends State<CompareImages>
+    with SingleTickerProviderStateMixin {
   File? firstImgPath;
   File? secondImgPath;
   File? thirdImgPath;
@@ -58,6 +63,12 @@ class _CompareImagesState extends State<CompareImages> {
   var player1 = "";
   var player2 = "";
   bool scoreUpdated = false;
+
+  late AnimationController animationController;
+  late Animation<double> animation;
+  BannerAdContainer bannerAdContainer = const BannerAdContainer();
+  InterstitialAd? _interstitialAd;
+  bool _isInterstitialAdReady = false;
 
   var p1Score = 0;
   var p2Score = 0;
@@ -204,9 +215,25 @@ class _CompareImagesState extends State<CompareImages> {
   void initState() {
     super.initState();
     setVariables();
-    loadSettings().then((_) {
-      scoreUpdated = false;
-    });
+    loadSettings();
+    scoreUpdated = false;
+    animationController = AnimationController(
+      vsync: this,
+      duration: const Duration(seconds: 5),
+    );
+    animation = CurvedAnimation(
+      parent: animationController,
+      curve: Curves.easeIn,
+    );
+    InterstitialAd.load(
+        adUnitId: AdHelper.interstitialAdUnitId,
+        request: const AdRequest(),
+        adLoadCallback: InterstitialAdLoadCallback(onAdLoaded: (ad) {
+          _interstitialAd = ad;
+          _isInterstitialAdReady = true;
+        }, onAdFailedToLoad: (LoadAdError error) {
+          debugPrint("Failed to Load Interstitial Ad ${error.message}");
+        }));
   }
 
   loadSettings() async {
@@ -215,6 +242,13 @@ class _CompareImagesState extends State<CompareImages> {
       player1 = (savedPref.getString('player1') ?? "Player1");
       player2 = (savedPref.getString('player2') ?? "Player2");
     });
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+
+    _interstitialAd!.dispose();
   }
 
   setVariables() {
@@ -267,16 +301,16 @@ class _CompareImagesState extends State<CompareImages> {
             Padding(
                 padding:
                     EdgeInsets.only(right: SizeConfig.blockSizeHorizontal * 3),
-                child: GestureDetector(
-                  child: Icon(
-                    Icons.restart_alt,
-                    color: AppColor.iconColor,
-                    size: SizeConfig.blockSizeHorizontal * 6,
-                  ),
-                  onTap: () {
-                    restartGame(context);
-                  },
-                )),
+                child: IconButton(
+                    icon: Icon(
+                      Icons.restart_alt,
+                      color: HexColor('#4b4272'),
+                      size: SizeConfig.blockSizeHorizontal * 7,
+                    ),
+                    onPressed: () {
+                      restartGame(
+                          context, _isInterstitialAdReady, _interstitialAd!);
+                    })),
           ],
         ),
         body: SingleChildScrollView(
@@ -290,8 +324,12 @@ class _CompareImagesState extends State<CompareImages> {
                     horizontal: SizeConfig.blockSizeHorizontal * 2),
                 child: Card(
                   elevation: 4,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(15.0),
+                  ),
                   child: Container(
                     decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(15.0),
                         gradient:
                             LinearGradient(colors: ColorArrays.orangeYellow)),
                     child: Padding(
@@ -327,8 +365,12 @@ class _CompareImagesState extends State<CompareImages> {
                       settingsProvider.numberOfPictures)
                   ? Card(
                       elevation: 4,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(15.0),
+                      ),
                       child: Container(
                         decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(15.0),
                             gradient:
                                 LinearGradient(colors: ColorArrays.purple)),
                         width: SizeConfig.blockSizeHorizontal * 95,
@@ -466,7 +508,7 @@ class _CompareImagesState extends State<CompareImages> {
                           Padding(
                             padding: EdgeInsets.symmetric(
                                 horizontal: SizeConfig.blockSizeVertical * 3,
-                                vertical: SizeConfig.blockSizeVertical * 2),
+                                vertical: SizeConfig.blockSizeVertical * 3),
                             child: (settingsProvider.playerTurns == 4 &&
                                     settingsProvider.currentRound ==
                                         settingsProvider
@@ -521,12 +563,11 @@ class _CompareImagesState extends State<CompareImages> {
           ),
         ),
         bottomNavigationBar: Container(
-          color: Colors.black26,
-          child: const SizedBox(
-            height: 60,
-            child: Center(child: Text("Banner Ad")),
-          ),
-        ),
+            decoration: BoxDecoration(
+                border: Border(
+                    top: BorderSide(width: 3, color: HexColor('#afa6d6')))),
+            padding: const EdgeInsets.only(top: 10),
+            child: bannerAdContainer),
       ),
     );
   }
@@ -681,17 +722,29 @@ class _CompareImagesState extends State<CompareImages> {
               Visibility(
                 visible: same,
                 child: Positioned(
-                    child: Image.asset(
-                  'assets/images/Matched.png',
-                  height: 250,
+                    child: AvatarGlow(
+                  endRadius: 180,
+                  glowColor: Colors.green,
+                  duration: const Duration(milliseconds: 3000),
+                  repeat: true,
+                  child: Image.asset(
+                    'assets/images/Matched.png',
+                    height: 250,
+                  ),
                 )),
               ),
               Visibility(
                 visible: notSame,
                 child: Positioned(
-                    child: Image.asset(
-                  'assets/images/NoMatch.png',
-                  height: 250,
+                    child: AvatarGlow(
+                  endRadius: 180,
+                  glowColor: Colors.red,
+                  duration: const Duration(seconds: 3),
+                  repeat: true,
+                  child: Image.asset(
+                    'assets/images/NoMatch.png',
+                    height: 250,
+                  ),
                 )),
               )
             ]),
