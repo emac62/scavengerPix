@@ -8,6 +8,7 @@ import 'package:provider/provider.dart';
 import 'package:scavenger_hunt_pictures/matching_screen.dart';
 import 'package:scavenger_hunt_pictures/providers/settings_provider.dart';
 import 'package:scavenger_hunt_pictures/settings_screen.dart';
+import 'package:scavenger_hunt_pictures/widgets/app_colors.dart';
 import 'package:scavenger_hunt_pictures/widgets/banner_ad_widget.dart';
 import 'package:scavenger_hunt_pictures/widgets/color_arrays.dart';
 import 'package:scavenger_hunt_pictures/widgets/dialogs.dart';
@@ -90,7 +91,7 @@ class _OriginalPageState extends State<OriginalPage> {
                   icon: Icon(
                     Icons.info,
                     color: HexColor('#4b4272'),
-                    size: SizeConfig.blockSizeHorizontal * 7,
+                    size: SizeConfig.blockSizeHorizontal * 5,
                   ),
                   onPressed: () {
                     showPlayer1Instructions(context);
@@ -103,7 +104,7 @@ class _OriginalPageState extends State<OriginalPage> {
                     icon: Icon(
                       Icons.settings,
                       color: HexColor('#4b4272'),
-                      size: SizeConfig.blockSizeHorizontal * 7,
+                      size: SizeConfig.blockSizeHorizontal * 5,
                     ),
                     onPressed: () {
                       Navigator.of(context).push(MaterialPageRoute(
@@ -182,13 +183,14 @@ class _OriginalPageState extends State<OriginalPage> {
                                     )));
                         break;
                       case 2:
-                        (firstImage == null || secondImage == null)
-                            ? null
-                            : Navigator.of(context).push(MaterialPageRoute(
-                                builder: (context) => MatchingPage(
-                                      firstImgPath: firstImage!.path,
-                                      secondImgPath: secondImage!.path,
-                                    )));
+                        // (firstImage == null || secondImage == null)
+                        //     ? null
+                        //     :
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => MatchingPage(
+                                  firstImgPath: firstImage!.path,
+                                  secondImgPath: secondImage!.path,
+                                )));
                         break;
                       case 3:
                         (firstImage == null ||
@@ -313,20 +315,23 @@ class _OriginalPageState extends State<OriginalPage> {
                           ImageTitle(
                             title: imgNum,
                           ),
-                          TextButton(
-                            onPressed: () {
-                              takePicture(imgNum);
-                            },
-                            child: Text(
-                              "Retake",
-                              style: TextStyle(
-                                  fontSize: SizeConfig.blockSizeHorizontal * 4,
-                                  color: HexColor('#fefefe')),
-                            ),
-                            style: ButtonStyle(
-                                backgroundColor: MaterialStateProperty.all(
-                                    HexColor('#7d74a4'))),
-                          ),
+                          imgNum != ""
+                              ? IconButton(
+                                  icon: Icon(
+                                    Icons.redo_sharp,
+                                    color: AppColor.textColor,
+                                    size: SizeConfig.blockSizeHorizontal * 5,
+                                  ),
+                                  onPressed: () {
+                                    takePicture(imgNum);
+                                  })
+                              : IconButton(
+                                  icon: Icon(
+                                    Icons.restart_alt,
+                                    color: Colors.transparent,
+                                    size: SizeConfig.blockSizeHorizontal * 4,
+                                  ),
+                                  onPressed: () {})
                         ],
                       )
                     : ImageTitle(

@@ -42,7 +42,7 @@ class _IntroPageState extends State<IntroPage> {
                     child: Icon(
                       Icons.info,
                       color: HexColor('#4b4272'),
-                      size: SizeConfig.blockSizeHorizontal * 5,
+                      size: SizeConfig.blockSizeHorizontal * 4,
                     ),
                   ),
                   onTap: () {

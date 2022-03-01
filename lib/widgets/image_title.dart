@@ -18,7 +18,7 @@ class ImageTitle extends StatelessWidget {
         "$title Photo",
         style: TextStyle(
             color: HexColor('#2d3a64'),
-            fontSize: (SizeConfig.blockSizeHorizontal * 8),
+            fontSize: (SizeConfig.blockSizeHorizontal * 6),
             fontWeight: FontWeight.w400),
       ),
     );

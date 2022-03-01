@@ -12,6 +12,7 @@ import 'package:scavenger_hunt_pictures/compare_images.dart';
 import 'package:scavenger_hunt_pictures/full_screen_image.dart';
 import 'package:scavenger_hunt_pictures/providers/settings_provider.dart';
 import 'package:scavenger_hunt_pictures/widgets/ad_helper.dart';
+import 'package:scavenger_hunt_pictures/widgets/app_colors.dart';
 import 'package:scavenger_hunt_pictures/widgets/banner_ad_widget.dart';
 import 'package:scavenger_hunt_pictures/widgets/color_arrays.dart';
 import 'package:scavenger_hunt_pictures/widgets/dialogs.dart';
@@ -361,34 +362,47 @@ class _MatchingPageState extends State<MatchingPage> {
             children: [
               ListTile(
                 title: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    TextButton(
-                      onPressed: () {
-                        Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => FullscreenImage(
-                                  imagePix: imgNumCompare,
-                                  imageUrl: imgUrlCompare,
-                                )));
-                      },
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      TextButton(
+                        onPressed: () {
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) => FullscreenImage(
+                                    imagePix: imgNumCompare,
+                                    imageUrl: imgUrlCompare,
+                                  )));
+                        },
                         child: Text(
                           "Match This!",
                           style: TextStyle(
-                              fontSize: SizeConfig.blockSizeHorizontal * 4,
+                              fontSize: SizeConfig.blockSizeHorizontal * 3,
                               color: HexColor('#fefefe')),
                         ),
+                        style: ButtonStyle(
+                            backgroundColor:
+                                MaterialStateProperty.all(HexColor('#7d74a4'))),
                       ),
-                      style: ButtonStyle(
-                          backgroundColor:
-                              MaterialStateProperty.all(HexColor('#7d74a4'))),
-                    ),
-                    ImageTitle(
-                      title: imgNumCompare,
-                    ),
-                  ],
-                ),
+                      ImageTitle(
+                        title: imgNumCompare,
+                      ),
+                      imgNum != ""
+                          ? IconButton(
+                              icon: Icon(
+                                Icons.redo_sharp,
+                                color: AppColor.textColor,
+                                size: SizeConfig.blockSizeHorizontal * 5,
+                              ),
+                              onPressed: () {
+                                takePicture(imgNum);
+                              })
+                          : IconButton(
+                              icon: Icon(
+                                Icons.restart_alt,
+                                color: Colors.transparent,
+                                size: SizeConfig.blockSizeHorizontal * 4,
+                              ),
+                              onPressed: () {})
+                    ]),
               ),
               SizedBox(
                 child: GestureDetector(
@@ -399,35 +413,14 @@ class _MatchingPageState extends State<MatchingPage> {
                             color: Colors.black38,
                             size: SizeConfig.blockSizeVertical * 10,
                           )
-                        : Image(
-                            image: FileImage(File(imgUrl)),
-                            fit: BoxFit.contain,
+                        : Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Image(
+                              image: FileImage(File(imgUrl)),
+                              fit: BoxFit.contain,
+                            ),
                           )),
               ),
-              ButtonBar(
-                alignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: imgUrl != ""
-                        ? TextButton(
-                            onPressed: () {
-                              takePicture(imgNum);
-                            },
-                            child: Text(
-                              "Retake!",
-                              style: TextStyle(
-                                  fontSize: SizeConfig.blockSizeHorizontal * 4,
-                                  color: HexColor('#fefefe')),
-                            ),
-                            style: ButtonStyle(
-                                backgroundColor: MaterialStateProperty.all(
-                                    HexColor('#7d74a4'))),
-                          )
-                        : null,
-                  ),
-                ],
-              )
             ],
           ),
         ));
