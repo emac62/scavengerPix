@@ -278,12 +278,12 @@ class _MatchingPageState extends State<MatchingPage> {
             )
           ]),
         ),
-        // bottomNavigationBar: Container(
-        //     decoration: BoxDecoration(
-        //         border: Border(
-        //             top: BorderSide(width: 3, color: HexColor('#afa6d6')))),
-        //     padding: const EdgeInsets.only(top: 10),
-        //     child: bannerAdContainer),
+        bottomNavigationBar: Container(
+            decoration: BoxDecoration(
+                border: Border(
+                    top: BorderSide(width: 3, color: HexColor('#afa6d6')))),
+            padding: const EdgeInsets.only(top: 5),
+            child: bannerAdContainer),
       ),
     );
   }

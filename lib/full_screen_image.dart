@@ -49,7 +49,7 @@ class _FullscreenImageState extends State<FullscreenImage> {
           decoration: BoxDecoration(
               border: Border(
                   top: BorderSide(width: 3, color: HexColor('#afa6d6')))),
-          padding: const EdgeInsets.only(top: 10),
+          padding: const EdgeInsets.only(top: 5),
           child: bannerAdContainer),
     );
   }
