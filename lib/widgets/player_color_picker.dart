@@ -20,10 +20,10 @@ class PlayerColorPicker extends StatefulWidget {
       : super(key: key);
 
   @override
-  _PlayerColorPickerState createState() => _PlayerColorPickerState();
+  PlayerColorPickerState createState() => PlayerColorPickerState();
 }
 
-class _PlayerColorPickerState extends State<PlayerColorPicker> {
+class PlayerColorPickerState extends State<PlayerColorPicker> {
   // This variable used to determine where the checkmark will be
   Color? _pickedColor;
 

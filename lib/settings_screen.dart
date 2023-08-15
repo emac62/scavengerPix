@@ -5,7 +5,7 @@ import 'package:custom_sliding_segmented_control/custom_sliding_segmented_contro
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
-import 'package:new_gradient_app_bar/new_gradient_app_bar.dart';
+import 'package:flutter_gradient_app_bar/flutter_gradient_app_bar.dart';
 import 'package:provider/provider.dart';
 import 'package:scavenger_hunt_pictures/original_pictures.dart';
 import 'package:scavenger_hunt_pictures/providers/settings_provider.dart';
@@ -22,10 +22,10 @@ class SettingsScreen extends StatefulWidget {
   const SettingsScreen({Key? key}) : super(key: key);
 
   @override
-  _SettingsScreenState createState() => _SettingsScreenState();
+  SettingsScreenState createState() => SettingsScreenState();
 }
 
-class _SettingsScreenState extends State<SettingsScreen> {
+class SettingsScreenState extends State<SettingsScreen> {
   bool keepScore = false;
   var player1;
   var player2;
@@ -63,7 +63,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
     SizeConfig().init(context);
     var settingsProvider = Provider.of<SettingsProvider>(context);
     return Scaffold(
-      appBar: NewGradientAppBar(
+      appBar: GradientAppBar(
         automaticallyImplyLeading: false,
         title: AutoSizeText("Settings",
             style: TextStyle(
@@ -99,7 +99,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
             child: Padding(
               padding: const EdgeInsets.only(top: 5),
               child: CustomSlidingSegmentedControl(
-                radius: 8,
+                innerPadding: EdgeInsets.zero,
+                thumbDecoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(8),
+                    color: Colors.white),
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(8),
                     gradient: LinearGradient(
@@ -154,7 +157,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
             child: Padding(
               padding: const EdgeInsets.only(top: 5),
               child: CustomSlidingSegmentedControl(
-                radius: 8,
+                innerPadding: EdgeInsets.zero,
+                thumbDecoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(8),
+                    color: Colors.white),
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(8),
                     gradient: LinearGradient(

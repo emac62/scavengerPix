@@ -19,7 +19,7 @@ class PixButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return TextButton(
         style: TextButton.styleFrom(
-          primary: HexColor('#a7d8f6'),
+          foregroundColor: HexColor('#a7d8f6'),
           padding: EdgeInsets.zero,
         ),
         onPressed: onPressed,

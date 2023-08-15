@@ -9,6 +9,8 @@ import 'package:scavenger_hunt_pictures/widgets/material_color.dart';
 
 const int maxFailedLoadAttempts = 3;
 
+bool useTestAds = true;
+
 List<String> testDeviceIDs = [
   "F8D0842E69D7D08FBA97DE652D059DEA", //Pixel 4
   "8E3C44E0453B296DEDFBA106CDBB59CC", // Samsung S5
@@ -46,8 +48,7 @@ class ScavengerHuntPictures extends StatelessWidget {
         fontFamily: 'CaveatBrush',
         primarySwatch: createMaterialColor(const Color(0xff4b4272)),
         textTheme: const TextTheme(
-          bodyText1: TextStyle(),
-          bodyText2: TextStyle(),
+          bodyMedium: TextStyle(),
         ).apply(
           bodyColor: HexColor('#4b4272'),
           displayColor: HexColor('#4b4272'),

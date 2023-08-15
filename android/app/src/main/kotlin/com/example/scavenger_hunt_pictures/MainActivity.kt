@@ -1,4 +1,4 @@
-package com.example.scavenger_hunt_pictures
+package com.blB.match_this
 
 import io.flutter.embedding.android.FlutterActivity
 

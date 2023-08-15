@@ -7,8 +7,9 @@ import 'package:before_after/before_after.dart';
 import 'package:flutter/material.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:hexcolor/hexcolor.dart';
-import 'package:new_gradient_app_bar/new_gradient_app_bar.dart';
+import 'package:flutter_gradient_app_bar/flutter_gradient_app_bar.dart';
 import 'package:provider/provider.dart';
+import 'package:scavenger_hunt_pictures/main.dart';
 import 'package:scavenger_hunt_pictures/original_pictures.dart';
 import 'package:scavenger_hunt_pictures/providers/settings_provider.dart';
 import 'package:scavenger_hunt_pictures/settings_screen.dart';
@@ -41,10 +42,10 @@ class CompareImages extends StatefulWidget {
       : super(key: key);
 
   @override
-  _CompareImagesState createState() => _CompareImagesState();
+  CompareImagesState createState() => CompareImagesState();
 }
 
-class _CompareImagesState extends State<CompareImages>
+class CompareImagesState extends State<CompareImages>
     with SingleTickerProviderStateMixin {
   File? firstImgPath;
   File? secondImgPath;
@@ -72,6 +73,8 @@ class _CompareImagesState extends State<CompareImages>
 
   var p1Score = 0;
   var p2Score = 0;
+
+  double value = 0.5;
 
   setSame(int position) {
     if (position == 0) {
@@ -226,7 +229,9 @@ class _CompareImagesState extends State<CompareImages>
       curve: Curves.easeIn,
     );
     InterstitialAd.load(
-        adUnitId: AdHelper.interstitialAdUnitId,
+        adUnitId: useTestAds
+            ? AdHelper.testInterstitialAdUnitId
+            : AdHelper.interstitialAdUnitId,
         request: const AdRequest(),
         adLoadCallback: InterstitialAdLoadCallback(onAdLoaded: (ad) {
           _interstitialAd = ad;
@@ -285,7 +290,7 @@ class _CompareImagesState extends State<CompareImages>
     return WillPopScope(
       onWillPop: () async => false,
       child: Scaffold(
-        appBar: NewGradientAppBar(
+        appBar: GradientAppBar(
           automaticallyImplyLeading: false,
           title: AutoSizeText(
             "Compare Photos",
@@ -523,7 +528,7 @@ class _CompareImagesState extends State<CompareImages>
                                         updateRound();
                                       });
 
-                                      imageCache!.clear();
+                                      imageCache.clear();
 
                                       Navigator.of(context).push(
                                           MaterialPageRoute(
@@ -543,7 +548,7 @@ class _CompareImagesState extends State<CompareImages>
                                         updateRound();
                                       });
 
-                                      imageCache!.clear();
+                                      imageCache.clear();
 
                                       Navigator.of(context).push(
                                           MaterialPageRoute(
@@ -712,8 +717,14 @@ class _CompareImagesState extends State<CompareImages>
                     vertical: SizeConfig.blockSizeVertical * 1),
                 child: SizedBox(
                   child: BeforeAfter(
-                      beforeImage: Image(image: FileImage(p1ImgPath)),
-                      afterImage: Image(
+                      value: value,
+                      onValueChanged: (value) {
+                        setState(() {
+                          this.value = value;
+                        });
+                      },
+                      before: Image(image: FileImage(p1ImgPath)),
+                      after: Image(
                         image: FileImage(p2ImgPath),
                       )),
                   //
@@ -765,8 +776,8 @@ class _CompareImagesState extends State<CompareImages>
                 children: [
                   ElevatedButton.icon(
                     style: ElevatedButton.styleFrom(
-                        primary: HexColor('6EB440'),
-                        onPrimary: AppColor.textColor,
+                        backgroundColor: HexColor('6EB440'),
+                        foregroundColor: AppColor.textColor,
                         side: BorderSide(
                           color: AppColor.textColor,
                           width: 2,
@@ -797,8 +808,8 @@ class _CompareImagesState extends State<CompareImages>
                   ),
                   ElevatedButton.icon(
                     style: ElevatedButton.styleFrom(
-                        primary: AppColor.lightBlue,
-                        onPrimary: HexColor('#BF2C24'),
+                        backgroundColor: AppColor.lightBlue,
+                        foregroundColor: HexColor('#BF2C24'),
                         side: BorderSide(color: HexColor('#BF2C24'), width: 2)),
                     icon: ImageIcon(
                       const AssetImage("assets/images/NotTheSame.png"),

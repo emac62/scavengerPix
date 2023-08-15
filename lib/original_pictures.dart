@@ -3,7 +3,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:new_gradient_app_bar/new_gradient_app_bar.dart';
+import 'package:flutter_gradient_app_bar/flutter_gradient_app_bar.dart';
 import 'package:provider/provider.dart';
 import 'package:scavenger_hunt_pictures/matching_screen.dart';
 import 'package:scavenger_hunt_pictures/providers/settings_provider.dart';
@@ -26,10 +26,10 @@ class OriginalPage extends StatefulWidget {
         );
 
   @override
-  _OriginalPageState createState() => _OriginalPageState();
+  OriginalPageState createState() => OriginalPageState();
 }
 
-class _OriginalPageState extends State<OriginalPage> {
+class OriginalPageState extends State<OriginalPage> {
   File? firstImage;
   File? secondImage;
   File? thirdImage;
@@ -71,7 +71,7 @@ class _OriginalPageState extends State<OriginalPage> {
     return WillPopScope(
       onWillPop: () async => false,
       child: Scaffold(
-        appBar: NewGradientAppBar(
+        appBar: GradientAppBar(
           automaticallyImplyLeading: false,
           title: AutoSizeText(
             "Take Original Photos",

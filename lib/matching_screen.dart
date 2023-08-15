@@ -6,10 +6,11 @@ import 'package:flutter/material.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:new_gradient_app_bar/new_gradient_app_bar.dart';
+import 'package:flutter_gradient_app_bar/flutter_gradient_app_bar.dart';
 import 'package:provider/provider.dart';
 import 'package:scavenger_hunt_pictures/compare_images.dart';
 import 'package:scavenger_hunt_pictures/full_screen_image.dart';
+import 'package:scavenger_hunt_pictures/main.dart';
 import 'package:scavenger_hunt_pictures/providers/settings_provider.dart';
 import 'package:scavenger_hunt_pictures/widgets/ad_helper.dart';
 import 'package:scavenger_hunt_pictures/widgets/app_colors.dart';
@@ -36,10 +37,10 @@ class MatchingPage extends StatefulWidget {
         );
 
   @override
-  _MatchingPageState createState() => _MatchingPageState();
+  MatchingPageState createState() => MatchingPageState();
 }
 
-class _MatchingPageState extends State<MatchingPage> {
+class MatchingPageState extends State<MatchingPage> {
   File? fourthImage;
   File? fifthImage;
   File? sixthImage;
@@ -69,7 +70,9 @@ class _MatchingPageState extends State<MatchingPage> {
           .setPlayerTurns(playerTurns);
 
       InterstitialAd.load(
-          adUnitId: AdHelper.interstitialAdUnitId,
+          adUnitId: useTestAds
+              ? AdHelper.testInterstitialAdUnitId
+              : AdHelper.interstitialAdUnitId,
           request: const AdRequest(),
           adLoadCallback: InterstitialAdLoadCallback(onAdLoaded: (ad) {
             _interstitialAd = ad;
@@ -114,7 +117,7 @@ class _MatchingPageState extends State<MatchingPage> {
     return WillPopScope(
       onWillPop: () async => false,
       child: Scaffold(
-        appBar: NewGradientAppBar(
+        appBar: GradientAppBar(
           automaticallyImplyLeading: false,
           title: AutoSizeText(
             "Match This!",
@@ -372,15 +375,15 @@ class _MatchingPageState extends State<MatchingPage> {
                                     imageUrl: imgUrlCompare,
                                   )));
                         },
+                        style: ButtonStyle(
+                            backgroundColor:
+                                MaterialStateProperty.all(HexColor('#7d74a4'))),
                         child: Text(
                           "Match This!",
                           style: TextStyle(
                               fontSize: SizeConfig.blockSizeHorizontal * 3,
                               color: HexColor('#fefefe')),
                         ),
-                        style: ButtonStyle(
-                            backgroundColor:
-                                MaterialStateProperty.all(HexColor('#7d74a4'))),
                       ),
                       ImageTitle(
                         title: imgNumCompare,

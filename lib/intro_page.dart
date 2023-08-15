@@ -1,8 +1,7 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
-import 'package:new_gradient_app_bar/new_gradient_app_bar.dart';
-
+import 'package:flutter_gradient_app_bar/flutter_gradient_app_bar.dart';
 import 'package:scavenger_hunt_pictures/settings_screen.dart';
 import 'package:scavenger_hunt_pictures/widgets/color_arrays.dart';
 import 'package:scavenger_hunt_pictures/widgets/pix_button.dart';
@@ -21,7 +20,7 @@ class _IntroPageState extends State<IntroPage> {
     SizeConfig().init(context);
 
     return Scaffold(
-        appBar: NewGradientAppBar(
+        appBar: GradientAppBar(
           automaticallyImplyLeading: false,
           title: AutoSizeText(
             "Match This!",
@@ -57,10 +56,10 @@ class _IntroPageState extends State<IntroPage> {
                       applicationVersion: "1.0.1",
                       applicationLegalese: '©2022 borderlineBoomer',
                       children: <Widget>[
-                        Padding(
-                            padding: const EdgeInsets.only(top: 15),
+                        const Padding(
+                            padding: EdgeInsets.only(top: 15),
                             child: Column(
-                              children: const [
+                              children: [
                                 Text(
                                   "Use the internal camera to play an active, cooperative scavenger hunt matching game with kids.",
                                 ),
