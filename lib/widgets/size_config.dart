@@ -13,6 +13,8 @@ class SizeConfig {
   static late double safeBlockVertical;
   static late double physicalWidth;
   static late double physicalHeight;
+  static late bool isPhone;
+  static late bool isPort;
 
   void init(BuildContext context) {
     _mediaQueryData = MediaQuery.of(context);
@@ -37,5 +39,8 @@ class SizeConfig {
 
     physicalWidth = screenWidth * _mediaQueryData.devicePixelRatio;
     physicalHeight = screenHeight * _mediaQueryData.devicePixelRatio;
+
+    isPhone = screenWidth < 600;
+    isPort = screenWidth < screenHeight;
   }
 }

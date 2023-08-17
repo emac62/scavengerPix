@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:scavenger_hunt_pictures/widgets/app_colors.dart';
+import 'package:scavenger_hunt_pictures/widgets/font_sizes.dart';
 import 'package:scavenger_hunt_pictures/widgets/size_config.dart';
 
 class PlayerColorPicker extends StatefulWidget {
@@ -35,12 +36,14 @@ class PlayerColorPickerState extends State<PlayerColorPicker> {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
+    return Container(
+      decoration: BoxDecoration(border: Border.all(color: Colors.transparent)),
       width: double.infinity,
+      height: getHeadingFontSize(),
       child: GridView.builder(
         gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
             maxCrossAxisExtent: SizeConfig.blockSizeHorizontal * 8,
-            childAspectRatio: 1 / 1,
+            childAspectRatio: 2 / 1,
             crossAxisSpacing: SizeConfig.blockSizeHorizontal * 1,
             mainAxisSpacing: SizeConfig.blockSizeHorizontal * 1),
         shrinkWrap: true,
@@ -55,8 +58,7 @@ class PlayerColorPickerState extends State<PlayerColorPicker> {
               });
             },
             child: Container(
-              width: SizeConfig.blockSizeHorizontal * 1,
-              height: SizeConfig.blockSizeHorizontal * 1,
+              height: double.infinity,
               decoration: BoxDecoration(
                   color: itemColor,
                   shape: widget.circleItem == true
@@ -68,7 +70,7 @@ class PlayerColorPickerState extends State<PlayerColorPicker> {
                       child: Icon(
                         Icons.check,
                         color: AppColor.textColor,
-                        size: SizeConfig.blockSizeHorizontal * 5,
+                        size: getInfoFontSize(),
                       ),
                     )
                   : Container(),

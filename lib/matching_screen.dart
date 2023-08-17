@@ -17,6 +17,7 @@ import 'package:scavenger_hunt_pictures/widgets/app_colors.dart';
 import 'package:scavenger_hunt_pictures/widgets/banner_ad_widget.dart';
 import 'package:scavenger_hunt_pictures/widgets/color_arrays.dart';
 import 'package:scavenger_hunt_pictures/widgets/dialogs.dart';
+import 'package:scavenger_hunt_pictures/widgets/font_sizes.dart';
 import 'package:scavenger_hunt_pictures/widgets/image_title.dart';
 import 'package:scavenger_hunt_pictures/widgets/ordinal.dart';
 import 'package:scavenger_hunt_pictures/widgets/pix_button.dart';
@@ -124,8 +125,8 @@ class MatchingPageState extends State<MatchingPage> {
             style: TextStyle(
               color: HexColor('#fefefe'),
               fontFamily: 'CaveatBrush',
-              fontSize: SizeConfig.blockSizeHorizontal * 10,
-              fontWeight: FontWeight.w400,
+              fontSize: SizeConfig.blockSizeHorizontal * 8,
+              fontWeight: FontWeight.w500,
             ),
           ),
           gradient: LinearGradient(colors: ColorArrays.purple),
@@ -137,7 +138,7 @@ class MatchingPageState extends State<MatchingPage> {
                   icon: Icon(
                     Icons.info,
                     color: HexColor('#4b4272'),
-                    size: SizeConfig.blockSizeHorizontal * 7,
+                    size: SizeConfig.blockSizeHorizontal * 3.5,
                   ),
                   onPressed: () {
                     showPlayer2Instructions(context);
@@ -150,7 +151,7 @@ class MatchingPageState extends State<MatchingPage> {
                     icon: Icon(
                       Icons.restart_alt,
                       color: HexColor('#4b4272'),
-                      size: SizeConfig.blockSizeHorizontal * 7,
+                      size: SizeConfig.blockSizeHorizontal * 3.5,
                     ),
                     onPressed: () {
                       restartGame(
@@ -181,18 +182,18 @@ class MatchingPageState extends State<MatchingPage> {
                         Text(
                             "Round ${settingsProvider.currentRound} of ${settingsProvider.numberOfRounds}",
                             style: TextStyle(
-                              fontSize: SizeConfig.blockSizeHorizontal * 8,
+                              fontSize: getHeadingFontSize(),
                               fontWeight: FontWeight.w400,
                             )),
                         (settingsProvider.playerTurns == 2)
                             ? Text("$player2 Match the Photos!",
                                 style: TextStyle(
-                                  fontSize: SizeConfig.blockSizeHorizontal * 6,
+                                  fontSize: getInfoFontSize(),
                                   fontWeight: FontWeight.w400,
                                 ))
                             : Text("$player1 - Match the Photos!",
                                 style: TextStyle(
-                                  fontSize: SizeConfig.blockSizeHorizontal * 6,
+                                  fontSize: getInfoFontSize(),
                                   fontWeight: FontWeight.w400,
                                 )),
                       ],
@@ -277,7 +278,7 @@ class MatchingPageState extends State<MatchingPage> {
                                   sixthImgPath: sixthImage!.path,
                                 )));
                   },
-                  fontSize: SizeConfig.blockSizeHorizontal * 8),
+                  fontSize: getHeadingFontSize()),
             )
           ]),
         ),
@@ -381,7 +382,7 @@ class MatchingPageState extends State<MatchingPage> {
                         child: Text(
                           "Match This!",
                           style: TextStyle(
-                              fontSize: SizeConfig.blockSizeHorizontal * 3,
+                              fontSize: getInfoFontSize(),
                               color: HexColor('#fefefe')),
                         ),
                       ),

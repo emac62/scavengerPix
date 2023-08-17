@@ -18,6 +18,7 @@ import 'package:scavenger_hunt_pictures/widgets/app_colors.dart';
 import 'package:scavenger_hunt_pictures/widgets/banner_ad_widget.dart';
 import 'package:scavenger_hunt_pictures/widgets/color_arrays.dart';
 import 'package:scavenger_hunt_pictures/widgets/dialogs.dart';
+import 'package:scavenger_hunt_pictures/widgets/font_sizes.dart';
 import 'package:scavenger_hunt_pictures/widgets/ordinal.dart';
 import 'package:scavenger_hunt_pictures/widgets/pix_button.dart';
 import 'package:scavenger_hunt_pictures/widgets/size_config.dart';
@@ -342,7 +343,7 @@ class CompareImagesState extends State<CompareImages>
                       child: Text(
                         "$player1 and $player2 work together to decide if the photos match!",
                         style: TextStyle(
-                          fontSize: SizeConfig.blockSizeHorizontal * 6,
+                          fontSize: getInfoFontSize(),
                         ),
                         textAlign: TextAlign.center,
                       ),
@@ -387,7 +388,7 @@ class CompareImagesState extends State<CompareImages>
                             child: Text(
                               'Results',
                               style: TextStyle(
-                                  fontSize: SizeConfig.blockSizeHorizontal * 10,
+                                  fontSize: getHeadingFontSize(),
                                   color: HexColor('#fefefe')),
                             ),
                           ),
@@ -399,7 +400,7 @@ class CompareImagesState extends State<CompareImages>
                               "Click 'Yes' or 'No' for each pair of photos in this round to update the score",
                               textAlign: TextAlign.center,
                               style: TextStyle(
-                                  fontSize: SizeConfig.blockSizeHorizontal * 6,
+                                  fontSize: getInfoFontSize(),
                                   color: HexColor('#fefefe')),
                             ),
                           ),
@@ -433,7 +434,7 @@ class CompareImagesState extends State<CompareImages>
                             child: Text(
                               'Results',
                               style: TextStyle(
-                                  fontSize: SizeConfig.blockSizeHorizontal * 10,
+                                  fontSize: getHeadingFontSize(),
                                   color: HexColor('#fefefe')),
                             ),
                           ),
@@ -444,37 +445,29 @@ class CompareImagesState extends State<CompareImages>
                             child: (settingsProvider.playerTurns == 2 ||
                                     settingsProvider.playerTurns == 3)
                                 ? numberCorrect > 0
-                                    ? AutoSizeText(
+                                    ? Text(
                                         "$player2 got $numberCorrect correct!",
                                         style: TextStyle(
-                                            fontSize:
-                                                SizeConfig.blockSizeHorizontal *
-                                                    6,
+                                            fontSize: getInfoFontSize(),
                                             color: HexColor('#fefefe')),
                                       )
-                                    : AutoSizeText(
+                                    : Text(
                                         "Sorry $player2, keep trying!",
                                         style: TextStyle(
-                                            fontSize:
-                                                SizeConfig.blockSizeHorizontal *
-                                                    6,
+                                            fontSize: getInfoFontSize(),
                                             color: HexColor('#fefefe')),
                                       )
                                 : numberCorrect > 0
-                                    ? AutoSizeText(
+                                    ? Text(
                                         "$player1 got $numberCorrect correct!",
                                         style: TextStyle(
-                                            fontSize:
-                                                SizeConfig.blockSizeHorizontal *
-                                                    6,
+                                            fontSize: getInfoFontSize(),
                                             color: HexColor('#fefefe')),
                                       )
-                                    : AutoSizeText(
+                                    : Text(
                                         "Sorry $player1, keep trying!",
                                         style: TextStyle(
-                                            fontSize:
-                                                SizeConfig.blockSizeHorizontal *
-                                                    6,
+                                            fontSize: getInfoFontSize(),
                                             color: HexColor('#fefefe')),
                                       ),
                           ),
@@ -489,9 +482,7 @@ class CompareImagesState extends State<CompareImages>
                                     child: Text(
                                       "Update Score",
                                       style: TextStyle(
-                                          fontSize:
-                                              SizeConfig.blockSizeHorizontal *
-                                                  8,
+                                          fontSize: getHeadingFontSize(),
                                           color: AppColor.orange),
                                     ),
                                     onPressed: () {
@@ -535,8 +526,7 @@ class CompareImagesState extends State<CompareImages>
                                               builder: (context) =>
                                                   const SettingsScreen()));
                                     },
-                                    fontSize:
-                                        SizeConfig.blockSizeHorizontal * 5)
+                                    fontSize: getHeadingFontSize())
                                 : PixButton(
                                     //Switch to finish
                                     name: getFinalButtonTitle(),
@@ -555,8 +545,7 @@ class CompareImagesState extends State<CompareImages>
                                               builder: (context) =>
                                                   const OriginalPage()));
                                     },
-                                    fontSize:
-                                        SizeConfig.blockSizeHorizontal * 5),
+                                    fontSize: getHeadingFontSize()),
                           )
                         ]),
                       ),
@@ -687,8 +676,7 @@ class CompareImagesState extends State<CompareImages>
                 child: AutoSizeText(
                   "Slide the white line left and right to compare the photos in this round.",
                   style: TextStyle(
-                      fontSize: SizeConfig.blockSizeHorizontal * 5,
-                      color: HexColor('#2d3a64')),
+                      fontSize: getInfoFontSize(), color: HexColor('#2d3a64')),
                   textAlign: TextAlign.center,
                 ),
               ),
@@ -698,13 +686,13 @@ class CompareImagesState extends State<CompareImages>
                   AutoSizeText(
                     "Original",
                     style: TextStyle(
-                        fontSize: SizeConfig.blockSizeHorizontal * 4,
+                        fontSize: getInfoFontSize(),
                         color: HexColor('#2d3a64')),
                   ),
                   AutoSizeText(
                     "Match",
                     style: TextStyle(
-                        fontSize: SizeConfig.blockSizeHorizontal * 4,
+                        fontSize: getInfoFontSize(),
                         color: HexColor('#2d3a64')),
                   ),
                 ],
@@ -723,8 +711,8 @@ class CompareImagesState extends State<CompareImages>
                           this.value = value;
                         });
                       },
-                      before: Image(image: FileImage(p1ImgPath)),
-                      after: Image(
+                      after: Image(image: FileImage(p1ImgPath)),
+                      before: Image(
                         image: FileImage(p2ImgPath),
                       )),
                   //
@@ -764,7 +752,7 @@ class CompareImagesState extends State<CompareImages>
                   vertical: SizeConfig.blockSizeVertical * 3),
               child: AutoSizeText(
                 "Are these pictures the same?",
-                style: TextStyle(fontSize: SizeConfig.blockSizeHorizontal * 6),
+                style: TextStyle(fontSize: getInfoFontSize()),
                 textAlign: TextAlign.center,
               ),
             ),
@@ -788,8 +776,7 @@ class CompareImagesState extends State<CompareImages>
                     ),
                     label: Text(
                       "YES!",
-                      style: TextStyle(
-                          fontSize: SizeConfig.blockSizeHorizontal * 8),
+                      style: TextStyle(fontSize: getHeadingFontSize()),
                     ),
                     onPressed: () {
                       switch (p1Img) {
@@ -817,8 +804,7 @@ class CompareImagesState extends State<CompareImages>
                     ),
                     label: Text(
                       "NO!",
-                      style: TextStyle(
-                          fontSize: SizeConfig.blockSizeHorizontal * 8),
+                      style: TextStyle(fontSize: getHeadingFontSize()),
                     ),
                     onPressed: () {
                       switch (p1Img) {

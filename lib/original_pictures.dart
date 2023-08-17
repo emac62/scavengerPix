@@ -12,6 +12,7 @@ import 'package:scavenger_hunt_pictures/widgets/app_colors.dart';
 import 'package:scavenger_hunt_pictures/widgets/banner_ad_widget.dart';
 import 'package:scavenger_hunt_pictures/widgets/color_arrays.dart';
 import 'package:scavenger_hunt_pictures/widgets/dialogs.dart';
+import 'package:scavenger_hunt_pictures/widgets/font_sizes.dart';
 import 'package:scavenger_hunt_pictures/widgets/image_title.dart';
 import 'package:scavenger_hunt_pictures/widgets/ordinal.dart';
 import 'package:scavenger_hunt_pictures/widgets/pix_button.dart';
@@ -91,7 +92,7 @@ class OriginalPageState extends State<OriginalPage> {
                   icon: Icon(
                     Icons.info,
                     color: HexColor('#4b4272'),
-                    size: SizeConfig.blockSizeHorizontal * 5,
+                    size: SizeConfig.blockSizeHorizontal * 3.5,
                   ),
                   onPressed: () {
                     showPlayer1Instructions(context);
@@ -104,7 +105,7 @@ class OriginalPageState extends State<OriginalPage> {
                     icon: Icon(
                       Icons.settings,
                       color: HexColor('#4b4272'),
-                      size: SizeConfig.blockSizeHorizontal * 5,
+                      size: SizeConfig.blockSizeHorizontal * 3.5,
                     ),
                     onPressed: () {
                       Navigator.of(context).push(MaterialPageRoute(
@@ -135,18 +136,18 @@ class OriginalPageState extends State<OriginalPage> {
                         Text(
                             "Round ${settingsProvider.currentRound} of ${settingsProvider.numberOfRounds}",
                             style: TextStyle(
-                              fontSize: SizeConfig.blockSizeHorizontal * 8,
+                              fontSize: getHeadingFontSize(),
                               fontWeight: FontWeight.w400,
                             )),
                         (settingsProvider.playerTurns == 1)
                             ? Text("$player1 find your Photos!",
                                 style: TextStyle(
-                                  fontSize: SizeConfig.blockSizeHorizontal * 6,
+                                  fontSize: getInfoFontSize(),
                                   fontWeight: FontWeight.w400,
                                 ))
                             : Text("$player2 - find your Pics!",
                                 style: TextStyle(
-                                  fontSize: SizeConfig.blockSizeHorizontal * 6,
+                                  fontSize: getInfoFontSize(),
                                   fontWeight: FontWeight.w400,
                                 )),
                       ],
@@ -218,7 +219,7 @@ class OriginalPageState extends State<OriginalPage> {
                                   thirdImgPath: thirdImage!.path,
                                 )));
                   },
-                  fontSize: SizeConfig.blockSizeHorizontal * 8),
+                  fontSize: getHeadingFontSize()),
             ),
           ]),
         ),
@@ -233,12 +234,14 @@ class OriginalPageState extends State<OriginalPage> {
   }
 
   Future<void> takePicture(String numPix) async {
+    debugPrint("takePicture");
     final picker = ImagePicker();
-    final imageFile = await picker.pickImage(
+    final XFile? imageFile = await picker.pickImage(
       source: ImageSource.camera,
       imageQuality: 80,
       maxWidth: 600,
     );
+    debugPrint("$imageFile");
     if (imageFile == null) return;
 
     setState(() {
@@ -341,8 +344,7 @@ class OriginalPageState extends State<OriginalPage> {
                     ? Text(
                         'Take a close up picture within your boundaries!',
                         textAlign: TextAlign.center,
-                        style: TextStyle(
-                            fontSize: SizeConfig.blockSizeHorizontal * 4),
+                        style: TextStyle(fontSize: getInfoFontSize()),
                       )
                     : null,
               ),

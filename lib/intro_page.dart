@@ -1,4 +1,3 @@
-import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:flutter_gradient_app_bar/flutter_gradient_app_bar.dart';
@@ -15,19 +14,28 @@ class IntroPage extends StatefulWidget {
 }
 
 class _IntroPageState extends State<IntroPage> {
+  getFontSize() {
+    double fontSize = SizeConfig.isPhone
+        ? SizeConfig.blockSizeVertical * 6
+        : SizeConfig.isPort
+            ? SizeConfig.blockSizeVertical * 4
+            : SizeConfig.blockSizeVertical * 5.5;
+    return fontSize;
+  }
+
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
-
+    getFontSize();
     return Scaffold(
         appBar: GradientAppBar(
           automaticallyImplyLeading: false,
-          title: AutoSizeText(
+          title: Text(
             "Match This!",
             style: TextStyle(
                 color: Colors.white,
                 fontFamily: 'CaveatBrush',
-                fontSize: SizeConfig.blockSizeHorizontal * 10,
+                fontSize: SizeConfig.blockSizeVertical * 4,
                 fontWeight: FontWeight.w400,
                 letterSpacing: 2.0),
           ),
@@ -41,7 +49,7 @@ class _IntroPageState extends State<IntroPage> {
                     child: Icon(
                       Icons.info,
                       color: HexColor('#4b4272'),
-                      size: SizeConfig.blockSizeHorizontal * 4,
+                      size: SizeConfig.blockSizeHorizontal * 3.5,
                     ),
                   ),
                   onTap: () {
@@ -93,7 +101,7 @@ class _IntroPageState extends State<IntroPage> {
                       "An active picture scavenger hunt.",
                       style: TextStyle(
                         fontFamily: 'CaveatBrush',
-                        fontSize: SizeConfig.blockSizeHorizontal * 6,
+                        fontSize: getFontSize(),
                         fontWeight: FontWeight.w400,
                       ),
                       textAlign: TextAlign.center,
@@ -105,7 +113,7 @@ class _IntroPageState extends State<IntroPage> {
                       "Set your boundaries, take photos and have your partner match them.",
                       style: TextStyle(
                         fontFamily: 'CaveatBrush',
-                        fontSize: SizeConfig.blockSizeHorizontal * 6,
+                        fontSize: getFontSize(),
                         fontWeight: FontWeight.w400,
                       ),
                       textAlign: TextAlign.center,
@@ -120,7 +128,7 @@ class _IntroPageState extends State<IntroPage> {
                 child: Center(
                   child: PixButton(
                       name: "Start",
-                      fontSize: SizeConfig.blockSizeHorizontal * 10,
+                      fontSize: getFontSize(),
                       onPressed: () {
                         Navigator.of(context).push(MaterialPageRoute(
                             builder: (context) => const SettingsScreen()));

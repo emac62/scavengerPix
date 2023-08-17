@@ -1,7 +1,7 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
-import 'package:scavenger_hunt_pictures/widgets/size_config.dart';
+import 'package:scavenger_hunt_pictures/widgets/font_sizes.dart';
 
 class ImageTitle extends StatelessWidget {
   final String title;
@@ -18,7 +18,7 @@ class ImageTitle extends StatelessWidget {
         "$title Photo",
         style: TextStyle(
             color: HexColor('#2d3a64'),
-            fontSize: (SizeConfig.blockSizeHorizontal * 6),
+            fontSize: getInfoFontSize(),
             fontWeight: FontWeight.w400),
       ),
     );

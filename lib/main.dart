@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hexcolor/hexcolor.dart';
@@ -19,7 +20,8 @@ List<String> testDeviceIDs = [
   "ea230aa9edfec099faea521e541b8502", //my phone
   "98729598294fd9d76c953d7d056f902c",
   "4520409bc3ffb536b6e203bf9d0b0007", //old SE
-  "8f4cb8307ba6019ca82bccc419afe5d0", // my iPad
+  "8f4cb8307ba6019ca82bccc419afe5d0",
+  "9d012fc3e3d1e41a7c7cc8038deb557a" // my iPad
 ];
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -31,7 +33,19 @@ Future<void> main() async {
       tagForChildDirectedTreatment: TagForChildDirectedTreatment.yes,
       testDeviceIds: testDeviceIDs);
   MobileAds.instance.updateRequestConfiguration(requestConfiguration);
-  await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+
+  if (kReleaseMode) {
+    debugPrint = (String? message, {int? wrapWidth}) {};
+  }
+  final physSize = PlatformDispatcher.instance.views.first.physicalSize;
+
+  final double deviceWidth = physSize.width;
+
+  if (deviceWidth < 600) {
+    await SystemChrome.setPreferredOrientations(
+        [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
+  }
+
   runApp(MultiProvider(
       providers: [ChangeNotifierProvider(create: (_) => SettingsProvider())],
       child: const ScavengerHuntPictures()));
@@ -47,12 +61,6 @@ class ScavengerHuntPictures extends StatelessWidget {
         scaffoldBackgroundColor: HexColor('#a7d8f6'),
         fontFamily: 'CaveatBrush',
         primarySwatch: createMaterialColor(const Color(0xff4b4272)),
-        textTheme: const TextTheme(
-          bodyMedium: TextStyle(),
-        ).apply(
-          bodyColor: HexColor('#4b4272'),
-          displayColor: HexColor('#4b4272'),
-        ),
       ),
       debugShowCheckedModeBanner: false,
       home: const IntroPage(),
