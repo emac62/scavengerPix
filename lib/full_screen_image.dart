@@ -6,6 +6,7 @@ import 'package:hexcolor/hexcolor.dart';
 import 'package:flutter_gradient_app_bar/flutter_gradient_app_bar.dart';
 import 'package:scavenger_hunt_pictures/widgets/banner_ad_widget.dart';
 import 'package:scavenger_hunt_pictures/widgets/color_arrays.dart';
+import 'package:scavenger_hunt_pictures/widgets/font_sizes.dart';
 import 'package:scavenger_hunt_pictures/widgets/size_config.dart';
 
 class FullscreenImage extends StatefulWidget {
@@ -28,7 +29,7 @@ class _FullscreenImageState extends State<FullscreenImage> {
         title: AutoSizeText(
           '${widget.imagePix} Pic',
           style: TextStyle(
-            fontSize: SizeConfig.blockSizeHorizontal * 8,
+            fontSize: getHeadingFontSize(),
             color: HexColor('#fefefe'),
           ),
         ),
