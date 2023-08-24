@@ -10,7 +10,7 @@ import 'package:scavenger_hunt_pictures/widgets/material_color.dart';
 
 const int maxFailedLoadAttempts = 3;
 
-bool useTestAds = true;
+bool useTestAds = false;
 
 List<String> testDeviceIDs = [
   "F8D0842E69D7D08FBA97DE652D059DEA", //Pixel 4
@@ -31,6 +31,7 @@ Future<void> main() async {
 
   final RequestConfiguration requestConfiguration = RequestConfiguration(
       tagForChildDirectedTreatment: TagForChildDirectedTreatment.yes,
+      tagForUnderAgeOfConsent: TagForUnderAgeOfConsent.yes,
       testDeviceIds: testDeviceIDs);
   MobileAds.instance.updateRequestConfiguration(requestConfiguration);
 

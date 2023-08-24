@@ -22,7 +22,6 @@ import 'package:scavenger_hunt_pictures/widgets/font_sizes.dart';
 import 'package:scavenger_hunt_pictures/widgets/ordinal.dart';
 import 'package:scavenger_hunt_pictures/widgets/pix_button.dart';
 import 'package:scavenger_hunt_pictures/widgets/size_config.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class CompareImages extends StatefulWidget {
   final String firstImgPath;
@@ -483,7 +482,7 @@ class CompareImagesState extends State<CompareImages>
                                       showScore(
                                           context,
                                           settingsProvider.player1,
-                                          settingsProvider.player1,
+                                          settingsProvider.player2,
                                           settingsProvider.p1Score,
                                           settingsProvider.p2Score);
                                     },

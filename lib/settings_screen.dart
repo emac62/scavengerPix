@@ -28,8 +28,7 @@ class SettingsScreen extends StatefulWidget {
 
 class SettingsScreenState extends State<SettingsScreen> {
   bool keepScore = false;
-  var player1;
-  var player2;
+
   BannerAdContainer bannerAdContainer = const BannerAdContainer();
 
   TextEditingController? p1Controller;
@@ -40,8 +39,10 @@ class SettingsScreenState extends State<SettingsScreen> {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       Provider.of<SettingsProvider>(context, listen: false).loadPreferences();
-      p1Controller = TextEditingController(text: player1);
-      p2Controller = TextEditingController(text: player2);
+      p1Controller = TextEditingController(
+          text: Provider.of<SettingsProvider>(context, listen: false).player1);
+      p2Controller = TextEditingController(
+          text: Provider.of<SettingsProvider>(context, listen: false).player2);
     });
   }
 
@@ -262,7 +263,7 @@ class SettingsScreenState extends State<SettingsScreen> {
                 padding: EdgeInsets.symmetric(
                     horizontal: SizeConfig.blockSizeHorizontal * 4),
                 child: Text(
-                  "Enter name and choose canvas background.",
+                  "Edit the players names and canvas background.",
                   style: TextStyle(
                       fontFamily: 'Roboto', fontSize: getInfoFontSize()),
                 ),
@@ -280,11 +281,10 @@ class SettingsScreenState extends State<SettingsScreen> {
                         controller: p1Controller,
                         keyboardType: TextInputType.text,
                         textCapitalization: TextCapitalization.words,
-                        decoration: InputDecoration(
-                            isCollapsed: true,
-                            border: const UnderlineInputBorder(),
-                            hintText: "Enter Player 1's Name",
-                            hintStyle: TextStyle(color: HexColor('#bb8b1f'))),
+                        decoration: const InputDecoration(
+                          isCollapsed: true,
+                          border: UnderlineInputBorder(),
+                        ),
                         style: TextStyle(
                           fontSize: getInfoFontSize(),
                         ),
@@ -335,11 +335,10 @@ class SettingsScreenState extends State<SettingsScreen> {
                         controller: p2Controller,
                         keyboardType: TextInputType.text,
                         textCapitalization: TextCapitalization.words,
-                        decoration: InputDecoration(
-                            isCollapsed: true,
-                            border: const UnderlineInputBorder(),
-                            hintText: "Enter Player 2's Name",
-                            hintStyle: TextStyle(color: HexColor('#bb8b1f'))),
+                        decoration: const InputDecoration(
+                          isCollapsed: true,
+                          border: UnderlineInputBorder(),
+                        ),
                         style: TextStyle(
                           fontSize: getInfoFontSize(),
                         ),
@@ -349,8 +348,7 @@ class SettingsScreenState extends State<SettingsScreen> {
                                 await SharedPreferences.getInstance();
                             pref.remove('player2');
                           } else {
-                            Provider.of<SettingsProvider>(context, listen: true)
-                                .setPlayer2(value);
+                            settingsProvider.setPlayer2(value);
                           }
                         },
                       ),
