@@ -15,8 +15,8 @@ class SettingsProvider extends ChangeNotifier {
   late int _p2ColorInt;
 
   SettingsProvider() {
-    _player1 = "";
-    _player2 = "";
+    _player1 = "Player 1";
+    _player2 = "Player 2";
     _keepScore = false;
     _numberOfRounds = 2;
     _numberOfPictures = 1;
@@ -123,6 +123,7 @@ class SettingsProvider extends ChangeNotifier {
     String? player2 = prefs.getString("player2");
     int? p1ColorInt = prefs.getInt("p1ColorInt");
     int? p2ColorInt = prefs.getInt("p2ColorInt");
+    debugPrint("sp - p1: $player1");
 
     if (player1 != null) setPlayer1(player1);
     if (player2 != null) setPlayer2(player2);

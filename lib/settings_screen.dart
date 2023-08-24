@@ -111,15 +111,22 @@ class SettingsScreenState extends State<SettingsScreen> {
                     children: {
                       1: Text("1",
                           style: TextStyle(
-                            fontSize: getHeadingFontSize(),
-                          )),
+                              fontSize: SizeConfig.isPhone
+                                  ? getHeadingFontSize()
+                                  : getInfoFontSize())),
                       2: Text(
                         "2",
-                        style: TextStyle(fontSize: getHeadingFontSize()),
+                        style: TextStyle(
+                            fontSize: SizeConfig.isPhone
+                                ? getHeadingFontSize()
+                                : getInfoFontSize()),
                       ),
                       3: Text(
                         "3",
-                        style: TextStyle(fontSize: getHeadingFontSize()),
+                        style: TextStyle(
+                            fontSize: SizeConfig.isPhone
+                                ? getHeadingFontSize()
+                                : getInfoFontSize()),
                       )
                     },
                     onValueChanged: (int value) {
@@ -167,15 +174,24 @@ class SettingsScreenState extends State<SettingsScreen> {
                     children: {
                       1: Text(
                         "1",
-                        style: TextStyle(fontSize: getHeadingFontSize()),
+                        style: TextStyle(
+                            fontSize: SizeConfig.isPhone
+                                ? getHeadingFontSize()
+                                : getInfoFontSize()),
                       ),
                       2: Text(
                         "2",
-                        style: TextStyle(fontSize: getHeadingFontSize()),
+                        style: TextStyle(
+                            fontSize: SizeConfig.isPhone
+                                ? getHeadingFontSize()
+                                : getInfoFontSize()),
                       ),
                       3: Text(
                         "3",
-                        style: TextStyle(fontSize: getHeadingFontSize()),
+                        style: TextStyle(
+                            fontSize: SizeConfig.isPhone
+                                ? getHeadingFontSize()
+                                : getInfoFontSize()),
                       )
                     },
                     onValueChanged: (int value) {

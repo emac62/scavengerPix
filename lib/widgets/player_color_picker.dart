@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:scavenger_hunt_pictures/providers/settings_provider.dart';
+
 import 'package:scavenger_hunt_pictures/widgets/app_colors.dart';
 import 'package:scavenger_hunt_pictures/widgets/font_sizes.dart';
 import 'package:scavenger_hunt_pictures/widgets/size_config.dart';

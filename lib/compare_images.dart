@@ -62,8 +62,7 @@ class CompareImagesState extends State<CompareImages>
   bool notSame3 = false;
   int numberCorrect = 0;
   int numberIncorrect = 0;
-  var player1 = "";
-  var player2 = "";
+
   bool scoreUpdated = false;
 
   late AnimationController animationController;
@@ -217,7 +216,7 @@ class CompareImagesState extends State<CompareImages>
   void initState() {
     super.initState();
     setVariables();
-    loadSettings();
+
     scoreUpdated = false;
     animationController = AnimationController(
       vsync: this,
@@ -238,14 +237,6 @@ class CompareImagesState extends State<CompareImages>
         }, onAdFailedToLoad: (LoadAdError error) {
           debugPrint("Failed to Load Interstitial Ad ${error.message}");
         }));
-  }
-
-  loadSettings() async {
-    SharedPreferences savedPref = await SharedPreferences.getInstance();
-    setState(() {
-      player1 = (savedPref.getString('player1') ?? "Player1");
-      player2 = (savedPref.getString('player2') ?? "Player2");
-    });
   }
 
   @override
@@ -309,7 +300,7 @@ class CompareImagesState extends State<CompareImages>
                     icon: Icon(
                       Icons.restart_alt,
                       color: HexColor('#4b4272'),
-                      size: SizeConfig.blockSizeHorizontal * 7,
+                      size: getHeadingFontSize(),
                     ),
                     onPressed: () {
                       restartGame(
@@ -339,7 +330,7 @@ class CompareImagesState extends State<CompareImages>
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Text(
-                        "$player1 and $player2 work together to decide if the photos match!",
+                        "${settingsProvider.player1} and ${settingsProvider.player2} work together to decide if the photos match!",
                         style: TextStyle(
                           fontFamily: 'Roboto',
                           fontSize: getInfoFontSize(),
@@ -446,26 +437,26 @@ class CompareImagesState extends State<CompareImages>
                                     settingsProvider.playerTurns == 3)
                                 ? numberCorrect > 0
                                     ? Text(
-                                        "$player2 got $numberCorrect correct!",
+                                        "${settingsProvider.player2} got $numberCorrect correct!",
                                         style: TextStyle(
                                             fontSize: getInfoFontSize(),
                                             color: HexColor('#fefefe')),
                                       )
                                     : Text(
-                                        "Sorry $player2, keep trying!",
+                                        "Sorry ${settingsProvider.player2}, keep trying!",
                                         style: TextStyle(
                                             fontSize: getInfoFontSize(),
                                             color: HexColor('#fefefe')),
                                       )
                                 : numberCorrect > 0
                                     ? Text(
-                                        "$player1 got $numberCorrect correct!",
+                                        "${settingsProvider.player1} got $numberCorrect correct!",
                                         style: TextStyle(
                                             fontSize: getInfoFontSize(),
                                             color: HexColor('#fefefe')),
                                       )
                                     : Text(
-                                        "Sorry $player1, keep trying!",
+                                        "Sorry ${settingsProvider.player1}, keep trying!",
                                         style: TextStyle(
                                             fontSize: getInfoFontSize(),
                                             color: HexColor('#fefefe')),
@@ -491,8 +482,8 @@ class CompareImagesState extends State<CompareImages>
                                           : null;
                                       showScore(
                                           context,
-                                          player1,
-                                          player2,
+                                          settingsProvider.player1,
+                                          settingsProvider.player1,
                                           settingsProvider.p1Score,
                                           settingsProvider.p2Score);
                                     },
@@ -616,7 +607,7 @@ class CompareImagesState extends State<CompareImages>
         Provider.of<SettingsProvider>(context, listen: false);
     String title;
     if (settingsProvider.playerTurns == 2) {
-      title = "$player2 take your photos";
+      title = "${settingsProvider.player2} take your photos";
     } else if (settingsProvider.playerTurns == 4 &&
         settingsProvider.currentRound != settingsProvider.numberOfRounds) {
       title = 'Next Round';

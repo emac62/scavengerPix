@@ -17,7 +17,6 @@ import 'package:scavenger_hunt_pictures/widgets/image_title.dart';
 import 'package:scavenger_hunt_pictures/widgets/ordinal.dart';
 import 'package:scavenger_hunt_pictures/widgets/pix_button.dart';
 import 'package:scavenger_hunt_pictures/widgets/size_config.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class OriginalPage extends StatefulWidget {
   const OriginalPage({
@@ -35,24 +34,14 @@ class OriginalPageState extends State<OriginalPage> {
   File? secondImage;
   File? thirdImage;
 
-  String player1 = "";
-  String player2 = "";
-
   BannerAdContainer bannerAdContainer = const BannerAdContainer();
-
-  loadSettings() async {
-    SharedPreferences savedPref = await SharedPreferences.getInstance();
-
-    setState(() {
-      player1 = (savedPref.getString('player1') ?? "Player1");
-      player2 = (savedPref.getString('player2') ?? "Player2");
-    });
-  }
 
   @override
   initState() {
     super.initState();
-    loadSettings();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      Provider.of<SettingsProvider>(context, listen: false).loadPreferences();
+    });
   }
 
   getImgUrl(int position) {
@@ -68,7 +57,8 @@ class OriginalPageState extends State<OriginalPage> {
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
-    var settingsProvider = Provider.of<SettingsProvider>(context);
+    var settingsProvider = Provider.of<SettingsProvider>(context, listen: true);
+    debugPrint("p1: ${settingsProvider.player1}");
     return WillPopScope(
       onWillPop: () async => false,
       child: Scaffold(
@@ -140,12 +130,14 @@ class OriginalPageState extends State<OriginalPage> {
                               fontWeight: FontWeight.w400,
                             )),
                         (settingsProvider.playerTurns == 1)
-                            ? Text("$player1 find your Photos!",
+                            ? Text(
+                                "${settingsProvider.player1} find your Photos!",
                                 style: TextStyle(
                                   fontSize: getInfoFontSize(),
                                   fontWeight: FontWeight.w400,
                                 ))
-                            : Text("$player2 - find your Pics!",
+                            : Text(
+                                "${settingsProvider.player2} - find your Pics!",
                                 style: TextStyle(
                                   fontSize: getInfoFontSize(),
                                   fontWeight: FontWeight.w400,

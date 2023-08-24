@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:scavenger_hunt_pictures/providers/settings_provider.dart';
 import 'package:scavenger_hunt_pictures/settings_screen.dart';
 import 'package:scavenger_hunt_pictures/widgets/app_colors.dart';
+import 'package:scavenger_hunt_pictures/widgets/font_sizes.dart';
 import 'package:scavenger_hunt_pictures/widgets/size_config.dart';
 
 showPlayer1Instructions(BuildContext context) {
@@ -98,9 +99,7 @@ restartGame(BuildContext context, bool ready, InterstitialAd ad) {
   Widget okButton = TextButton(
     child: Text(
       "OK",
-      style: TextStyle(
-          fontSize: SizeConfig.blockSizeHorizontal * 6,
-          color: Colors.green[700]),
+      style: TextStyle(fontSize: getInfoFontSize(), color: Colors.green[700]),
     ),
     onPressed: () {
       if (ready) ad.show();
@@ -114,9 +113,8 @@ restartGame(BuildContext context, bool ready, InterstitialAd ad) {
       padding: EdgeInsets.only(right: SizeConfig.blockSizeHorizontal * 5),
       child: Text(
         "Cancel",
-        style: TextStyle(
-            fontSize: SizeConfig.blockSizeHorizontal * 6,
-            color: AppColor.orangeRed),
+        style:
+            TextStyle(fontSize: getInfoFontSize(), color: AppColor.orangeRed),
       ),
     ),
     onPressed: () {
@@ -128,9 +126,8 @@ restartGame(BuildContext context, bool ready, InterstitialAd ad) {
     backgroundColor: HexColor('#a7d8f6'),
     title: Text(
       "Restart the Game?",
-      style: TextStyle(
-          fontSize: SizeConfig.blockSizeHorizontal * 8,
-          color: AppColor.textColor),
+      style:
+          TextStyle(fontSize: getHeadingFontSize(), color: AppColor.textColor),
     ),
     content: Text(
       "Restarting the game will delete all photos taken.",
@@ -159,9 +156,7 @@ showScore(BuildContext context, String player1, String player2, int p1Score,
   Widget okButton = TextButton(
     child: Text(
       "OK",
-      style: TextStyle(
-          fontSize: SizeConfig.blockSizeHorizontal * 6,
-          color: Colors.green[700]),
+      style: TextStyle(fontSize: getInfoFontSize(), color: Colors.green[700]),
     ),
     onPressed: () {
       Navigator.of(context).pop();
@@ -195,14 +190,14 @@ showScore(BuildContext context, String player1, String player2, int p1Score,
         Text(
           "$player1  - $p1Score",
           style: TextStyle(
-              fontSize: SizeConfig.blockSizeHorizontal * 6,
+              fontSize: getInfoFontSize(),
               color: Color(Provider.of<SettingsProvider>(context, listen: false)
                   .p1ColorInt)),
         ),
         Text(
           "$player2 - $p2Score",
           style: TextStyle(
-              fontSize: SizeConfig.blockSizeHorizontal * 6,
+              fontSize: getInfoFontSize(),
               color: Color(Provider.of<SettingsProvider>(context, listen: false)
                   .p2ColorInt)),
         ),
