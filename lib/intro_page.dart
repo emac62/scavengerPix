@@ -16,7 +16,7 @@ class IntroPage extends StatefulWidget {
 class _IntroPageState extends State<IntroPage> {
   getFontSize() {
     double fontSize = SizeConfig.isPhone
-        ? SizeConfig.blockSizeVertical * 6
+        ? SizeConfig.blockSizeVertical * 3.5
         : SizeConfig.isPort
             ? SizeConfig.blockSizeVertical * 4
             : SizeConfig.blockSizeVertical * 5.5;

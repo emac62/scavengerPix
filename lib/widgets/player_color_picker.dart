@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:scavenger_hunt_pictures/providers/settings_provider.dart';
 import 'package:scavenger_hunt_pictures/widgets/app_colors.dart';
 import 'package:scavenger_hunt_pictures/widgets/font_sizes.dart';
 import 'package:scavenger_hunt_pictures/widgets/size_config.dart';
@@ -43,7 +45,7 @@ class PlayerColorPickerState extends State<PlayerColorPicker> {
       child: GridView.builder(
         gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
             maxCrossAxisExtent: SizeConfig.blockSizeHorizontal * 8,
-            childAspectRatio: 2 / 1,
+            childAspectRatio: SizeConfig.isPhone ? 5 / 4 : 2 / 1,
             crossAxisSpacing: SizeConfig.blockSizeHorizontal * 1,
             mainAxisSpacing: SizeConfig.blockSizeHorizontal * 1),
         shrinkWrap: true,
@@ -53,6 +55,7 @@ class PlayerColorPickerState extends State<PlayerColorPicker> {
           return InkWell(
             onTap: () {
               widget.onSelectColor(itemColor);
+
               setState(() {
                 _pickedColor = itemColor;
               });

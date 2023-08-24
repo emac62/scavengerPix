@@ -130,7 +130,6 @@ class CompareImagesState extends State<CompareImages>
         numberCorrect -= 1;
       }
       notSame1 = false;
-      debugPrint('$numberCorrect');
     });
   }
 
@@ -147,7 +146,6 @@ class CompareImagesState extends State<CompareImages>
         numberCorrect -= 1;
       }
       notSame2 = false;
-      debugPrint('$numberCorrect');
     });
   }
 
@@ -343,6 +341,7 @@ class CompareImagesState extends State<CompareImages>
                       child: Text(
                         "$player1 and $player2 work together to decide if the photos match!",
                         style: TextStyle(
+                          fontFamily: 'Roboto',
                           fontSize: getInfoFontSize(),
                         ),
                         textAlign: TextAlign.center,
@@ -400,6 +399,7 @@ class CompareImagesState extends State<CompareImages>
                               "Click 'Yes' or 'No' for each pair of photos in this round to update the score",
                               textAlign: TextAlign.center,
                               style: TextStyle(
+                                  fontFamily: 'Roboto',
                                   fontSize: getInfoFontSize(),
                                   color: HexColor('#fefefe')),
                             ),
@@ -600,7 +600,6 @@ class CompareImagesState extends State<CompareImages>
         Provider.of<SettingsProvider>(context, listen: false);
     if (settingsProvider.playerTurns == 4 &&
         settingsProvider.currentRound == settingsProvider.numberOfRounds) {
-      debugPrint("End of Game");
     } else if (settingsProvider.playerTurns == 4 &&
         settingsProvider.currentRound != settingsProvider.numberOfRounds) {
       int currentRound = settingsProvider.currentRound + 1;
@@ -676,7 +675,9 @@ class CompareImagesState extends State<CompareImages>
                 child: AutoSizeText(
                   "Slide the white line left and right to compare the photos in this round.",
                   style: TextStyle(
-                      fontSize: getInfoFontSize(), color: HexColor('#2d3a64')),
+                      fontFamily: 'Roboto',
+                      fontSize: getInfoFontSize(),
+                      color: HexColor('#2d3a64')),
                   textAlign: TextAlign.center,
                 ),
               ),

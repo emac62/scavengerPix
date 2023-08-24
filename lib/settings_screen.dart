@@ -38,17 +38,10 @@ class SettingsScreenState extends State<SettingsScreen> {
   @override
   void initState() {
     super.initState();
-    loadSettings().then((_) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      Provider.of<SettingsProvider>(context, listen: false).loadPreferences();
       p1Controller = TextEditingController(text: player1);
       p2Controller = TextEditingController(text: player2);
-    });
-  }
-
-  loadSettings() async {
-    SharedPreferences savedPref = await SharedPreferences.getInstance();
-    setState(() {
-      player1 = (savedPref.getString('player1') ?? "");
-      player2 = (savedPref.getString('player2') ?? "");
     });
   }
 
@@ -62,13 +55,13 @@ class SettingsScreenState extends State<SettingsScreen> {
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
-    var settingsProvider = Provider.of<SettingsProvider>(context);
+
     return Scaffold(
       appBar: GradientAppBar(
         automaticallyImplyLeading: false,
         title: AutoSizeText("Settings",
             style: TextStyle(
-                fontSize: SizeConfig.blockSizeHorizontal * 10,
+                fontSize: SizeConfig.blockSizeHorizontal * 8,
                 color: HexColor('#fefefe'),
                 letterSpacing: 2.0)),
         gradient: LinearGradient(colors: ColorArrays.purple),
@@ -76,321 +69,326 @@ class SettingsScreenState extends State<SettingsScreen> {
       ),
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: SizeConfig.isPort ? 8.0 : 16),
-        child: ListView(
-          shrinkWrap: true,
-          children: [
-            const SizedBox(
-              height: 15,
-            ),
-            Padding(
-              padding: EdgeInsets.symmetric(
-                  horizontal: SizeConfig.blockSizeHorizontal * 4),
-              child: Text(
-                "Rounds",
-                style: TextStyle(fontSize: getHeadingFontSize()),
+        child: Consumer<SettingsProvider>(
+            builder: (context, settingsProvider, child) {
+          return ListView(
+            shrinkWrap: true,
+            children: [
+              const SizedBox(
+                height: 15,
               ),
-            ),
-            Padding(
-              padding: EdgeInsets.symmetric(
-                  horizontal: SizeConfig.blockSizeHorizontal * 10),
-              child: Text(
-                "A single round consists of each player taking photos and matching photos.",
-                style: TextStyle(fontSize: getInfoFontSize()),
+              Padding(
+                padding: EdgeInsets.symmetric(
+                    horizontal: SizeConfig.blockSizeHorizontal * 4),
+                child: Text(
+                  "Rounds",
+                  style: TextStyle(fontSize: getHeadingFontSize()),
+                ),
               ),
-            ),
-            Center(
-              child: Padding(
-                padding: const EdgeInsets.only(top: 5),
-                child: CustomSlidingSegmentedControl(
-                  innerPadding: EdgeInsets.zero,
-                  thumbDecoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(8),
-                      color: Colors.white),
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(8),
-                      gradient: LinearGradient(
-                          begin: Alignment.topLeft,
-                          end: Alignment.bottomRight,
-                          colors: ColorArrays.orangeYellow)),
-                  children: {
-                    1: Text("1",
+              Padding(
+                padding: EdgeInsets.symmetric(
+                    horizontal: SizeConfig.blockSizeHorizontal * 4),
+                child: Text(
+                  "A single round consists of each player taking photos and matching photos.",
+                  style: TextStyle(
+                      fontFamily: 'Roboto', fontSize: getInfoFontSize()),
+                ),
+              ),
+              Center(
+                child: Padding(
+                  padding: const EdgeInsets.only(top: 5),
+                  child: CustomSlidingSegmentedControl(
+                    innerPadding: EdgeInsets.zero,
+                    thumbDecoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(8),
+                        color: Colors.white),
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(8),
+                        gradient: LinearGradient(
+                            begin: Alignment.topLeft,
+                            end: Alignment.bottomRight,
+                            colors: ColorArrays.orangeYellow)),
+                    children: {
+                      1: Text("1",
+                          style: TextStyle(
+                            fontSize: getHeadingFontSize(),
+                          )),
+                      2: Text(
+                        "2",
+                        style: TextStyle(fontSize: getHeadingFontSize()),
+                      ),
+                      3: Text(
+                        "3",
+                        style: TextStyle(fontSize: getHeadingFontSize()),
+                      )
+                    },
+                    onValueChanged: (int value) {
+                      setState(() {
+                        Provider.of<SettingsProvider>(context, listen: false)
+                            .setNumberOfRounds(value);
+                      });
+                    },
+                    initialValue: settingsProvider.numberOfRounds,
+                    fixedWidth: SizeConfig.blockSizeHorizontal * 20,
+                  ),
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.symmetric(
+                    horizontal: SizeConfig.blockSizeHorizontal * 4),
+                child: Text(
+                  "Photos per Round",
+                  style: TextStyle(fontSize: getHeadingFontSize()),
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.symmetric(
+                    horizontal: SizeConfig.blockSizeHorizontal * 4),
+                child: Text(
+                  "Choose the number of photos to be taken before matching them.",
+                  style: TextStyle(
+                      fontFamily: 'Roboto', fontSize: getInfoFontSize()),
+                ),
+              ),
+              Center(
+                child: Padding(
+                  padding: const EdgeInsets.only(top: 5),
+                  child: CustomSlidingSegmentedControl(
+                    innerPadding: EdgeInsets.zero,
+                    thumbDecoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(8),
+                        color: Colors.white),
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(8),
+                        gradient: LinearGradient(
+                            begin: Alignment.topLeft,
+                            end: Alignment.bottomRight,
+                            colors: ColorArrays.whiteBlue)),
+                    children: {
+                      1: Text(
+                        "1",
+                        style: TextStyle(fontSize: getHeadingFontSize()),
+                      ),
+                      2: Text(
+                        "2",
+                        style: TextStyle(fontSize: getHeadingFontSize()),
+                      ),
+                      3: Text(
+                        "3",
+                        style: TextStyle(fontSize: getHeadingFontSize()),
+                      )
+                    },
+                    onValueChanged: (int value) {
+                      setState(() {
+                        Provider.of<SettingsProvider>(context, listen: false)
+                            .setNumberOfPictures(value);
+                      });
+                    },
+                    initialValue: settingsProvider.numberOfPictures,
+                    fixedWidth: SizeConfig.blockSizeHorizontal * 20,
+                  ),
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.symmetric(
+                    horizontal: SizeConfig.blockSizeHorizontal * 4),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      "Keep Score?",
+                      style: TextStyle(fontSize: getHeadingFontSize()),
+                    ),
+                    Transform.scale(
+                      scale: SizeConfig.isPort
+                          ? SizeConfig.blockSizeVertical * 0.1
+                          : SizeConfig.blockSizeVertical * 0.15,
+                      child: Padding(
+                        padding: EdgeInsets.only(
+                            top: SizeConfig.blockSizeVertical * 2,
+                            right: SizeConfig.blockSizeHorizontal * 5),
+                        child: CupertinoSwitch(
+                            value: keepScore,
+                            activeColor: HexColor('#f0a142'),
+                            thumbColor: HexColor('#fefefe'),
+                            trackColor: HexColor('#71a4db'),
+                            onChanged: (value) {
+                              setState(() {
+                                keepScore = value;
+                                Provider.of<SettingsProvider>(context,
+                                        listen: false)
+                                    .setKeepScore(keepScore);
+                              });
+                            }),
+                      ),
+                    )
+                  ],
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.fromLTRB(SizeConfig.blockSizeHorizontal * 4,
+                    0, SizeConfig.blockSizeHorizontal * 4, 8),
+                child: Text(
+                  "A point is awarded for each correct match.",
+                  style: TextStyle(
+                      fontFamily: 'Roboto', fontSize: getInfoFontSize()),
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.symmetric(
+                    horizontal: SizeConfig.blockSizeHorizontal * 4),
+                child: Text(
+                  "Add Names",
+                  style: TextStyle(fontSize: getHeadingFontSize()),
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.symmetric(
+                    horizontal: SizeConfig.blockSizeHorizontal * 4),
+                child: Text(
+                  "Enter name and choose canvas background.",
+                  style: TextStyle(
+                      fontFamily: 'Roboto', fontSize: getInfoFontSize()),
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.only(
+                    left: SizeConfig.blockSizeHorizontal * 8,
+                    top: SizeConfig.blockSizeVertical * 2,
+                    bottom: SizeConfig.blockSizeVertical * 1),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Flexible(
+                      child: TextField(
+                        controller: p1Controller,
+                        keyboardType: TextInputType.text,
+                        textCapitalization: TextCapitalization.words,
+                        decoration: InputDecoration(
+                            isCollapsed: true,
+                            border: const UnderlineInputBorder(),
+                            hintText: "Enter Player 1's Name",
+                            hintStyle: TextStyle(color: HexColor('#bb8b1f'))),
                         style: TextStyle(
                           fontSize: getInfoFontSize(),
-                        )),
-                    2: Text(
-                      "2",
-                      style: TextStyle(fontSize: getInfoFontSize()),
+                        ),
+                        onChanged: (value) async {
+                          if (value == "") {
+                            SharedPreferences pref =
+                                await SharedPreferences.getInstance();
+                            pref.remove('player1');
+                          } else {
+                            settingsProvider.setPlayer1(value);
+                          }
+                        },
+                      ),
                     ),
-                    3: Text(
-                      "3",
-                      style: TextStyle(fontSize: getInfoFontSize()),
-                    )
-                  },
-                  onValueChanged: (int value) {
-                    setState(() {
-                      Provider.of<SettingsProvider>(context, listen: false)
-                          .setNumberOfRounds(value);
-                    });
-                  },
-                  initialValue: settingsProvider.numberOfRounds,
-                  fixedWidth: SizeConfig.blockSizeHorizontal * 20,
+                    SizedBox(
+                      width: SizeConfig.blockSizeHorizontal * 40,
+                      child: PlayerColorPicker(
+                        onSelectColor: (color) {
+                          String p1ColorString = color.value.toString();
+                          int value = int.parse(p1ColorString);
+                          setState(() {
+                            settingsProvider.setP1ColorInt(value);
+                          });
+                        },
+                        availableColors: const [
+                          Color(0xffffeb3b),
+                          Color(0xff2196f3),
+                          Color(0xffff9800),
+                          Color(0xff66bb6a),
+                        ],
+                        initialColor: Color(settingsProvider.p1ColorInt),
+                        player: settingsProvider.player1,
+                      ),
+                    ),
+                  ],
                 ),
               ),
-            ),
-            Padding(
-              padding: EdgeInsets.symmetric(
-                  horizontal: SizeConfig.blockSizeHorizontal * 4),
-              child: Text(
-                "Photos per Round",
-                style: TextStyle(fontSize: getHeadingFontSize()),
-              ),
-            ),
-            Padding(
-              padding: EdgeInsets.symmetric(
-                  horizontal: SizeConfig.blockSizeHorizontal * 10),
-              child: Text(
-                "Choose the number of photos to be taken before matching them.",
-                style: TextStyle(fontSize: getInfoFontSize()),
-              ),
-            ),
-            Center(
-              child: Padding(
-                padding: const EdgeInsets.only(top: 5),
-                child: CustomSlidingSegmentedControl(
-                  innerPadding: EdgeInsets.zero,
-                  thumbDecoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(8),
-                      color: Colors.white),
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(8),
-                      gradient: LinearGradient(
-                          begin: Alignment.topLeft,
-                          end: Alignment.bottomRight,
-                          colors: ColorArrays.whiteBlue)),
-                  children: {
-                    1: Text(
-                      "1",
-                      style: TextStyle(fontSize: getInfoFontSize()),
-                    ),
-                    2: Text(
-                      "2",
-                      style: TextStyle(fontSize: getInfoFontSize()),
-                    ),
-                    3: Text(
-                      "3",
-                      style: TextStyle(fontSize: getInfoFontSize()),
-                    )
-                  },
-                  onValueChanged: (int value) {
-                    setState(() {
-                      Provider.of<SettingsProvider>(context, listen: false)
-                          .setNumberOfPictures(value);
-                    });
-                  },
-                  initialValue: settingsProvider.numberOfPictures,
-                  fixedWidth: SizeConfig.blockSizeHorizontal * 20,
-                ),
-              ),
-            ),
-            Padding(
-              padding: EdgeInsets.symmetric(
-                  horizontal: SizeConfig.blockSizeHorizontal * 4),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    "Keep Score?",
-                    style: TextStyle(fontSize: getHeadingFontSize()),
-                  ),
-                  Transform.scale(
-                    scale: SizeConfig.isPort
-                        ? SizeConfig.blockSizeVertical * 0.1
-                        : SizeConfig.blockSizeVertical * 0.15,
-                    child: Padding(
-                      padding: EdgeInsets.only(
-                          top: SizeConfig.blockSizeVertical * 2,
-                          right: SizeConfig.blockSizeHorizontal * 5),
-                      child: CupertinoSwitch(
-                          value: keepScore,
-                          activeColor: HexColor('#f0a142'),
-                          thumbColor: HexColor('#fefefe'),
-                          trackColor: HexColor('#71a4db'),
-                          onChanged: (value) {
-                            setState(() {
-                              keepScore = value;
-                              Provider.of<SettingsProvider>(context,
-                                      listen: false)
-                                  .setKeepScore(keepScore);
-                            });
-                          }),
-                    ),
-                  )
-                ],
-              ),
-            ),
-            Padding(
-              padding: EdgeInsets.fromLTRB(SizeConfig.blockSizeHorizontal * 10,
-                  0, SizeConfig.blockSizeHorizontal * 10, 10),
-              child: Text(
-                "A point is awarded and tallied for each correct match.",
-                style: TextStyle(fontSize: getInfoFontSize()),
-              ),
-            ),
-            Padding(
-              padding: EdgeInsets.symmetric(
-                  horizontal: SizeConfig.blockSizeHorizontal * 4),
-              child: Text(
-                "Add Names",
-                style: TextStyle(fontSize: getHeadingFontSize()),
-              ),
-            ),
-            Padding(
-              padding: EdgeInsets.symmetric(
-                  horizontal: SizeConfig.blockSizeHorizontal * 10),
-              child: AutoSizeText(
-                "Enter name and choose canvas background.",
-                style: TextStyle(fontSize: getInfoFontSize()),
-              ),
-            ),
-            Padding(
-              padding: EdgeInsets.only(
-                  left: SizeConfig.blockSizeHorizontal * 10,
-                  top: SizeConfig.blockSizeVertical * 2,
-                  bottom: SizeConfig.blockSizeVertical * 1),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Flexible(
-                    child: TextField(
-                      controller: p1Controller,
-                      keyboardType: TextInputType.text,
-                      textCapitalization: TextCapitalization.words,
-                      decoration: InputDecoration(
-                          isCollapsed: true,
-                          border: const UnderlineInputBorder(),
-                          hintText: "Enter Player 1's Name",
-                          hintStyle: TextStyle(color: HexColor('#bb8b1f'))),
-                      style: TextStyle(
-                        fontSize: getInfoFontSize(),
+              Padding(
+                padding: EdgeInsets.only(
+                    left: SizeConfig.blockSizeHorizontal * 8,
+                    top: SizeConfig.blockSizeVertical * 1,
+                    bottom: SizeConfig.blockSizeVertical * 1),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Flexible(
+                      child: TextField(
+                        controller: p2Controller,
+                        keyboardType: TextInputType.text,
+                        textCapitalization: TextCapitalization.words,
+                        decoration: InputDecoration(
+                            isCollapsed: true,
+                            border: const UnderlineInputBorder(),
+                            hintText: "Enter Player 2's Name",
+                            hintStyle: TextStyle(color: HexColor('#bb8b1f'))),
+                        style: TextStyle(
+                          fontSize: getInfoFontSize(),
+                        ),
+                        onChanged: (value) async {
+                          if (value == "") {
+                            SharedPreferences pref =
+                                await SharedPreferences.getInstance();
+                            pref.remove('player2');
+                          } else {
+                            Provider.of<SettingsProvider>(context, listen: true)
+                                .setPlayer2(value);
+                          }
+                        },
                       ),
-                      onChanged: (value) async {
-                        if (value == "") {
-                          SharedPreferences pref =
-                              await SharedPreferences.getInstance();
-                          pref.remove('player1');
-                        } else {
-                          Provider.of<SettingsProvider>(context, listen: false)
-                              .setPlayer1(value);
-                        }
-                      },
                     ),
-                  ),
-                  SizedBox(
-                    width: SizeConfig.blockSizeHorizontal * 40,
-                    child: PlayerColorPicker(
-                      onSelectColor: (color) {
-                        String p1ColorString = color.value.toString();
-                        int value = int.parse(p1ColorString);
-                        Provider.of<SettingsProvider>(context, listen: false)
-                            .setP1ColorInt(value);
-                      },
-                      availableColors: const [
-                        Colors.yellow,
-                        Colors.blue,
-                        Colors.orange,
-                        Colors.green,
-                      ],
-                      initialColor: Color(
-                          Provider.of<SettingsProvider>(context, listen: false)
-                              .p1ColorInt),
-                      player: settingsProvider.player1,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            Padding(
-              padding: EdgeInsets.only(
-                  left: SizeConfig.blockSizeHorizontal * 10,
-                  top: SizeConfig.blockSizeVertical * 1,
-                  bottom: SizeConfig.blockSizeVertical * 1),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Flexible(
-                    child: TextField(
-                      controller: p2Controller,
-                      keyboardType: TextInputType.text,
-                      textCapitalization: TextCapitalization.words,
-                      decoration: InputDecoration(
-                          isCollapsed: true,
-                          border: const UnderlineInputBorder(),
-                          hintText: "Enter Player 2's Name",
-                          hintStyle: TextStyle(color: HexColor('#bb8b1f'))),
-                      style: TextStyle(
-                        fontSize: getInfoFontSize(),
-                      ),
-                      onChanged: (value) async {
-                        if (value == "") {
-                          SharedPreferences pref =
-                              await SharedPreferences.getInstance();
-                          pref.remove('player2');
-                        } else {
-                          Provider.of<SettingsProvider>(context, listen: false)
-                              .setPlayer2(value);
-                        }
-                      },
-                    ),
-                  ),
-                  SizedBox(
-                    width: SizeConfig.blockSizeHorizontal * 40,
-                    child: PlayerColorPicker(
-                      onSelectColor: (color) {
-                        String p2ColorString = color.value.toString();
-                        int value = int.parse(p2ColorString);
-                        Provider.of<SettingsProvider>(context, listen: false)
-                            .setP2ColorInt(value);
-                      },
-                      availableColors: const [
-                        Colors.yellow,
-                        Colors.blue,
-                        Colors.orange,
-                        Colors.green,
-                      ],
-                      initialColor: Color(
-                          Provider.of<SettingsProvider>(context, listen: false)
-                              .p2ColorInt),
-                      player: settingsProvider.player2,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            Padding(
-              padding: EdgeInsets.symmetric(
-                  vertical: SizeConfig.blockSizeVertical * 2),
-              child: PixButton(
-                  name: "Let's Play!",
-                  onPressed: () {
-                    int turn = 1;
-                    setState(() {
-                      Provider.of<SettingsProvider>(context, listen: false)
-                          .setPlayerTurns(turn);
-                      Provider.of<SettingsProvider>(context, listen: false)
-                          .setCurrentRound(turn);
-                      Provider.of<SettingsProvider>(context, listen: false)
-                          .setP1Score(0);
-                      Provider.of<SettingsProvider>(context, listen: false)
-                          .setP2Score(0);
-                    });
+                    SizedBox(
+                      width: SizeConfig.blockSizeHorizontal * 40,
+                      child: PlayerColorPicker(
+                        onSelectColor: (color) {
+                          String p2ColorString = color.value.toString();
 
-                    Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => const OriginalPage()));
-                  },
-                  fontSize: getHeadingFontSize()),
-            )
-          ],
-        ),
+                          int value = int.parse(p2ColorString);
+                          setState(() {
+                            settingsProvider.setP2ColorInt(value);
+                          });
+                        },
+                        availableColors: const [
+                          Color(0xffffeb3b),
+                          Color(0xff2196f3),
+                          Color(0xffff9800),
+                          Color(0xff66bb6a),
+                        ],
+                        initialColor: Color(settingsProvider.p2ColorInt),
+                        player: settingsProvider.player2,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.symmetric(
+                    vertical: SizeConfig.blockSizeVertical * 2),
+                child: PixButton(
+                    name: "Let's Play!",
+                    onPressed: () {
+                      int turn = 1;
+                      setState(() {
+                        Provider.of<SettingsProvider>(context, listen: false)
+                            .setPlayerTurns(turn);
+                        Provider.of<SettingsProvider>(context, listen: false)
+                            .setCurrentRound(turn);
+                        Provider.of<SettingsProvider>(context, listen: false)
+                            .setP1Score(0);
+                        Provider.of<SettingsProvider>(context, listen: false)
+                            .setP2Score(0);
+                      });
+
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => const OriginalPage()));
+                    },
+                    fontSize: getHeadingFontSize()),
+              )
+            ],
+          );
+        }),
       ),
       bottomNavigationBar: Container(
           decoration: BoxDecoration(

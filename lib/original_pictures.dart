@@ -92,7 +92,7 @@ class OriginalPageState extends State<OriginalPage> {
                   icon: Icon(
                     Icons.info,
                     color: HexColor('#4b4272'),
-                    size: SizeConfig.blockSizeHorizontal * 3.5,
+                    size: SizeConfig.blockSizeVertical * 3.5,
                   ),
                   onPressed: () {
                     showPlayer1Instructions(context);
@@ -100,12 +100,12 @@ class OriginalPageState extends State<OriginalPage> {
                 )),
             Padding(
                 padding:
-                    EdgeInsets.only(right: SizeConfig.blockSizeHorizontal * 1),
+                    EdgeInsets.only(right: SizeConfig.blockSizeVertical * 1),
                 child: IconButton(
                     icon: Icon(
                       Icons.settings,
                       color: HexColor('#4b4272'),
-                      size: SizeConfig.blockSizeHorizontal * 3.5,
+                      size: SizeConfig.blockSizeVertical * 3.5,
                     ),
                     onPressed: () {
                       Navigator.of(context).push(MaterialPageRoute(
@@ -234,14 +234,13 @@ class OriginalPageState extends State<OriginalPage> {
   }
 
   Future<void> takePicture(String numPix) async {
-    debugPrint("takePicture");
     final picker = ImagePicker();
     final XFile? imageFile = await picker.pickImage(
       source: ImageSource.camera,
       imageQuality: 80,
       maxWidth: 600,
     );
-    debugPrint("$imageFile");
+
     if (imageFile == null) return;
 
     setState(() {

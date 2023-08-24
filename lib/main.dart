@@ -10,7 +10,7 @@ import 'package:scavenger_hunt_pictures/widgets/material_color.dart';
 
 const int maxFailedLoadAttempts = 3;
 
-bool useTestAds = false;
+bool useTestAds = true;
 
 List<String> testDeviceIDs = [
   "F8D0842E69D7D08FBA97DE652D059DEA", //Pixel 4

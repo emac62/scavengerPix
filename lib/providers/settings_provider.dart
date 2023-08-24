@@ -91,11 +91,13 @@ class SettingsProvider extends ChangeNotifier {
 
   void setP1ColorInt(int p1ColorInt) {
     _p1ColorInt = p1ColorInt;
+    savePreferences();
     notifyListeners();
   }
 
   void setP2ColorInt(int p2ColorInt) {
     _p2ColorInt = p2ColorInt;
+    savePreferences();
     notifyListeners();
   }
 
@@ -111,14 +113,20 @@ class SettingsProvider extends ChangeNotifier {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setString("player1", _player1);
     prefs.setString("player2", _player2);
+    prefs.setInt("p1ColorInt", _p1ColorInt);
+    prefs.setInt("p2ColorInt", _p2ColorInt);
   }
 
   loadPreferences() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String? player1 = prefs.getString("player1");
     String? player2 = prefs.getString("player2");
+    int? p1ColorInt = prefs.getInt("p1ColorInt");
+    int? p2ColorInt = prefs.getInt("p2ColorInt");
 
     if (player1 != null) setPlayer1(player1);
     if (player2 != null) setPlayer2(player2);
+    if (p1ColorInt != null) setP1ColorInt(p1ColorInt);
+    if (p2ColorInt != null) setP2ColorInt(p2ColorInt);
   }
 }

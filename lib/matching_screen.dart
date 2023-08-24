@@ -65,10 +65,10 @@ class MatchingPageState extends State<MatchingPage> {
   initState() {
     super.initState();
     loadSettings().then((_) {
-      int playerTurns =
-          Provider.of<SettingsProvider>(context, listen: false).playerTurns + 1;
-      Provider.of<SettingsProvider>(context, listen: false)
-          .setPlayerTurns(playerTurns);
+      var settingsProv = Provider.of<SettingsProvider>(context, listen: false);
+
+      int playerTurns = settingsProv.playerTurns + 1;
+      settingsProv.setPlayerTurns(playerTurns);
 
       InterstitialAd.load(
           adUnitId: useTestAds
