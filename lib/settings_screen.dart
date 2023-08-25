@@ -17,7 +17,6 @@ import 'package:scavenger_hunt_pictures/widgets/font_sizes.dart';
 import 'package:scavenger_hunt_pictures/widgets/pix_button.dart';
 import 'package:scavenger_hunt_pictures/widgets/player_color_picker.dart';
 import 'package:scavenger_hunt_pictures/widgets/size_config.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({Key? key}) : super(key: key);
@@ -33,16 +32,25 @@ class SettingsScreenState extends State<SettingsScreen> {
 
   TextEditingController? p1Controller;
   TextEditingController? p2Controller;
+  String p1Text = "";
+  String p2Text = "";
 
   @override
   void initState() {
     super.initState();
+
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      Provider.of<SettingsProvider>(context, listen: false).loadPreferences();
-      p1Controller = TextEditingController(
-          text: Provider.of<SettingsProvider>(context, listen: false).player1);
-      p2Controller = TextEditingController(
-          text: Provider.of<SettingsProvider>(context, listen: false).player2);
+      if (Provider.of<SettingsProvider>(context, listen: false).player1 !=
+          "Player 1") {
+        p1Text = Provider.of<SettingsProvider>(context, listen: false).player1;
+      }
+      debugPrint("p1Text: $p1Text");
+      if (Provider.of<SettingsProvider>(context, listen: false).player2 !=
+          "Player 2") {
+        p2Text = Provider.of<SettingsProvider>(context, listen: false).player2;
+      }
+      p1Controller = TextEditingController(text: p1Text);
+      p2Controller = TextEditingController(text: p2Text);
     });
   }
 
@@ -282,17 +290,17 @@ class SettingsScreenState extends State<SettingsScreen> {
                         keyboardType: TextInputType.text,
                         textCapitalization: TextCapitalization.words,
                         decoration: const InputDecoration(
-                          isCollapsed: true,
-                          border: UnderlineInputBorder(),
-                        ),
+                            contentPadding: EdgeInsets.symmetric(
+                                horizontal: 4, vertical: 8),
+                            border: OutlineInputBorder(),
+                            isCollapsed: true,
+                            labelText: "Player 1"),
                         style: TextStyle(
                           fontSize: getInfoFontSize(),
                         ),
                         onChanged: (value) async {
-                          if (value == "") {
-                            SharedPreferences pref =
-                                await SharedPreferences.getInstance();
-                            pref.remove('player1');
+                          if (value == "" || value == " ") {
+                            settingsProvider.setPlayer1("Player 1");
                           } else {
                             settingsProvider.setPlayer1(value);
                           }
@@ -336,17 +344,17 @@ class SettingsScreenState extends State<SettingsScreen> {
                         keyboardType: TextInputType.text,
                         textCapitalization: TextCapitalization.words,
                         decoration: const InputDecoration(
-                          isCollapsed: true,
-                          border: UnderlineInputBorder(),
-                        ),
+                            contentPadding: EdgeInsets.symmetric(
+                                horizontal: 4, vertical: 8),
+                            border: OutlineInputBorder(),
+                            isCollapsed: true,
+                            labelText: "Player 2"),
                         style: TextStyle(
                           fontSize: getInfoFontSize(),
                         ),
                         onChanged: (value) async {
-                          if (value == "") {
-                            SharedPreferences pref =
-                                await SharedPreferences.getInstance();
-                            pref.remove('player2');
+                          if (value == "" || value == " ") {
+                            settingsProvider.setPlayer2("Player 2");
                           } else {
                             settingsProvider.setPlayer2(value);
                           }

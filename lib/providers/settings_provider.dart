@@ -123,7 +123,6 @@ class SettingsProvider extends ChangeNotifier {
     String? player2 = prefs.getString("player2");
     int? p1ColorInt = prefs.getInt("p1ColorInt");
     int? p2ColorInt = prefs.getInt("p2ColorInt");
-    debugPrint("sp - p1: $player1");
 
     if (player1 != null) setPlayer1(player1);
     if (player2 != null) setPlayer2(player2);
