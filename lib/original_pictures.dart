@@ -59,8 +59,8 @@ class OriginalPageState extends State<OriginalPage> {
     SizeConfig().init(context);
     var settingsProvider = Provider.of<SettingsProvider>(context, listen: true);
     debugPrint("p1: ${settingsProvider.player1}");
-    return WillPopScope(
-      onWillPop: () async => false,
+    return PopScope(
+      canPop: false,
       child: Scaffold(
         appBar: GradientAppBar(
           automaticallyImplyLeading: false,

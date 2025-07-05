@@ -276,8 +276,8 @@ class CompareImagesState extends State<CompareImages>
   Widget build(BuildContext context) {
     SizeConfig().init(context);
     var settingsProvider = Provider.of<SettingsProvider>(context);
-    return WillPopScope(
-      onWillPop: () async => false,
+    return PopScope(
+      canPop: false,
       child: Scaffold(
         appBar: GradientAppBar(
           automaticallyImplyLeading: false,
@@ -713,7 +713,7 @@ class CompareImagesState extends State<CompareImages>
                 visible: same,
                 child: Positioned(
                     child: AvatarGlow(
-                  endRadius: 180,
+                  // endRadius: 180,
                   glowColor: Colors.green,
                   duration: const Duration(milliseconds: 3000),
                   repeat: true,
@@ -727,7 +727,7 @@ class CompareImagesState extends State<CompareImages>
                 visible: notSame,
                 child: Positioned(
                     child: AvatarGlow(
-                  endRadius: 180,
+                  // endRadius: 180,
                   glowColor: Colors.red,
                   duration: const Duration(seconds: 3),
                   repeat: true,

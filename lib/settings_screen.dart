@@ -234,9 +234,9 @@ class SettingsScreenState extends State<SettingsScreen> {
                             right: SizeConfig.blockSizeHorizontal * 5),
                         child: CupertinoSwitch(
                             value: keepScore,
-                            activeColor: HexColor('#f0a142'),
+                            activeTrackColor: HexColor('#f0a142'),
                             thumbColor: HexColor('#fefefe'),
-                            trackColor: HexColor('#71a4db'),
+                            inactiveThumbColor: HexColor('#71a4db'),
                             onChanged: (value) {
                               setState(() {
                                 keepScore = value;

@@ -115,8 +115,8 @@ class MatchingPageState extends State<MatchingPage> {
   Widget build(BuildContext context) {
     SizeConfig().init(context);
     var settingsProvider = Provider.of<SettingsProvider>(context);
-    return WillPopScope(
-      onWillPop: () async => false,
+    return PopScope(
+      canPop: false,
       child: Scaffold(
         appBar: GradientAppBar(
           automaticallyImplyLeading: false,
@@ -378,7 +378,7 @@ class MatchingPageState extends State<MatchingPage> {
                         },
                         style: ButtonStyle(
                             backgroundColor:
-                                MaterialStateProperty.all(HexColor('#7d74a4'))),
+                                WidgetStatePropertyAll(HexColor('#7d74a4'))),
                         child: Text(
                           "Match This!",
                           style: TextStyle(

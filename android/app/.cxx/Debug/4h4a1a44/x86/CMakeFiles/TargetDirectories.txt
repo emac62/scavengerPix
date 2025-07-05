@@ -1,0 +1,2 @@
+/Users/ellen/WebProjects/scavenger_hunt_pictures/android/app/.cxx/Debug/4h4a1a44/x86/CMakeFiles/edit_cache.dir
+/Users/ellen/WebProjects/scavenger_hunt_pictures/android/app/.cxx/Debug/4h4a1a44/x86/CMakeFiles/rebuild_cache.dir

@@ -1,0 +1,20 @@
+{
+  "buildFiles": [
+    "/Volumes/CodingDrive/FlutterSDK/packages/flutter_tools/gradle/src/main/groovy/CMakeLists.txt"
+  ],
+  "cleanCommandsComponents": [
+    [
+      "/Users/ellen/Library/Android/sdk/cmake/3.22.1/bin/ninja",
+      "-C",
+      "/Users/ellen/WebProjects/scavenger_hunt_pictures/android/app/.cxx/Debug/4h4a1a44/x86_64",
+      "clean"
+    ]
+  ],
+  "buildTargetsCommandComponents": [
+    "/Users/ellen/Library/Android/sdk/cmake/3.22.1/bin/ninja",
+    "-C",
+    "/Users/ellen/WebProjects/scavenger_hunt_pictures/android/app/.cxx/Debug/4h4a1a44/x86_64",
+    "{LIST_OF_TARGETS_TO_BUILD}"
+  ],
+  "libraries": {}
+}
