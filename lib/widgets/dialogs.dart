@@ -8,7 +8,7 @@ import 'package:scavenger_hunt_pictures/widgets/app_colors.dart';
 import 'package:scavenger_hunt_pictures/widgets/font_sizes.dart';
 import 'package:scavenger_hunt_pictures/widgets/size_config.dart';
 
-showPlayer1Instructions(BuildContext context) {
+void showPlayer1Instructions(BuildContext context) {
   // set up the button
   Widget okButton = TextButton(
     child: Text(
@@ -51,7 +51,7 @@ showPlayer1Instructions(BuildContext context) {
   );
 }
 
-showPlayer2Instructions(BuildContext context) {
+void showPlayer2Instructions(BuildContext context) {
   // set up the button
   Widget okButton = TextButton(
     child: Text(
@@ -94,7 +94,7 @@ showPlayer2Instructions(BuildContext context) {
   );
 }
 
-restartGame(BuildContext context, bool ready, InterstitialAd ad) {
+void restartGame(BuildContext context, bool ready, InterstitialAd ad) {
   // set up the button
   Widget okButton = TextButton(
     child: Text(
@@ -150,8 +150,8 @@ restartGame(BuildContext context, bool ready, InterstitialAd ad) {
   );
 }
 
-showScore(BuildContext context, String player1, String player2, int p1Score,
-    int p2Score) {
+void showScore(BuildContext context, String player1, String player2,
+    int p1Score, int p2Score) {
   // set up the button
   Widget okButton = TextButton(
     child: Text(

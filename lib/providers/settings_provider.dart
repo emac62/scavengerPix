@@ -109,7 +109,7 @@ class SettingsProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  savePreferences() async {
+  Future<void> savePreferences() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setString("player1", _player1);
     prefs.setString("player2", _player2);
@@ -117,7 +117,7 @@ class SettingsProvider extends ChangeNotifier {
     prefs.setInt("p2ColorInt", _p2ColorInt);
   }
 
-  loadPreferences() async {
+  Future<void> loadPreferences() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String? player1 = prefs.getString("player1");
     String? player2 = prefs.getString("player2");

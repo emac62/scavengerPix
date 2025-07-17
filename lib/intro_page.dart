@@ -14,13 +14,18 @@ class IntroPage extends StatefulWidget {
 }
 
 class _IntroPageState extends State<IntroPage> {
-  getFontSize() {
+  double getFontSize() {
     double fontSize = SizeConfig.isPhone
         ? SizeConfig.blockSizeVertical * 3.5
         : SizeConfig.isPort
             ? SizeConfig.blockSizeVertical * 4
             : SizeConfig.blockSizeVertical * 5.5;
     return fontSize;
+  }
+
+  int getYear() {
+    DateTime now = DateTime.now();
+    return now.year;
   }
 
   @override
@@ -61,15 +66,20 @@ class _IntroPageState extends State<IntroPage> {
                         width: 50,
                       ),
                       applicationName: "Match This!",
-                      applicationVersion: "1.0.1",
-                      applicationLegalese: '©2022 borderlineBoomer',
+                      applicationVersion: "1.2.2",
+                      applicationLegalese: '© ${getYear()} borderlineBoomer',
                       children: <Widget>[
-                        const Padding(
+                        Padding(
                             padding: EdgeInsets.only(top: 15),
                             child: Column(
                               children: [
                                 Text(
                                   "Use the internal camera to play an active, cooperative scavenger hunt matching game with kids.",
+                                  style: TextStyle(
+                                    fontFamily: 'Roboto',
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.w400,
+                                  ),
                                 ),
                               ],
                             ))

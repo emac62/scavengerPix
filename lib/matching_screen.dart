@@ -46,14 +46,14 @@ class MatchingPageState extends State<MatchingPage> {
   File? fifthImage;
   File? sixthImage;
 
-  var player1;
-  var player2;
+  String player1 = "";
+  String player2 = "";
 
   BannerAdContainer bannerAdContainer = const BannerAdContainer();
   InterstitialAd? _interstitialAd;
   bool _isInterstitialAdReady = false;
 
-  loadSettings() async {
+  Future<void> loadSettings() async {
     SharedPreferences savedPref = await SharedPreferences.getInstance();
     setState(() {
       player1 = (savedPref.getString('player1') ?? "Player1");
@@ -65,6 +65,7 @@ class MatchingPageState extends State<MatchingPage> {
   initState() {
     super.initState();
     loadSettings().then((_) {
+      if (!mounted) return;
       var settingsProv = Provider.of<SettingsProvider>(context, listen: false);
 
       int playerTurns = settingsProv.playerTurns + 1;
@@ -91,24 +92,28 @@ class MatchingPageState extends State<MatchingPage> {
     _interstitialAd!.dispose();
   }
 
-  getImgUrl(int position) {
+  File? getImgUrl(int position) {
+    File? path;
     if (position == 0) {
-      return fourthImage;
+      path = fourthImage;
     } else if (position == 1) {
-      return fifthImage;
+      path = fifthImage;
     } else if (position == 2) {
-      return sixthImage;
+      path = sixthImage;
     }
+    return path;
   }
 
-  getImgUrlCompare(int position) {
+  File? getImgUrlCompare(int position) {
+    File? path;
     if (position == 0) {
-      return widget.firstImgPath;
+      path = File(widget.firstImgPath);
     } else if (position == 1) {
-      return widget.secondImgPath;
+      path = widget.secondImgPath != null ? File(widget.secondImgPath!) : null;
     } else if (position == 2) {
-      return widget.thirdImgPath;
+      path = widget.thirdImgPath != null ? File(widget.thirdImgPath!) : null;
     }
+    return path;
   }
 
   @override
@@ -206,15 +211,14 @@ class MatchingPageState extends State<MatchingPage> {
               itemCount: settingsProvider.numberOfPictures,
               itemBuilder: (context, position) {
                 return Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: buildPlayer2ImageCard(
-                      imgNum: toOrdinal(position + 4),
-                      imgUrl: getImgUrl(position) == null
-                          ? ""
-                          : getImgUrl(position)!.path,
-                      imgNumCompare: toOrdinal(position + 1),
-                      imgUrlCompare: getImgUrlCompare(position)),
-                );
+                    padding: const EdgeInsets.all(8.0),
+                    child: buildPlayer2ImageCard(
+                        imgNum: toOrdinal(position + 4),
+                        imgUrl: getImgUrl(position) == null
+                            ? ""
+                            : getImgUrl(position)!.path,
+                        imgNumCompare: toOrdinal(position + 1),
+                        imgUrlCompare: getImgUrlCompare(position)?.path ?? ""));
               },
             ),
             SizedBox(

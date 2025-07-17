@@ -44,14 +44,16 @@ class OriginalPageState extends State<OriginalPage> {
     });
   }
 
-  getImgUrl(int position) {
+  File? getImgUrl(int position) {
+    File? img;
     if (position == 0) {
-      return firstImage;
+      img = firstImage;
     } else if (position == 1) {
-      return secondImage;
+      img = secondImage;
     } else if (position == 2) {
-      return thirdImage;
+      img = thirdImage;
     }
+    return img;
   }
 
   @override

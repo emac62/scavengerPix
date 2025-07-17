@@ -75,47 +75,55 @@ class CompareImagesState extends State<CompareImages>
 
   double value = 0.5;
 
-  setSame(int position) {
+  bool setSame(int position) {
+    bool same = false;
     if (position == 0) {
-      return same1;
+      same = same1;
     } else if (position == 1) {
-      return same2;
+      same = same2;
     } else if (position == 2) {
-      return same3;
+      same = same3;
     }
+    return same;
   }
 
-  setNotSame(int position) {
+  bool setNotSame(int position) {
+    bool notSame = false;
     if (position == 0) {
-      return notSame1;
+      notSame = notSame1;
     } else if (position == 1) {
-      return notSame2;
+      notSame = notSame2;
     } else if (position == 2) {
-      return notSame3;
+      notSame = notSame3;
     }
+    return notSame;
   }
 
-  getP1ImgPath(int position) {
+  File getP1ImgPath(int position) {
+    File path = File('');
     if (position == 0) {
-      return firstImgPath!;
+      path = firstImgPath!;
     } else if (position == 1) {
-      return secondImgPath!;
+      path = secondImgPath!;
     } else if (position == 2) {
-      return thirdImgPath!;
+      path = thirdImgPath!;
     }
+    return path;
   }
 
-  getP2ImgPath(int position) {
+  File getP2ImgPath(int position) {
+    File path = File('');
     if (position == 0) {
-      return fourthImgPath!;
+      path = fourthImgPath!;
     } else if (position == 1) {
-      return fifthImgPath!;
+      path = fifthImgPath!;
     } else if (position == 2) {
-      return sixthImgPath!;
+      path = sixthImgPath!;
     }
+    return path;
   }
 
-  toggleSame1() {
+  void toggleSame1() {
     setState(() {
       if (notSame1 == true) {
         numberIncorrect = -1;
@@ -131,7 +139,7 @@ class CompareImagesState extends State<CompareImages>
     });
   }
 
-  toggleSame2() {
+  void toggleSame2() {
     setState(() {
       if (notSame2 == true) {
         numberIncorrect = -1;
@@ -147,7 +155,7 @@ class CompareImagesState extends State<CompareImages>
     });
   }
 
-  toggleSame3() {
+  void toggleSame3() {
     setState(() {
       if (notSame3 == true) {
         numberIncorrect = -1;
@@ -163,7 +171,7 @@ class CompareImagesState extends State<CompareImages>
     });
   }
 
-  toggleNotSame1() {
+  void toggleNotSame1() {
     setState(() {
       if (same1 == true) {
         numberCorrect -= 1;
@@ -179,7 +187,7 @@ class CompareImagesState extends State<CompareImages>
     });
   }
 
-  toggleNotSame2() {
+  void toggleNotSame2() {
     setState(() {
       if (same2 == true) {
         numberCorrect -= 1;
@@ -195,7 +203,7 @@ class CompareImagesState extends State<CompareImages>
     });
   }
 
-  toggleNotSame3() {
+  void toggleNotSame3() {
     setState(() {
       if (same3 == true) {
         numberCorrect -= 1;
@@ -245,7 +253,7 @@ class CompareImagesState extends State<CompareImages>
     _interstitialAd!.dispose();
   }
 
-  setVariables() {
+  void setVariables() {
     var settingsProvider =
         Provider.of<SettingsProvider>(context, listen: false);
     switch (settingsProvider.numberOfPictures) {
@@ -556,7 +564,7 @@ class CompareImagesState extends State<CompareImages>
     );
   }
 
-  updatePlayerScore() {
+  void updatePlayerScore() {
     scoreUpdated = true;
     var settingsProvider =
         Provider.of<SettingsProvider>(context, listen: false);
@@ -573,7 +581,7 @@ class CompareImagesState extends State<CompareImages>
     });
   }
 
-  updatePlayerTurns() {
+  void updatePlayerTurns() {
     var settingsProvider =
         Provider.of<SettingsProvider>(context, listen: false);
     if (settingsProvider.playerTurns == 2) {
@@ -585,7 +593,7 @@ class CompareImagesState extends State<CompareImages>
     }
   }
 
-  updateRound() {
+  void updateRound() {
     var settingsProvider =
         Provider.of<SettingsProvider>(context, listen: false);
     if (settingsProvider.playerTurns == 4 &&
@@ -601,7 +609,7 @@ class CompareImagesState extends State<CompareImages>
     }
   }
 
-  getFinalButtonTitle() {
+  String getFinalButtonTitle() {
     var settingsProvider =
         Provider.of<SettingsProvider>(context, listen: false);
     String title;

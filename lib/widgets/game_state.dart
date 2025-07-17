@@ -1,1 +1,1 @@
-setGameState() {}
+void setGameState() {}

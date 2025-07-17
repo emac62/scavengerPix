@@ -1,6 +1,6 @@
 import 'size_config.dart';
 
-getHeadingFontSize() {
+double getHeadingFontSize() {
   double fontSize = SizeConfig.isPhone
       ? SizeConfig.blockSizeVertical * 3.5
       : SizeConfig.isPort
@@ -9,7 +9,7 @@ getHeadingFontSize() {
   return fontSize;
 }
 
-getInfoFontSize() {
+double getInfoFontSize() {
   double fontSize = SizeConfig.isPhone
       ? SizeConfig.blockSizeVertical * 1.75
       : SizeConfig.isPort
