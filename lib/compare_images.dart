@@ -7,7 +7,6 @@ import 'package:before_after/before_after.dart';
 import 'package:flutter/material.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:hexcolor/hexcolor.dart';
-import 'package:flutter_gradient_app_bar/flutter_gradient_app_bar.dart';
 import 'package:provider/provider.dart';
 import 'package:scavenger_hunt_pictures/main.dart';
 import 'package:scavenger_hunt_pictures/original_pictures.dart';
@@ -287,7 +286,7 @@ class CompareImagesState extends State<CompareImages>
     return PopScope(
       canPop: false,
       child: Scaffold(
-        appBar: GradientAppBar(
+        appBar: AppBar(
           automaticallyImplyLeading: false,
           title: AutoSizeText(
             "Compare Photos",
@@ -298,7 +297,8 @@ class CompareImagesState extends State<CompareImages>
               fontWeight: FontWeight.w400,
             ),
           ),
-          gradient: LinearGradient(colors: ColorArrays.purple),
+          backgroundColor: ColorArrays.purple.first,
+          elevation: 0,
           actions: [
             Padding(
                 padding:

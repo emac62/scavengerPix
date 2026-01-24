@@ -3,7 +3,6 @@ import 'dart:io';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
-import 'package:flutter_gradient_app_bar/flutter_gradient_app_bar.dart';
 import 'package:scavenger_hunt_pictures/widgets/banner_ad_widget.dart';
 import 'package:scavenger_hunt_pictures/widgets/color_arrays.dart';
 import 'package:scavenger_hunt_pictures/widgets/font_sizes.dart';
@@ -25,7 +24,7 @@ class _FullscreenImageState extends State<FullscreenImage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: GradientAppBar(
+      appBar: AppBar(
         title: AutoSizeText(
           '${widget.imagePix} Pic',
           style: TextStyle(
@@ -33,7 +32,8 @@ class _FullscreenImageState extends State<FullscreenImage> {
             color: HexColor('#fefefe'),
           ),
         ),
-        gradient: LinearGradient(colors: ColorArrays.purple),
+        backgroundColor: ColorArrays.purple.first,
+        elevation: 0,
       ),
       body: Padding(
         padding:

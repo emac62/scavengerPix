@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
-import 'package:flutter_gradient_app_bar/flutter_gradient_app_bar.dart';
 import 'package:scavenger_hunt_pictures/settings_screen.dart';
 import 'package:scavenger_hunt_pictures/widgets/color_arrays.dart';
 import 'package:scavenger_hunt_pictures/widgets/pix_button.dart';
@@ -33,7 +32,7 @@ class _IntroPageState extends State<IntroPage> {
     SizeConfig().init(context);
     getFontSize();
     return Scaffold(
-        appBar: GradientAppBar(
+        appBar: AppBar(
           automaticallyImplyLeading: false,
           title: Text(
             "Match This!",
@@ -44,7 +43,8 @@ class _IntroPageState extends State<IntroPage> {
                 fontWeight: FontWeight.w400,
                 letterSpacing: 2.0),
           ),
-          gradient: LinearGradient(colors: ColorArrays.purple),
+          backgroundColor: ColorArrays.purple.first,
+          elevation: 0,
           actions: [
             Padding(
               padding: const EdgeInsets.all(8.0),

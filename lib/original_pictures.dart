@@ -3,7 +3,6 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:flutter_gradient_app_bar/flutter_gradient_app_bar.dart';
 import 'package:provider/provider.dart';
 import 'package:scavenger_hunt_pictures/matching_screen.dart';
 import 'package:scavenger_hunt_pictures/providers/settings_provider.dart';
@@ -64,7 +63,7 @@ class OriginalPageState extends State<OriginalPage> {
     return PopScope(
       canPop: false,
       child: Scaffold(
-        appBar: GradientAppBar(
+        appBar: AppBar(
           automaticallyImplyLeading: false,
           title: AutoSizeText(
             "Take Original Photos",
@@ -75,7 +74,8 @@ class OriginalPageState extends State<OriginalPage> {
               fontWeight: FontWeight.w500,
             ),
           ),
-          gradient: LinearGradient(colors: ColorArrays.purple),
+          backgroundColor: ColorArrays.purple.first,
+          elevation: 0,
           actions: [
             Padding(
                 padding:

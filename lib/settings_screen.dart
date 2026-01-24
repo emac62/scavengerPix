@@ -5,7 +5,6 @@ import 'package:custom_sliding_segmented_control/custom_sliding_segmented_contro
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
-import 'package:flutter_gradient_app_bar/flutter_gradient_app_bar.dart';
 import 'package:provider/provider.dart';
 import 'package:scavenger_hunt_pictures/original_pictures.dart';
 import 'package:scavenger_hunt_pictures/providers/settings_provider.dart';
@@ -66,14 +65,15 @@ class SettingsScreenState extends State<SettingsScreen> {
     SizeConfig().init(context);
 
     return Scaffold(
-      appBar: GradientAppBar(
+      appBar: AppBar(
         automaticallyImplyLeading: false,
         title: AutoSizeText("Settings",
             style: TextStyle(
                 fontSize: SizeConfig.blockSizeHorizontal * 8,
                 color: HexColor('#fefefe'),
                 letterSpacing: 2.0)),
-        gradient: LinearGradient(colors: ColorArrays.purple),
+        backgroundColor: ColorArrays.purple.first,
+        elevation: 0,
         actions: const [],
       ),
       body: Padding(

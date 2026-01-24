@@ -6,7 +6,6 @@ import 'package:flutter/material.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:flutter_gradient_app_bar/flutter_gradient_app_bar.dart';
 import 'package:provider/provider.dart';
 import 'package:scavenger_hunt_pictures/compare_images.dart';
 import 'package:scavenger_hunt_pictures/full_screen_image.dart';
@@ -123,7 +122,7 @@ class MatchingPageState extends State<MatchingPage> {
     return PopScope(
       canPop: false,
       child: Scaffold(
-        appBar: GradientAppBar(
+        appBar: AppBar(
           automaticallyImplyLeading: false,
           title: AutoSizeText(
             "Match This!",
@@ -134,7 +133,8 @@ class MatchingPageState extends State<MatchingPage> {
               fontWeight: FontWeight.w500,
             ),
           ),
-          gradient: LinearGradient(colors: ColorArrays.purple),
+          backgroundColor: ColorArrays.purple.first,
+          elevation: 0,
           actions: [
             Padding(
                 padding:
