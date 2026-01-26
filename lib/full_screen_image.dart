@@ -25,6 +25,7 @@ class _FullscreenImageState extends State<FullscreenImage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        iconTheme: IconThemeData(color: HexColor('#fefefe')),
         title: AutoSizeText(
           '${widget.imagePix} Pic',
           style: TextStyle(

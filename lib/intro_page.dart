@@ -53,8 +53,8 @@ class _IntroPageState extends State<IntroPage> {
                     padding: const EdgeInsets.all(8.0),
                     child: Icon(
                       Icons.info,
-                      color: HexColor('#4b4272'),
-                      size: SizeConfig.blockSizeHorizontal * 3.5,
+                      color: HexColor('#fefefe'),
+                      size: SizeConfig.blockSizeVertical * 3.5,
                     ),
                   ),
                   onTap: () {
@@ -66,7 +66,7 @@ class _IntroPageState extends State<IntroPage> {
                         width: 50,
                       ),
                       applicationName: "Match This!",
-                      applicationVersion: "1.2.2",
+                      applicationVersion: "1.2.3",
                       applicationLegalese: '© ${getYear()} borderlineBoomer',
                       children: <Widget>[
                         Padding(

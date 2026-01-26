@@ -306,7 +306,7 @@ class CompareImagesState extends State<CompareImages>
                 child: IconButton(
                     icon: Icon(
                       Icons.restart_alt,
-                      color: HexColor('#4b4272'),
+                      color: HexColor('#fefefe'),
                       size: getHeadingFontSize(),
                     ),
                     onPressed: () {

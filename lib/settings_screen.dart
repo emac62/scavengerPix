@@ -37,27 +37,17 @@ class SettingsScreenState extends State<SettingsScreen> {
   @override
   void initState() {
     super.initState();
-
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (Provider.of<SettingsProvider>(context, listen: false).player1 !=
-          "Player 1") {
-        p1Text = Provider.of<SettingsProvider>(context, listen: false).player1;
-      }
-      debugPrint("p1Text: $p1Text");
-      if (Provider.of<SettingsProvider>(context, listen: false).player2 !=
-          "Player 2") {
-        p2Text = Provider.of<SettingsProvider>(context, listen: false).player2;
-      }
-      p1Controller = TextEditingController(text: p1Text);
-      p2Controller = TextEditingController(text: p2Text);
-    });
+    final settingsProvider =
+        Provider.of<SettingsProvider>(context, listen: false);
+    p1Controller = TextEditingController(text: settingsProvider.player1);
+    p2Controller = TextEditingController(text: settingsProvider.player2);
   }
 
   @override
   void dispose() {
+    p1Controller?.dispose();
+    p2Controller?.dispose();
     super.dispose();
-    p1Controller!.dispose();
-    p2Controller!.dispose();
   }
 
   @override
@@ -80,6 +70,19 @@ class SettingsScreenState extends State<SettingsScreen> {
         padding: EdgeInsets.symmetric(horizontal: SizeConfig.isPort ? 8.0 : 16),
         child: Consumer<SettingsProvider>(
             builder: (context, settingsProvider, child) {
+          // Update controllers' text if provider values change
+          if (p1Controller != null &&
+              p1Controller!.text != settingsProvider.player1) {
+            p1Controller!.text = settingsProvider.player1;
+            p1Controller!.selection = TextSelection.fromPosition(
+                TextPosition(offset: p1Controller!.text.length));
+          }
+          if (p2Controller != null &&
+              p2Controller!.text != settingsProvider.player2) {
+            p2Controller!.text = settingsProvider.player2;
+            p2Controller!.selection = TextSelection.fromPosition(
+                TextPosition(offset: p2Controller!.text.length));
+          }
           return ListView(
             shrinkWrap: true,
             children: [
@@ -310,6 +313,7 @@ class SettingsScreenState extends State<SettingsScreen> {
                     SizedBox(
                       width: SizeConfig.blockSizeHorizontal * 40,
                       child: PlayerColorPicker(
+                        key: ValueKey(settingsProvider.p1ColorInt),
                         onSelectColor: (color) {
                           String p1ColorString = color.value.toString();
                           int value = int.parse(p1ColorString);
@@ -364,9 +368,9 @@ class SettingsScreenState extends State<SettingsScreen> {
                     SizedBox(
                       width: SizeConfig.blockSizeHorizontal * 40,
                       child: PlayerColorPicker(
+                        key: ValueKey(settingsProvider.p2ColorInt),
                         onSelectColor: (color) {
                           String p2ColorString = color.value.toString();
-
                           int value = int.parse(p2ColorString);
                           setState(() {
                             settingsProvider.setP2ColorInt(value);

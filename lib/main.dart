@@ -13,7 +13,7 @@ const int maxFailedLoadAttempts = 3;
 bool useTestAds = false;
 
 List<String> testDeviceIDs = [
-  "ea230aa9edfec099faea521e541b8502", //my phone
+  "f0e400f92fc1f762333ca805bd6291f2", //my phone
   "98729598294fd9d76c953d7d056f902c",
   "4520409bc3ffb536b6e203bf9d0b0007", //old SE
   "8f4cb8307ba6019ca82bccc419afe5d0",

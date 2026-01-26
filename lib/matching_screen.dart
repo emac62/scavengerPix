@@ -142,8 +142,8 @@ class MatchingPageState extends State<MatchingPage> {
                 child: IconButton(
                   icon: Icon(
                     Icons.info,
-                    color: HexColor('#4b4272'),
-                    size: SizeConfig.blockSizeHorizontal * 3.5,
+                    color: HexColor('#fefefe'),
+                    size: SizeConfig.blockSizeVertical * 3.5,
                   ),
                   onPressed: () {
                     showPlayer2Instructions(context);
@@ -155,8 +155,8 @@ class MatchingPageState extends State<MatchingPage> {
                 child: IconButton(
                     icon: Icon(
                       Icons.restart_alt,
-                      color: HexColor('#4b4272'),
-                      size: SizeConfig.blockSizeHorizontal * 3.5,
+                      color: HexColor('#fefefe'),
+                      size: SizeConfig.blockSizeVertical * 3.5,
                     ),
                     onPressed: () {
                       restartGame(

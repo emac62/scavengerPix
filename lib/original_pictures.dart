@@ -70,7 +70,7 @@ class OriginalPageState extends State<OriginalPage> {
             style: TextStyle(
               color: HexColor('#fefefe'),
               fontFamily: 'CaveatBrush',
-              fontSize: SizeConfig.blockSizeHorizontal * 8,
+              fontSize: SizeConfig.blockSizeHorizontal * 7,
               fontWeight: FontWeight.w500,
             ),
           ),
@@ -83,7 +83,7 @@ class OriginalPageState extends State<OriginalPage> {
                 child: IconButton(
                   icon: Icon(
                     Icons.info,
-                    color: HexColor('#4b4272'),
+                    color: HexColor('#fefefe'),
                     size: SizeConfig.blockSizeVertical * 3.5,
                   ),
                   onPressed: () {
@@ -96,7 +96,7 @@ class OriginalPageState extends State<OriginalPage> {
                 child: IconButton(
                     icon: Icon(
                       Icons.settings,
-                      color: HexColor('#4b4272'),
+                      color: HexColor('#fefefe'),
                       size: SizeConfig.blockSizeVertical * 3.5,
                     ),
                     onPressed: () {
