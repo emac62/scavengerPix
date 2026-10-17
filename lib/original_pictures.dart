@@ -222,7 +222,7 @@ class OriginalPageState extends State<OriginalPage> {
                 border: Border(
                     top: BorderSide(width: 3, color: HexColor('#afa6d6')))),
             padding: const EdgeInsets.only(top: 5),
-            child: bannerAdContainer),
+            child: SafeArea(top: false, child: bannerAdContainer)),
       ),
     );
   }

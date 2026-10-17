@@ -1,4 +1,16 @@
-ext.kotlin_version = '2.1.0'
+buildscript {
+    ext.kotlin_version = '2.2.0'
+    repositories {
+        google()
+        mavenCentral()
+    }
+
+    dependencies {
+        classpath 'com.android.tools.build:gradle:8.9.1'
+        classpath 'com.google.gms:google-services:4.4.0'
+        // Kotlin Gradle plugin version is now managed by the plugins block in settings.gradle
+    }
+}
 
 allprojects {
     repositories {

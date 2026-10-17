@@ -559,7 +559,7 @@ class CompareImagesState extends State<CompareImages>
                 border: Border(
                     top: BorderSide(width: 3, color: HexColor('#afa6d6')))),
             padding: const EdgeInsets.only(top: 10),
-            child: bannerAdContainer),
+            child: SafeArea(top: false, child: bannerAdContainer)),
       ),
     );
   }

@@ -13,12 +13,9 @@ const int maxFailedLoadAttempts = 3;
 bool useTestAds = false;
 
 List<String> testDeviceIDs = [
-  "f0e400f92fc1f762333ca805bd6291f2", //my phone
-  "98729598294fd9d76c953d7d056f902c",
-  "4520409bc3ffb536b6e203bf9d0b0007", //old SE
-  "8f4cb8307ba6019ca82bccc419afe5d0",
-  "9d012fc3e3d1e41a7c7cc8038deb557a", // my iPad
-  "4D5715970712BC196DC81B02ABB50DB7" // Lenovo
+  "8f4cb8307ba6019ca82bccc419afe5d0", // my iPad
+  "B148F45EC4D7035147769503E195ECF9", // Lenovo
+  "f0e400f92fc1f762333ca805bd6291f2", // my iPhone
 ];
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -28,8 +25,7 @@ Future<void> main() async {
 
   final RequestConfiguration requestConfiguration = RequestConfiguration(
       tagForChildDirectedTreatment: TagForChildDirectedTreatment.yes,
-      tagForUnderAgeOfConsent: TagForUnderAgeOfConsent.yes,
-      testDeviceIds: testDeviceIDs);
+      testDeviceIds: kReleaseMode ? const <String>[] : testDeviceIDs);
   MobileAds.instance.updateRequestConfiguration(requestConfiguration);
 
   if (kReleaseMode) {
