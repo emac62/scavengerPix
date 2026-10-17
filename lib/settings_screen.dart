@@ -18,7 +18,7 @@ import 'package:scavenger_hunt_pictures/widgets/player_color_picker.dart';
 import 'package:scavenger_hunt_pictures/widgets/size_config.dart';
 
 class SettingsScreen extends StatefulWidget {
-  const SettingsScreen({Key? key}) : super(key: key);
+  const SettingsScreen({super.key});
 
   @override
   SettingsScreenState createState() => SettingsScreenState();

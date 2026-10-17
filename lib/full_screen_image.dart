@@ -12,8 +12,7 @@ class FullscreenImage extends StatefulWidget {
   final String imageUrl;
   final String imagePix;
   const FullscreenImage(
-      {Key? key, required this.imageUrl, required this.imagePix})
-      : super(key: key);
+      {super.key, required this.imageUrl, required this.imagePix});
 
   @override
   State<FullscreenImage> createState() => _FullscreenImageState();

@@ -28,13 +28,10 @@ class MatchingPage extends StatefulWidget {
   String? secondImgPath;
   String? thirdImgPath;
   MatchingPage(
-      {Key? key,
+      {super.key,
       required this.firstImgPath,
       this.secondImgPath,
-      this.thirdImgPath})
-      : super(
-          key: key,
-        );
+      this.thirdImgPath});
 
   @override
   MatchingPageState createState() => MatchingPageState();

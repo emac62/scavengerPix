@@ -4,7 +4,7 @@ import 'package:scavenger_hunt_pictures/main.dart';
 import 'package:scavenger_hunt_pictures/widgets/ad_helper.dart';
 
 class BannerAdContainer extends StatefulWidget {
-  const BannerAdContainer({Key? key}) : super(key: key);
+  const BannerAdContainer({super.key});
 
   @override
   BannerAdContainerState createState() => BannerAdContainerState();

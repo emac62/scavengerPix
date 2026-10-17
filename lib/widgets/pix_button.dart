@@ -9,11 +9,10 @@ class PixButton extends StatelessWidget {
   final GestureTapCallback onPressed;
   final double fontSize;
   const PixButton(
-      {Key? key,
+      {super.key,
       required this.name,
       required this.onPressed,
-      required this.fontSize})
-      : super(key: key);
+      required this.fontSize});
 
   @override
   Widget build(BuildContext context) {

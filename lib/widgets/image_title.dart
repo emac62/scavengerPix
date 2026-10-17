@@ -6,9 +6,9 @@ import 'package:scavenger_hunt_pictures/widgets/font_sizes.dart';
 class ImageTitle extends StatelessWidget {
   final String title;
   const ImageTitle({
-    Key? key,
+    super.key,
     required this.title,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

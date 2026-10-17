@@ -19,10 +19,8 @@ import 'package:scavenger_hunt_pictures/widgets/size_config.dart';
 
 class OriginalPage extends StatefulWidget {
   const OriginalPage({
-    Key? key,
-  }) : super(
-          key: key,
-        );
+    super.key,
+  });
 
   @override
   OriginalPageState createState() => OriginalPageState();

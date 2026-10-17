@@ -12,11 +12,12 @@ const int maxFailedLoadAttempts = 3;
 
 bool useTestAds = false;
 
-List<String> testDeviceIDs = [
-  "8f4cb8307ba6019ca82bccc419afe5d0", // my iPad
-  "B148F45EC4D7035147769503E195ECF9", // Lenovo
-  "f0e400f92fc1f762333ca805bd6291f2", // my iPhone
-];
+// Pass with: --dart-define=TEST_DEVICE_IDS=id1,id2
+const String _testDeviceIdsRaw = String.fromEnvironment('TEST_DEVICE_IDS');
+
+final List<String> testDeviceIDs = kReleaseMode || _testDeviceIdsRaw.isEmpty
+    ? const <String>[]
+    : _testDeviceIdsRaw.split(',').map((id) => id.trim()).toList();
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await MobileAds.instance.initialize().then((InitializationStatus status) {
@@ -25,7 +26,7 @@ Future<void> main() async {
 
   final RequestConfiguration requestConfiguration = RequestConfiguration(
       tagForChildDirectedTreatment: TagForChildDirectedTreatment.yes,
-      testDeviceIds: kReleaseMode ? const <String>[] : testDeviceIDs);
+      testDeviceIds: testDeviceIDs);
   MobileAds.instance.updateRequestConfiguration(requestConfiguration);
 
   if (kReleaseMode) {
@@ -46,7 +47,7 @@ Future<void> main() async {
 }
 
 class ScavengerHuntPictures extends StatelessWidget {
-  const ScavengerHuntPictures({Key? key}) : super(key: key);
+  const ScavengerHuntPictures({super.key});
 
   @override
   Widget build(BuildContext context) {

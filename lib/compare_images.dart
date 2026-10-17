@@ -31,14 +31,13 @@ class CompareImages extends StatefulWidget {
   String? sixthImgPath;
 
   CompareImages(
-      {Key? key,
+      {super.key,
       required this.firstImgPath,
       this.secondImgPath,
       this.thirdImgPath,
       required this.fourthImgPath,
       this.fifthImgPath,
-      this.sixthImgPath})
-      : super(key: key);
+      this.sixthImgPath});
 
   @override
   CompareImagesState createState() => CompareImagesState();

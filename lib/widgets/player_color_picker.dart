@@ -13,13 +13,12 @@ class PlayerColorPicker extends StatefulWidget {
   final String player; // Determnie shapes of color cells
 
   const PlayerColorPicker(
-      {Key? key,
+      {super.key,
       required this.onSelectColor,
       required this.availableColors,
       required this.initialColor,
       required this.player,
-      this.circleItem = true})
-      : super(key: key);
+      this.circleItem = true});
 
   @override
   PlayerColorPickerState createState() => PlayerColorPickerState();
