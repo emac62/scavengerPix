@@ -25,8 +25,9 @@ Future<void> main() async {
   });
 
   final RequestConfiguration requestConfiguration = RequestConfiguration(
-      tagForChildDirectedTreatment: TagForChildDirectedTreatment.yes,
-      testDeviceIds: testDeviceIDs);
+    tagForChildDirectedTreatment: TagForChildDirectedTreatment.yes,
+    testDeviceIds: testDeviceIDs,
+  );
   MobileAds.instance.updateRequestConfiguration(requestConfiguration);
 
   if (kReleaseMode) {
@@ -37,13 +38,18 @@ Future<void> main() async {
   final double deviceWidth = physSize.width;
 
   if (deviceWidth < 600) {
-    await SystemChrome.setPreferredOrientations(
-        [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
+    await SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
+    ]);
   }
 
-  runApp(MultiProvider(
+  runApp(
+    MultiProvider(
       providers: [ChangeNotifierProvider(create: (_) => SettingsProvider())],
-      child: const ScavengerHuntPictures()));
+      child: const ScavengerHuntPictures(),
+    ),
+  );
 }
 
 class ScavengerHuntPictures extends StatelessWidget {

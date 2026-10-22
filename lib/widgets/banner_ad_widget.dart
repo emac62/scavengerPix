@@ -23,11 +23,15 @@ class BannerAdContainerState extends State<BannerAdContainer> {
       request: const AdRequest(),
       listener: BannerAdListener(
         onAdLoaded: (_) {
+          if (!mounted) return;
           setState(() {
             _isBottomBannerAdLoaded = true;
           });
         },
         onAdFailedToLoad: (ad, error) {
+          // ignore: avoid_print
+          print('Banner failed: code=${error.code} domain=${error.domain} '
+              'message=${error.message}');
           ad.dispose();
         },
       ),
